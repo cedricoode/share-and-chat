@@ -4,7 +4,7 @@ import { View, StyleSheet, Text } from 'react-native';
 
 const ChatContainer = () => (
     <View style={styles.container}>
-            <Text>nice</Text>
+            <Text>this is a message nice  dfsdf</Text>
     </View>
 );
 

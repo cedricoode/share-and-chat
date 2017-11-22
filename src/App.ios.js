@@ -16,6 +16,7 @@ const navigatorStyle = {
 	tabBarBackgroundColor: 'white'
 };
 
+
 Navigation.startTabBasedApp({
     tabs: [
         {
