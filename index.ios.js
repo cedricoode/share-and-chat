@@ -1,1 +1,3 @@
-import './src/App';
+import App from './src/App';
+
+new App();

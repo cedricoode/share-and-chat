@@ -18,14 +18,15 @@ const LabeledTextInput = ({label, placeholder, displayLabel, secureTextEntry, on
             autoCorrect={false}
             placeholder={placeholder}
             secureTextEntry={secureTextEntry}
-            caretHidden={true}            
+            caretHidden={false}            
         />
     </View>
 );
 
 const styles = StyleSheet.create({
     container: {
-        flexDirection: 'row'
+        flexDirection: 'row',
+        height: 56
     },
     label: {
         flex: 1,

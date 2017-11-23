@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { View, Button, Text, StyleSheet } from 'react-native';
+import { View, Button, Text, StyleSheet, ImageBackground, Image } from 'react-native';
 import PropTypes from 'prop-types';
 
 import LabeledTextInput from './labeledTextInputComponent';
@@ -27,32 +27,40 @@ class LoginComponent extends Component {
             submitError
          } = this.props;
         return (
-            <View style={styles.container}>
+            <ImageBackground style={styles.imgBackground}
+                source={require('../../static/icon/bg.png')}>
                 <View>
-                    <LabeledTextInput
-                        label='Email'
-                        placeholder='Company Name'
-                        displayLabel={false}
-                        onChange={onUsernameChange}/>
-                </View>
-                <View>
-                    <LabeledTextInput 
-                        label='Password'
-                        placeholder='Password'
-                        displayLabel={false}
-                        secureTextEntry={true}
-                        onChange={onPasswordChange}/>
-                </View>
-                {submitError?
-                    <Text style={styles.errorText}>
-                        error
-                    </Text>
-                    : null
-                }
+                    <Image source={require('../../static/icon/logo.png')}
+                        resizeMode='contain'
+                        style={styles.logo}/>
+                    <View style={styles.inputContainer}>
+                        <View>
+                            <LabeledTextInput
+                                label='Email'
+                                placeholder='Company Name'
+                                displayLabel={false}
+                                onChange={onUsernameChange}/>
+                        </View>
+                        <View>
+                            <LabeledTextInput 
+                                label='Password'
+                                placeholder='Password'
+                                displayLabel={false}
+                                secureTextEntry={true}
+                                onChange={onPasswordChange}/>
+                        </View>
+                    </View>
+                    {submitError?
+                        <Text style={styles.errorText}>
+                            error
+                        </Text>
+                        : null
+                    }
 
-                <Button title='Sign In' onPress={() => 
-                    onSubmit()||null}/>
-            </View>
+                    <Button title='Sign In' onPress={() => 
+                        onSubmit()||null}/>
+                </View>
+            </ImageBackground>
         );
     }
 }
@@ -65,12 +73,19 @@ LoginComponent.propTypes = {
 };
 
 const styles = StyleSheet.create({
-    container: {
-        // flex: 1,
-        // justifyContent: 'center',
+    imgBackground: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     errorText: {
         color: 'red'
+    },
+    logo: {
+        width: 180,
+        height: 90
+    },
+    inputContainer: {
     }
 });
 export default LoginComponent;
