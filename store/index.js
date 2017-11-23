@@ -11,7 +11,7 @@ const reducers = combineReducers({
 const InitialState = {
     auth: {
         loggedIn: false,
-        develop: 'login'
+        develop: 'login'//login, loggedIn, other
     }
 };
 
