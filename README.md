@@ -1,6 +1,7 @@
 # Tuding client terminal
 
 ## Android
+1. changed android buildtools version and supported library version to mitigate a bug after adding react-native-navigation
 
 ## iOS
 
@@ -10,8 +11,16 @@ For react native, we are not going to use create-react-native-app, since we are 
 1. [ReactJS docs](https://reactjs.org/tutorial/tutorial.html)
 2. [React Native docs](https://facebook.github.io/react-native/)(we are using version 0.49)
 3. [React Native debug](https://facebook.github.io/react-native/)
+    * change default chrome devTool debugger to react-native-debugger
+    * element inspection
+    * redux state inspection
 4. [Redux, a way of managing application state](https://redux.js.org/docs/basics/)
 5. React styling is a bit different from other frontend framework, maybe one will need some time to adapt to it.
+6. [react-native-config](https://github.com/luggit/react-native-config) *12-factor-app* configuration.
+7. [react-native-debugger](https://github.com/jhen0409/react-native-debugger) awesome debugger tools. use ```yarn run debug``` to start the debugging process.
+8. [redux-persist](https://github.com/rt2zz/redux-persist), a redux state persisting tool.
+9. [redux-logger](https://github.com/evgenyrodionov/redux-logger), as its name suggests.
+10. [react-native-navigation](https://wix.github.io/react-native-navigation/#/styling-the-navigator), the navigation tools we are using.
 
 ## Firebase
 ### Realtime database

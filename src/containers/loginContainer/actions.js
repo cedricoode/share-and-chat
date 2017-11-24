@@ -22,8 +22,6 @@ const actionCreators = {
 };
 
 function loginRequest(username, password) {
-    // const headers = new Headers();
-    // headers.append('ContentType', 'application/json');
     const options = {
         method: 'POST',
         headers: {
