@@ -140,10 +140,12 @@ export default class App {
         store.subscribe(this.onStoreUpdate.bind(this));
         // Dispatch a init action to get onStoreUpdate run.
         store.dispatch({type: 'APP_INITIALIZED'});
+        store.dispatch({type: 'DEVELOP', content: Globals.development.develop});
     }
 
     onStoreUpdate() {
-        const { loggedIn } = store.getState().auth;
+        // const { loggedIn } = store.getState().auth;
+        const loggedIn = store.getState().develop;
 
         if (this.app != loggedIn) {
             this.app = loggedIn;

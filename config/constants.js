@@ -19,7 +19,8 @@ const Globals = {
     },
     development: {
         username: Config.TEST_USER,
-        password: Config.TEST_PASSWORD
+        password: Config.TEST_PASSWORD,
+        develop: 'other'
     }
 };
 

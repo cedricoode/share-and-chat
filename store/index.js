@@ -14,7 +14,14 @@ const persistConfig = {
 
 const reducer = persistCombineReducers(persistConfig, {
     auth: authReducer,
-    orders: (state=null) => state
+    orders: (state=null) => state,
+    develop: (state=null, action) => {
+        if (action.type === 'DEVELOP') {
+            return action.content;
+        } else {
+            return state;
+        }
+    }
 });
 
 const logger = createLogger({
