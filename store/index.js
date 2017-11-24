@@ -5,7 +5,7 @@ import { persistStore, persistCombineReducers } from 'redux-persist';
 import storage from 'redux-persist/es/storage';
 
 import authReducer from '../src/containers/loginContainer/reducer';
-import Globals from '../config/constants';
+import { development } from '../config/constants';
 
 const persistConfig = {
     key: 'stateRoot',
@@ -32,8 +32,8 @@ const logger = createLogger({
 const InitialState = {
     auth: {
         loggedIn: false,
-        username: Globals.development.username,
-        password: Globals.development.password,
+        username: development.username,
+        password: development.password,
         develop: 'login'//login, loggedIn, other
     },
     orders: [

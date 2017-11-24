@@ -2,23 +2,21 @@ import ProgramScreen from './containers/programContainer';
 import ChatScreen from './containers/chatContainer';
 import MapScreen from './containers/mapContainer';
 import LoginContainer from './containers/loginContainer';
-import SideMenu from './containers/sideMenuContainer';
 import OrderList from './containers/orderListContainer';
+import { screens } from '../config/constants';
 
 import { Navigation } from 'react-native-navigation';
 
 // Register all apps' screens
-export function registerScreens(store, provider) {
+export default function registerScreens(store, provider) {
     Navigation.registerComponent(
-        'tuding.OrderList', () => OrderList, store, provider);
+        screens.orderList, () => OrderList, store, provider);
     Navigation.registerComponent(
-        'tuding.LoginScreen', () => LoginContainer, store, provider);
+        screens.login, () => LoginContainer, store, provider);
     Navigation.registerComponent(
-        'tuding.ChatScreen', () => ChatScreen, store, provider);
+        screens.chat, () => ChatScreen, store, provider);
     Navigation.registerComponent(
-        'tuding.ProgramScreen', () => ProgramScreen, store, provider);
+        screens.program, () => ProgramScreen, store, provider);
     Navigation.registerComponent(
-        'tuding.MapScreen', () => MapScreen, store, provider);
-    Navigation.registerComponent(
-        'tuding.SideMenu', () => SideMenu, store, provider);
+        screens.map, () => MapScreen, store, provider);
 }

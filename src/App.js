@@ -1,33 +1,17 @@
 import { Navigation } from 'react-native-navigation';
 import { Provider } from 'react-redux';
 
-import { registerScreens } from './screens';
-import Globals from '../config/constants';
+import registerScreens from './navScreens';
+import registerComponents from './navComponents';
+import { screens, colors, components, development } from '../config/constants';
 import store from '../store';
 
 registerScreens(store, Provider);
+registerComponents(store, Provider);
 
-import React from 'react';
-import { Image, TouchableOpacity } from 'react-native';
-// TODO: refactor here! views should not be here.
-const MenuButton = () =>
-    <TouchableOpacity>
-        <Image source={require('../static/icon/icon-menu.png')} style={{height: 18, width:18}}/>
-    </TouchableOpacity>;
-Navigation.registerComponent('MenuButton', () => MenuButton);
-
-const navigatorStyle = {
-    statusBarColor: 'black',
-    statusBarTextColorScheme: 'light',
-    navigationBarColor: 'black',
-    navBarBackgroundColor: '#0a0a0a',
-    navBarTextColor: 'white',
-    navBarButtonColor: 'white',
-    // tabBarButtonColor: 'red',
-    // tabBarSelectedButtonColor: 'red',
-    tabBarBackgroundColor: 'white'
-};
-
+// **************************
+// *     Login App          *
+// **************************
 const LoginNavigatorStype = {
     navBarHidden: true,
     // orientation: 'portrait',
@@ -37,40 +21,10 @@ const LoginNavigatorStype = {
     navBarNoBorder: true
 };
 
-export function goToOrderScreen() {
-    Navigation.startTabBasedApp({
-        tabs: [
-            {
-                label: 'chat',
-                screen: 'tuding.ChatScreen', // this is a registered name for a screen
-                icon: require('../static/icon/chat.png'),
-                selectedIcon: require('../static/icon/chat.png'), // iOS only
-                title: 'ChatScreen',
-                navigatorStyle
-            },
-            {
-                label: 'map',
-                screen: 'tuding.MapScreen',
-                icon: require('../static/icon/map.png'),
-                selectedIcon: require('../static/icon/map.png'), // iOS only
-                title: 'ProgramScreen'
-            },
-            {
-                label: 'program',
-                screen: 'tuding.ProgramScreen',
-                icon: require('../static/icon/programe.png'),
-                selectedIcon: require('../static/icon/programe.png'), // iOS only
-                title: 'ProgramScreen'
-            },
-        ]
-    });
-}
-
-
 function startLoginApp() {
     Navigation.startSingleScreenApp({
         screen: {
-            screen: 'tuding.LoginScreen', // unique ID registered with Navigation.registerScreen
+            screen: screens.login, // unique ID registered with Navigation.registerScreen
             // title: 'Welcome', // title of the screen as appears in the nav bar (optional)
             navigatorStyle: LoginNavigatorStype, // override the navigator style for the screen, see "Styling the navigator" below (optional)
             navigatorButtons: {} // override the nav buttons for the screen, see "Adding buttons to the navigator" below (optional)
@@ -82,14 +36,59 @@ function startLoginApp() {
     });
 }
 
-
-const OrderListNavigatorStype = {
-    statusBarColor: Globals.colors.primary,
+// **************************
+// *     Order App          *
+// **************************
+const OrderNavigatorStyle = {
+    statusBarColor: 'black',
     statusBarTextColorScheme: 'light',
-    navigationBarColor: Globals.colors.primary,
-    navBarBackgroundColor: Globals.colors.primary,
-    navBarTextColor: Globals.colors.textOnPrimary,
-    navBarButtonColor: Globals.colors.textOnPrimary,
+    navigationBarColor: 'black',
+    navBarBackgroundColor: '#0a0a0a',
+    navBarTextColor: 'white',
+    navBarButtonColor: 'white',
+    // tabBarButtonColor: 'red',
+    // tabBarSelectedButtonColor: 'red',
+    tabBarBackgroundColor: 'white'
+};
+function startOrderApp() {
+    Navigation.startTabBasedApp({
+        tabs: [
+            {
+                label: 'chat',
+                screen: screens.chat, // this is a registered name for a screen
+                icon: require('../static/icon/chat.png'),
+                selectedIcon: require('../static/icon/chat.png'), // iOS only
+                title: 'ChatScreen',
+                navigatorStyle: OrderNavigatorStyle
+            },
+            {
+                label: 'map',
+                screen: screens.map,
+                icon: require('../static/icon/map.png'),
+                selectedIcon: require('../static/icon/map.png'), // iOS only
+                title: 'ProgramScreen'
+            },
+            {
+                label: 'program',
+                screen: screens.program,
+                icon: require('../static/icon/programe.png'),
+                selectedIcon: require('../static/icon/programe.png'), // iOS only
+                title: 'ProgramScreen'
+            },
+        ]
+    });
+}
+
+// **************************
+// *     OrderList App      *
+// **************************
+const OrderListNavigatorStype = {
+    statusBarColor: colors.primary,
+    statusBarTextColorScheme: 'light',
+    navigationBarColor: colors.primary,
+    navBarBackgroundColor: colors.primary,
+    navBarTextColor: colors.textOnPrimary,
+    navBarButtonColor: colors.textOnPrimary,
     // tabBarButtonColor: 'red',
     // tabBarSelectedButtonColor: 'red',
     tabBarBackgroundColor: 'white'
@@ -98,21 +97,21 @@ const OrderListNavigatorStype = {
 function startOrderListApp() {
     Navigation.startSingleScreenApp({
         screen: {
-            screen: 'tuding.OrderList',
+            screen: screens.orderList,
             title: 'OrderList',
             navigatorStyle: OrderListNavigatorStype,
             navigatorButtons: {
                 leftButtons: [
                     {
                         id: 'menu-btn',
-                        component: 'MenuButton'
+                        component: components.menuButton
                     }
                 ]
             },
         },
         drawer: { // optional, add this if you want a side menu drawer in your app
             left: { // optional, define if you want a drawer from the left
-                screen: 'tuding.SideMenu', // unique ID registered with Navigation.registerScreen
+                screen: components.sideMenu, // unique ID registered with Navigation.registerScreen
                 passProps: {}, // simple serializable object that will pass as props to all top screens (optional)
                 disableOpenGesture: true // can the drawer be opened with a swipe instead of button (optional, Android only)
             },
@@ -140,12 +139,12 @@ export default class App {
         store.subscribe(this.onStoreUpdate.bind(this));
         // Dispatch a init action to get onStoreUpdate run.
         store.dispatch({type: 'APP_INITIALIZED'});
-        store.dispatch({type: 'DEVELOP', content: Globals.development.develop});
+        store.dispatch({type: 'DEVELOP', content: development.develop});
     }
 
     onStoreUpdate() {
-        // const { loggedIn } = store.getState().auth;
-        const loggedIn = store.getState().develop;
+        const { loggedIn } = store.getState().auth;
+        // const loggedIn = store.getState().develop;
 
         if (this.app != loggedIn) {
             this.app = loggedIn;
@@ -162,7 +161,7 @@ export default class App {
                 startOrderListApp();
                 break;
             default:
-                goToOrderScreen();
+                startOrderApp();
         }
     } 
 }
