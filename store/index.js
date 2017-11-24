@@ -21,7 +21,9 @@ const reducer = persistCombineReducers(persistConfig, {
         } else {
             return state;
         }
-    }
+    },
+    programHTML :(state=null) => state
+    
 });
 
 const logger = createLogger({
@@ -121,8 +123,9 @@ const InitialState = {
             "endDateTime": "2017-11-22T19:34:56",
             "isActive": false
         }
-    ]
-};
+    ], 
+    programHTML :  'https://tdbusmapi-dev.azurewebsites.net/OrderProgram/Program?id=3072-38' 
+}; 
 
 function configureStore() {
     let store = createStore(

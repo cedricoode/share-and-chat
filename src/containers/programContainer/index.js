@@ -1,19 +1,9 @@
-import React from 'react';
+import {connect} from 'react-redux';
+import {View, Text, StyleSheet, WebView} from 'react-native';
+import ProgramComponent from '../../components/programComponent';
 
-import { View, Text, StyleSheet } from 'react-native';
-
-
-const ProgramContainer = () => (
-    <View style={styles.container}>
-        <Text>nice</Text>
-    </View>
-);
-
-const styles = StyleSheet.create({
-    container: {
-        backgroundColor: 'powderblue',
-        flex: 1
-    }
-});
-
+function mapStateToProps(state) { 
+    return {url: state.programHTML};
+} 
+const ProgramContainer = connect(mapStateToProps)(ProgramComponent);
 export default ProgramContainer;
