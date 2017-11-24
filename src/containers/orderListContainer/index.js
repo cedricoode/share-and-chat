@@ -1,17 +1,5 @@
-import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { connect } from 'react-redux';
 
+import OrderListComponent from '../../components/orderListComponent';
 
-const OrderList = () => (
-    <View style={styles.container}>
-    </View>
-);
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: 'greenyellow'
-    }
-});
-
-export default OrderList;
+export default connect()(OrderListComponent);
