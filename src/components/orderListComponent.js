@@ -1,108 +1,67 @@
 import React from 'react';
-import { View, FlatList, StyleSheet, Text } from 'react-native';
+import { View, FlatList, StyleSheet, Text, Image, RefreshControl } from 'react-native';
+import { Card } from 'react-native-elements';
+import PropTypes from 'prop-types';
 
-const TestData = {
-    "data": [
-        {
-            "id": "TD3061-31",
-            "atomyOrderQuotationId": 31,
-            "atomyOrderId": 24,
-            "orderId": 3061,
-            "orderQuotationId": 8,
-            "startPlace": "18 Rue de Rivoli, 75004 Paris, France",
-            "startDateTime": "2018-01-30T08:01:09",
-            "endPlace": "11 Rue de Reims, 75013 Paris, France",
-            "endDateTime": "2018-02-01T08:02:43",
-            "isActive": true
-        },
-        {
-            "id": "TD3068-36",
-            "atomyOrderQuotationId": 36,
-            "atomyOrderId": 26,
-            "orderId": 3068,
-            "orderQuotationId": 12,
-            "startPlace": "Rome, Metropolitan City of Rome, Italy",
-            "startDateTime": "2017-12-14T07:00:00",
-            "endPlace": "Paris, France",
-            "endDateTime": "2017-12-16T07:12:55",
-            "isActive": true
-        },
-        {
-            "id": "TD3072-38",
-            "atomyOrderQuotationId": 38,
-            "atomyOrderId": 20,
-            "orderId": 3072,
-            "orderQuotationId": 16,
-            "startPlace": "Paris, France",
-            "startDateTime": "2017-11-30T10:28:55",
-            "endPlace": "58 Avenue Foch, 75116 Paris, France",
-            "endDateTime": "2017-11-30T20:11:54",
-            "isActive": true
-        },
-        {
-            "id": "TD3066-40",
-            "atomyOrderQuotationId": 40,
-            "atomyOrderId": 19,
-            "orderId": 3066,
-            "orderQuotationId": 14,
-            "startPlace": "11 Rue de Reims, 75013 Paris, France",
-            "startDateTime": "2017-11-29T09:11:44",
-            "endPlace": "58 Avenue Foch, 75116 Paris, France",
-            "endDateTime": "2017-11-29T09:11:41",
-            "isActive": true
-        },
-        {
-            "id": "TD3067-39",
-            "atomyOrderQuotationId": 39,
-            "atomyOrderId": 15,
-            "orderId": 3067,
-            "orderQuotationId": 15,
-            "startPlace": "Rome, Metropolitan City of Rome, Italy",
-            "startDateTime": "2017-11-22T12:11:00",
-            "endPlace": "Paris, France",
-            "endDateTime": "2017-11-24T12:11:00",
-            "isActive": true
-        },
-        {
-            "id": "TD3128-41",
-            "atomyOrderQuotationId": 41,
-            "atomyOrderId": 27,
-            "orderId": 3128,
-            "orderQuotationId": 17,
-            "startPlace": "58 Avenue Foch, 75116 Paris, France",
-            "startDateTime": "2017-11-22T08:34:56",
-            "endPlace": "11 Rue de Rivoli, 75004 Paris, France",
-            "endDateTime": "2017-11-22T19:34:56",
-            "isActive": true
-        },
-        {
-            "id": "TD3128-43",
-            "atomyOrderQuotationId": 43,
-            "atomyOrderId": 28,
-            "orderId": 3128,
-            "orderQuotationId": 17,
-            "startPlace": "58 Avenue Foch, 75116 Paris, France",
-            "startDateTime": "2017-11-22T08:34:56",
-            "endPlace": "11 Rue de Rivoli, 75004 Paris, France",
-            "endDateTime": "2017-11-22T19:34:56",
-            "isActive": true
-        }
-    ],
-    "status": "OK",
-    "message": null
+const ListItemComponent = 
+    ({id, startPlace, endPlace, startDateTime, endDateTime, isActive}) => (
+        <Card title={id} 
+            titleStyle={{
+                fontWeight: isActive? 'bold': 'normal',
+                textAlign: 'left'}}>
+            <View style={{flexDirection: 'row'}}>
+                <View>
+                    <Image style={{flex: 1, height: 16, width: 16}} resizeMode='contain' source={require('../../static/icon/map.png')}/>
+                    <Image style={{flex: 1, height: 16, width: 16}} resizeMode='contain' source={require('../../static/icon/map.png')}/>
+                </View>
+                <View style={{marginLeft: 16}}>
+                    <View>
+                        <Text style={{fontSize: 16}}>{startDateTime}</Text>
+                        <Text>{startPlace}</Text>
+                    </View>
+                    <View style={{marginTop: 8}}>
+                        <Text style={{fontSize: 16}}>{endDateTime}</Text>
+                        <Text>{endPlace}</Text>
+                    </View>
+                </View>
+            </View>
+        </Card>
+);
+
+ListItemComponent.propTypes = {
+    id: PropTypes.string.isRequired,
+    startPlace: PropTypes.string.isRequired,
+    endPlace: PropTypes.string.isRequired,
+    startDateTime: PropTypes.string.isRequired,
+    endDateTime: PropTypes.string.isRequired,
+    isActive: PropTypes.bool.isRequired
 };
 
-const OrderListComponent = () => (
+function tempFunction() {
+    console.log('refreshing');
+    setTimeout(() => refreshing=true, 2000);
+}
+
+let refreshing = false;
+
+const OrderListComponent = ({orders}) => (
     <View style={styles.container}>
         <FlatList
+            refreshControl={<RefreshControl
+                onRefresh={tempFunction}
+                refreshing={refreshing}/>}
             style={{flex: 1}}
             extraData={this.state}
-            data={TestData.data}
+            data={orders.map(item => ({...item, id: `Order N˚ ${item.id}`}))}
             keyExtractor={(item) => item.id}
-            renderItem={(item) => <View style={{height: 54}}><Text id={item.id}>{item.id}</Text></View>}
+            renderItem={({item}) => <ListItemComponent {...item}/>}
         />
     </View>
 );
+
+OrderListComponent.propTypes = {
+    orders: PropTypes.array
+};
 
 const styles = StyleSheet.create({
     container: {

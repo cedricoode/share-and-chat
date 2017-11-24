@@ -2,13 +2,13 @@ import Config from 'react-native-config';
 
 const Globals = {
     colors: {
-        primary: '#03a9f4',
+        primary: '#00a2ae',
         primaryDark: '#007ac1',
         primaryLight: '#67daff',
         secondary: '#ffc107',
         secondaryDark: '#c79100',
         secondaryLight: '#fff350',
-        textOnPrimary: '#fff350',
+        textOnPrimary: '#fafafa',
         textOnSecondary: '#fff350'
     },
     endpoints: {

@@ -1,11 +1,20 @@
 import { Navigation } from 'react-native-navigation';
-
-import { registerScreens } from './screens';
-
-import store from '../store';
 import { Provider } from 'react-redux';
 
+import { registerScreens } from './screens';
+import Globals from '../config/constants';
+import store from '../store';
+
 registerScreens(store, Provider);
+
+import React from 'react';
+import { Image, TouchableOpacity } from 'react-native';
+// TODO: refactor here! views should not be here.
+const MenuButton = () =>
+    <TouchableOpacity>
+        <Image source={require('../static/icon/icon-menu.png')} style={{height: 18, width:18}}/>
+    </TouchableOpacity>;
+Navigation.registerComponent('MenuButton', () => MenuButton);
 
 const navigatorStyle = {
     statusBarColor: 'black',
@@ -73,13 +82,33 @@ function startLoginApp() {
     });
 }
 
+
+const OrderListNavigatorStype = {
+    statusBarColor: Globals.colors.primary,
+    statusBarTextColorScheme: 'light',
+    navigationBarColor: Globals.colors.primary,
+    navBarBackgroundColor: Globals.colors.primary,
+    navBarTextColor: Globals.colors.textOnPrimary,
+    navBarButtonColor: Globals.colors.textOnPrimary,
+    // tabBarButtonColor: 'red',
+    // tabBarSelectedButtonColor: 'red',
+    tabBarBackgroundColor: 'white'
+};
+
 function startOrderListApp() {
     Navigation.startSingleScreenApp({
         screen: {
             screen: 'tuding.OrderList',
             title: 'OrderList',
-            navigatorStyle,
-            navigatorButtons: {},
+            navigatorStyle: OrderListNavigatorStype,
+            navigatorButtons: {
+                leftButtons: [
+                    {
+                        id: 'menu-btn',
+                        component: 'MenuButton'
+                    }
+                ]
+            },
         },
         drawer: { // optional, add this if you want a side menu drawer in your app
             left: { // optional, define if you want a drawer from the left

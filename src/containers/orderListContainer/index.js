@@ -2,4 +2,10 @@ import { connect } from 'react-redux';
 
 import OrderListComponent from '../../components/orderListComponent';
 
-export default connect()(OrderListComponent);
+function mapStateToProps(state) {
+    return {
+        orders: state.orders
+    };
+}
+
+export default connect(mapStateToProps)(OrderListComponent);
