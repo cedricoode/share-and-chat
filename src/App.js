@@ -106,30 +106,28 @@ function startOrderListApp() {
     });
 }
 
-
 export default class App {
     constructor() {
         store.subscribe(this.onStoreUpdate.bind(this));
+        // Dispatch a init action to get onStoreUpdate run.
         store.dispatch({type: 'APP_INITIALIZED'});
-        // app initialized;
     }
 
     onStoreUpdate() {
-        const { develop } = store.getState().auth;
-        this.startApp(develop);
-        // if (loggedIn) {
-        //     this.startApp('loggedIn');
-        // } else {
-        //     this.startApp('login');
-        // }
+        const { loggedIn } = store.getState().auth;
+
+        if (this.app != loggedIn) {
+            this.app = loggedIn;
+            this.startApp(loggedIn);
+        }
     }
 
     startApp(root) {
         switch (root) {
-            case 'login':
+            case false:
                 startLoginApp();
                 break;
-            case 'loggedIn':
+            case true:
                 startOrderListApp();
                 break;
             default:

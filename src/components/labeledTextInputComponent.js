@@ -16,6 +16,7 @@ const LabeledTextInput = ({label, placeholder, displayLabel, secureTextEntry, on
             onChangeText={onChange? ((text) => onChange(text)) : null}
             style={styles.inputField}
             autoCorrect={false}
+            autoCapitalize='none'
             placeholder={placeholder}
             secureTextEntry={secureTextEntry}
             caretHidden={false}            

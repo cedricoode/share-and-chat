@@ -1,4 +1,5 @@
 import logger from '../../helpers/logger';
+import Global from '../../../config/constants';
 
 const actions = {
     LOGIN: 'AUTH/LOGIN',
@@ -20,45 +21,49 @@ const actionCreators = {
     })
 };
 
+function loginRequest(username, password) {
+    // const headers = new Headers();
+    // headers.append('ContentType', 'application/json');
+    const options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            userName: username,
+            password: password
+        })
+    };
+    return fetch(Global.endpoints.login, options).then(response => {
+        console.log('here!!!!!!!!!');
+        if (response.ok) {
+            return response.json();
+        } else {
+            throw new Error('response error, status code: ' + response.status);
+        }
+    });
+    
+}
+
 const actionCreatorFactory = {
     loginCreator: () => {
         logger.log('loginCtn', 'actions', 'loginCreaton called!');
         return (dispatch, getState) => {
             const state = getState();
-            logger.log('loginCtn', 'loginCreator',
-                `login username(${state.auth.username})
-                password(${state.auth.password})`);
-
-            let formData = new FormData();
-            formData.append('name', state.auth.username);
-            formData.append('password', state.auth.password);
-            let options = {
-                method: 'POST',
-                headers: {}
-            };
-            options.headers['Content-Type'] = 'multipart/form-data';
-            options.body = formData;
-            fetch('http://192.168.0.12:8080/login', options)
-                .then(response => {
-                    if (response.ok) {
-                        return response.text();
-                    } else {
-                        throw new Error('response error, status code: ' + response.status);
-                    }
-                }).then(() => {
+            const { username, password } = state.auth;
+            loginRequest(username, password)
+                .then(data => {
                     logger.log('loginCtn', 'login', 'login success');                    
                     dispatch({
-                        type: actions.LOGIN_SUCCESS
-                    });
-                }).catch(err => {
-                    logger.log('loginCtn', 'login', err);
-                    dispatch({
-                        type: actions.LOGIN_FAILURE,
-                        content: {
-                            reason: err
-                        }
-                    });
-                });
+                        type: actions.LOGIN_SUCCESS,
+                        content: data
+                    });})
+                .catch(err => dispatch({
+                    type: actions.LOGIN_FAILURE,
+                    content: {
+                        reason: err
+                    }
+                }));
         };
     }
 };

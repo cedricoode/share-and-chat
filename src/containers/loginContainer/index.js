@@ -3,8 +3,6 @@ import LoginComponent from '../../components/loginComponent';
 import actionCreators, { actionCreatorFactory } from './actions';
 import logger from '../../helpers/logger';
 
-import { goToOrderScreen } from '../../App';
-
 // Redux
 function mapStateToProps(state) {
     return {
@@ -25,7 +23,6 @@ function mapDispatchToProps(dispatch, ownProps) {
         onSubmit: (username, password) => {
             dispatch(actionCreators.onLogin());
             dispatch(actionCreatorFactory.loginCreator(username, password));
-            goToOrderScreen();            
         }
     };
 }
