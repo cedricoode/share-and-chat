@@ -42,12 +42,12 @@ function startLoginApp() {
 // *     Order App          *
 // **************************
 const OrderNavigatorStyle = {
-    statusBarColor: 'black',
+    statusBarColor: colors.primary,
     statusBarTextColorScheme: 'light',
-    navigationBarColor: 'black',
-    navBarBackgroundColor: '#0a0a0a',
-    navBarTextColor: 'white',
-    navBarButtonColor: 'white',
+    navigationBarColor: colors.primary,
+    navBarBackgroundColor: colors.primary,
+    navBarTextColor: colors.textOnPrimary,
+    navBarButtonColor: colors.textOnPrimary,
     // tabBarButtonColor: 'red',
     // tabBarSelectedButtonColor: 'red',
     tabBarBackgroundColor: 'white'
@@ -60,7 +60,7 @@ function startOrderApp() {
                 screen: screens.chat, // this is a registered name for a screen
                 icon: require('../static/icon/chat.png'),
                 selectedIcon: require('../static/icon/chat.png'), // iOS only
-                title: 'ChatScreen',
+                title: store.getState().selectedId,
                 navigatorStyle: OrderNavigatorStyle
             },
             {
