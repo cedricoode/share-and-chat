@@ -3,8 +3,10 @@ import { Provider } from 'react-redux';
 
 import registerScreens from './navScreens';
 import registerComponents from './navComponents';
-import { screens, colors, components, development } from '../config/constants';
-import store from '../store';
+import {
+    screens, colors, components,
+    development, initialState } from '../config/constants';
+import store, { persistor } from '../store';
 
 registerScreens(store, Provider);
 registerComponents(store, Provider);
@@ -110,12 +112,23 @@ function startOrderListApp() {
                 rightButtons: [
                     {
                         id: 'logout-btn',
-                        componet: components.logoutButton,
-                        title: 'logout..'
+                        title: 'logout'
                     }
                 ]
             },
         },
+        passProps: {
+            orderListNavProps: {
+                eventHandler: (event)=>{
+                    if (event.type === 'NavBarButtonPress') {
+                        if (event.id === 'logout-btn') {
+                            store.dispatch({type: 'RESET', state: initialState});
+                            persistor.purge();
+                        }
+                    }
+                    }
+                }
+            },
         drawer: { // optional, add this if you want a side menu drawer in your app
             left: { // optional, define if you want a drawer from the left
                 screen: components.sideMenu, // unique ID registered with Navigation.registerScreen
@@ -137,7 +150,7 @@ function startOrderListApp() {
             // animationType: 'door', //optional, iOS only, for MMDrawer: 'door', 'parallax', 'slide', 'slide-and-scale'
             // for TheSideBar: 'airbnb', 'facebook', 'luvocracy','wunder-list'
             disableOpenGesture: true // optional, can the drawer, both right and left, be opened with a swipe instead of button
-        }
+            }
     });
 }
 

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, FlatList, StyleSheet, Text, Image, RefreshControl } from 'react-native';
 import { Card } from 'react-native-elements';
 import PropTypes from 'prop-types';
+import get from 'lodash/get';
 
 const ListItemComponent =
     ({ id, startPlace, endPlace, startDateTime, endDateTime, isActive }) => (
@@ -39,15 +40,30 @@ ListItemComponent.propTypes = {
 };
 
 class OrderListComponent extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this._onRefresh = this._onRefresh.bind(this);
+        this._onNavigatorEvent = this._onNavigatorEvent.bind(this);
+
+        if (this.props.navigator) {
+            this.props.navigator.addOnNavigatorEvent(this._onNavigatorEvent);
+        }
     }
     componentDidMount() {
         this._onRefresh();
     }
     _onRefresh() {
         this.props.onRefresh();
+    }
+    /**
+     * The navigator property is an injected dependency of this component,
+     * we cannot garantee the existence of nav event handler.
+     * To make the configuration clear, normally the relevant handler is injected
+     * the same place where the navigator is defined, namely in src/App.js
+     * @param {NavigatorEventType} event 
+     */
+    _onNavigatorEvent(event) {
+        get(this.props, 'orderListNavProps.eventHandler', () =>{})(event);
     }
     render() {
         const { orders, refreshing } = this.props;
@@ -68,7 +84,9 @@ class OrderListComponent extends Component {
 OrderListComponent.propTypes = {
     orders: PropTypes.array,
     onRefresh: PropTypes.func,
-    refreshing: PropTypes.bool
+    refreshing: PropTypes.bool,
+    navigator: PropTypes.object,
+    orderListNavProps: PropTypes.object,
 };
 
 const styles = StyleSheet.create({
