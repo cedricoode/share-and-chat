@@ -23,7 +23,9 @@ const reducer = persistCombineReducers(persistConfig, {
         } else {
             return state;
         }
-    }
+    },
+    programHTML :(state=null) => state
+    
 });
 
 const logger = createLogger({
