@@ -11,6 +11,21 @@ import store, { persistor } from '../store';
 registerScreens(store, Provider);
 registerComponents(store, Provider);
 
+const navEventHandler = (event)=>{
+    if (event.type === 'NavBarButtonPress') {
+        if (event.id === 'logout-btn') {
+            store.dispatch({type: 'RESET', state: {
+                ...initialState,
+                appInitialized: true,
+                _persist: store.getState()._persist
+            }});
+            persistor.purge();
+        } else if (event.id === 'back-btn') {
+            store.dispatch({type: 'SELECTORDER', content: null});
+        }
+    }
+};
+
 // **************************
 // *     Login App          *
 // **************************
@@ -61,23 +76,72 @@ function startOrderApp() {
                 icon: require('../static/icon/chat.png'),
                 selectedIcon: require('../static/icon/chat.png'), // iOS only
                 title: store.getState().selectedId,
-                navigatorStyle: OrderNavigatorStyle
+                navigatorStyle: OrderNavigatorStyle,
+                navigatorButtons: {
+                    rightButtons: [
+                        {
+                            title: 'logout',
+                            id: 'logout-btn'
+                        }
+                    ],
+                    leftButtons: [
+                        {
+                            title: 'back',
+                            id: 'back-btn'
+                        }
+                    ]
+                }
             },
             {
                 label: 'map',
                 screen: screens.map,
                 icon: require('../static/icon/map.png'),
                 selectedIcon: require('../static/icon/map.png'), // iOS only
-                title: 'ProgramScreen'
+                title: 'ProgramScreen',
+                navigatorStyle: OrderNavigatorStyle,
+                navigatorButtons: {
+                    rightButtons: [
+                        {
+                            title: 'logout',
+                            id: 'logout-btn'
+                        }
+                    ],
+                    leftButtons: [
+                        {
+                            title: 'back',
+                            id: 'back-btn'
+                        }
+                    ]
+                }
             },
             {
                 label: 'program',
                 screen: screens.program,
                 icon: require('../static/icon/programe.png'),
                 selectedIcon: require('../static/icon/programe.png'), // iOS only
-                title: 'ProgramScreen'
+                title: 'ProgramScreen',
+                navigatorStyle: OrderNavigatorStyle,
+                navigatorButtons: {
+                    rightButtons: [
+                        {
+                            title: 'logout',
+                            id: 'logout-btn'
+                        }
+                    ],
+                    leftButtons: [
+                        {
+                            title: 'back',
+                            id: 'back-btn'
+                        }
+                    ]
+                }               
             },
-        ]
+        ],
+        passProps: {
+            chatNavProps: {
+                eventHandler: navEventHandler
+            }
+        },
     });
 }
 
@@ -119,16 +183,9 @@ function startOrderListApp() {
         },
         passProps: {
             orderListNavProps: {
-                eventHandler: (event)=>{
-                    if (event.type === 'NavBarButtonPress') {
-                        if (event.id === 'logout-btn') {
-                            store.dispatch({type: 'RESET', state: initialState});
-                            persistor.purge();
-                        }
-                    }
-                    }
-                }
-            },
+                eventHandler: navEventHandler
+            }
+        },
         drawer: { // optional, add this if you want a side menu drawer in your app
             left: { // optional, define if you want a drawer from the left
                 screen: components.sideMenu, // unique ID registered with Navigation.registerScreen
@@ -157,31 +214,38 @@ function startOrderListApp() {
 export default class App {
     constructor() {
         store.subscribe(this.onStoreUpdate.bind(this));
-        // Dispatch a init action to get onStoreUpdate run.
-        store.dispatch({type: 'APP_INITIALIZED'});
-        store.dispatch({type: 'DEVELOP', content: development.develop});
     }
 
     onStoreUpdate() {
-        // const { loggedIn } = store.getState().auth;
-        const loggedIn = store.getState().develop;
+        // only when app is rehydrated to dispatch an APP_INITIALIXED event
+        const { _persist, auth, appInitialized, selectedId } = store.getState();
+        if (_persist) {
+            if (appInitialized) {
+                const { loggedIn } = auth || {};
+                // const loggedIn = store.getState().develop;
+                const app = loggedIn ? (selectedId || 'orderList') : 'login';
+                console.log('app is: ', app);
+                if (this.app != app) {
+                    this.app = app;
+                    this.startApp(app);
+                }
+            } else {
+                // Dispatch an init action to get onStoreUpdate run. Only when 
+                // store is rehydrated and application is not initialized.
+                store.dispatch({type: 'APP_INITIALIZED'});
+                // store.dispatch({type: 'DEVELOP', content: development.develop});
+            }
 
-        if (this.app != loggedIn) {
-            this.app = loggedIn;
-            this.startApp(loggedIn);
         }
     }
 
-    startApp(root) {
-        switch (root) {
-            case false:
-                startLoginApp();
-                break;
-            case true:
-                startOrderListApp();
-                break;
-            default:
-                startOrderApp();
+    startApp(app) {
+        if (app === 'login') {
+            startLoginApp();
+        } else if (app === 'orderList') {
+            startOrderListApp();
+        } else {
+            startOrderApp();
         }
     } 
 }

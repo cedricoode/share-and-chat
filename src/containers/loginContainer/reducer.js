@@ -12,10 +12,7 @@ function reducer(state={username: 'default', password: 'password'}, action) {
             return {
                 ...state,
                 loggedIn: true,
-                user: {
-                    ...action.content.data,
-                    firebaseToken: action.content.firebaseToken
-                }
+                user: action.content.user
             };
         case actions.LOGIN_FAILURE:
             return {...state, loggedIn: false};

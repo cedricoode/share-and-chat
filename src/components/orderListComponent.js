@@ -71,7 +71,8 @@ class OrderListComponent extends Component {
      * @param {NavigatorEventType} event 
      */
     _onNavigatorEvent(event) {
-        get(this.props, 'orderListNavProps.eventHandler', () =>{})(event);
+        get(this.props, 'orderListNavProps.eventHandler',
+            () =>console.log('no event handler'))(event);
     }
     _handleItemClick(id) {
         this.props.onItemClick(id);

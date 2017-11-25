@@ -1,3 +1,5 @@
+import ObjectMapper from 'object-mapper';
+
 import logger from '../../helpers/logger';
 import { endpoints } from '../../../config/constants';
 
@@ -33,7 +35,6 @@ function loginRequest(username, password) {
         })
     };
     return fetch(endpoints.login, options).then(response => {
-        console.log('here!!!!!!!!!');
         if (response.ok) {
             return response.json();
         } else {
@@ -43,6 +44,17 @@ function loginRequest(username, password) {
     
 }
 
+// Map logging result to redux/auth.user
+const ResponseMapper = {
+    'data.access_token': 'accessToken',
+    'data.expires_in': 'expiresIn',
+    'data.refresh_token': 'refreshToken',
+    'data.token_type': 'tokenType',
+    'data.ref_id': 'refId',
+    'data.user_name': 'userName',
+    firebaseToken: 'firebaseToken'
+};
+
 const actionCreatorFactory = {
     loginCreator: () => {
         logger.log('loginCtn', 'actions', 'loginCreaton called!');
@@ -50,11 +62,11 @@ const actionCreatorFactory = {
             const state = getState();
             const { username, password } = state.auth;
             loginRequest(username, password)
-                .then(({data, firebaseToken}) => {
-                    logger.log('loginCtn', 'login', 'login success');                    
+                .then(rslt => {
+                    const user = ObjectMapper(rslt, ResponseMapper);
                     dispatch({
                         type: actions.LOGIN_SUCCESS,
-                        content: { data, firebaseToken }
+                        content: { user }
                     });})
                 .catch(error => dispatch({
                     type: actions.LOGIN_FAILURE,

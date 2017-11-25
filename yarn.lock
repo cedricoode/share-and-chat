@@ -147,6 +147,10 @@ amdefine@>=0.0.4:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/amdefine/-/amdefine-1.0.1.tgz#4a5282ac164729e93619bcfd3ad151f817ce91f5"
 
+andlog@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/andlog/-/andlog-1.0.0.tgz#25b39047ac9c1e5f6b2c8e4cdb5e7bf9e65e534b"
+
 ansi-align@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/ansi-align/-/ansi-align-2.0.0.tgz#c36aeccba563b89ceb556f3690f0b1d9e3547f7f"
@@ -996,6 +1000,12 @@ boom@5.x.x:
   resolved "https://registry.yarnpkg.com/boom/-/boom-5.2.0.tgz#5dd9da6ee3a5f302077436290cb717d3f4a54e02"
   dependencies:
     hoek "4.x.x"
+
+bows@^1.6.0:
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/bows/-/bows-1.7.0.tgz#a3598ed9cef61a7a0cab1a7240f291654865ec76"
+  dependencies:
+    andlog "^1.0.0"
 
 boxen@^1.2.1:
   version "1.2.2"
@@ -3681,6 +3691,10 @@ object-keys@~0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/object-keys/-/object-keys-0.4.0.tgz#28a6aae7428dd2c3a92f3d95f21335dd204e0336"
 
+object-mapper@^4.2.0:
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/object-mapper/-/object-mapper-4.2.0.tgz#51823edc341a440644c12a0406bf464affabf07a"
+
 object.omit@^2.0.0:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/object.omit/-/object.omit-2.0.1.tgz#1a9c744829f39dbb858c76ca3579ae2a54ebd1fa"
@@ -4123,6 +4137,14 @@ react-native-elements@^0.18.2:
     lodash.times "^4.3.2"
     opencollective "^1.0.3"
     prop-types "^15.5.8"
+
+react-native-firebase@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/react-native-firebase/-/react-native-firebase-3.1.0.tgz#0391b7bd6ca5c9b68e5a54a9e87ad5ea5c8dd089"
+  dependencies:
+    bows "^1.6.0"
+    opencollective "^1.0.3"
+    prop-types "^15.6.0"
 
 react-native-gifted-chat@^0.3.0:
   version "0.3.0"

@@ -7,23 +7,31 @@ import reduxReset from 'redux-reset';
 
 import authReducer from '../src/containers/loginContainer/reducer';
 import orderListReducer from '../src/containers/orderListContainer/reducer';
+import messageReducer from '../src/containers/chatContainer/reducer';
 import { initialState } from '../config/constants';
 
+// 1. appInitialized should be blacklisted, since its lifespan is from starting app
+// to quiting app.
+// 2. selectedId should be blacklisted, since we always want user to be on
+// orderList page when open application.
 const persistConfig = {
     key: 'stateRoot',
-    storage
+    storage,
+    blacklist: ['appInitialized', 'selectedId']
 };
 
 const reducer = persistCombineReducers(persistConfig, {
     auth: authReducer,
     orders: orderListReducer,
+    messages: messageReducer,
     develop: (state=null, action) =>
         action.type === 'DEVELOP' ? action.content : state,
     selectedId: (state=null, action) =>
         action.type === 'SELECTORDER' ? action.content : state,
     programHTML :(state=null, action) =>
-        action.type === 'SELECTORDER' ? 'https://www.google.com' : 'https://www.youtube.com'
-    
+        action.type === 'SELECTORDER' ? 'https://www.google.com' : 'https://www.youtube.com',
+    appInitialized: (state=false, action) =>
+        action.type === 'APP_INITIALIZED' ? true: state
 });
 
 const logger = createLogger({

@@ -19,7 +19,7 @@ const endpoints = {
 const development = {
     username: Config.TEST_USER,
     password: Config.TEST_PASSWORD,
-    develop: true
+    develop: true //'login'//login, loggedIn, other
 };
 const screens = {
     login: 'com.tuding.login',
@@ -40,8 +40,7 @@ const initialState = {
     auth: {
         loggedIn: false,
         username: development.username,
-        password: development.password,
-        develop: 'login'//login, loggedIn, other
+        password: development.password
     },
     orders: {
         data: [
@@ -131,6 +130,17 @@ const initialState = {
             }
         ],
         refreshing: false
+    },
+    messages: {
+        'Order N˚ TD3061-31': [{
+            _id: 1,
+            text: 'Hello developer',
+            createdAt: new Date(),
+            user: {
+              _id: 2,
+              name: 'React Native'
+            },
+          }]
     }
 };
 
