@@ -16,7 +16,7 @@ function orderListRequest(user) {
     };
     return fetch(`${endpoints.orderList}?page=0&size=20`, options).then(response => {
         if (response.ok) {
-            return response.json().data;
+            return response.json();
         } else {
             console.log('respnse: ', response);
             throw new Error('response error, status code: ' + response.status);            
@@ -29,7 +29,7 @@ export const actionCreatorFactory = {
         return (dispatch, getState) => {
             dispatch({type: actions.REFRESH, content: true});
             const { user } = getState().auth;
-            orderListRequest(user).then(data => {
+            orderListRequest(user).then(({data}) => {
                 dispatch({type: actions.NEWDATA, content: {data}});
             }).catch(error => {dispatch({type: actions.REFRESH_ERROR, content: {error}}); console.log(error);});
         };

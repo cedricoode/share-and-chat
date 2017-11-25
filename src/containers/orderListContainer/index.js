@@ -15,7 +15,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        onRefresh: () => {dispatch(actionCreatorFactory.orderListActionCreator());}
+        onRefresh: () => {dispatch(actionCreatorFactory.orderListActionCreator());},
     };
 }
 

@@ -30,7 +30,8 @@ export default function orderlistReducer(state={data:[], freshing: false}, actio
             const mergedData = mergeLists(
                 state.data, action.content.data,
                 'id',
-                'startDateTime');
+                'startDateTime',
+                -1);
             return {...state, data: mergedData, refreshing: false};
         }
         case actions.REFRESH_ERROR:
@@ -39,4 +40,4 @@ export default function orderlistReducer(state={data:[], freshing: false}, actio
         default:
             return state;
     }
-};
+}
