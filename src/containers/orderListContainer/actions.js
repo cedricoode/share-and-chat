@@ -3,7 +3,8 @@ import { endpoints } from '../../../config/constants';
 export const actions = {
     REFRESH: 'ORDERLIST/REFRESH',
     NEWDATA: 'ORDERLIST/NEWDATA',
-    REFRESH_ERROR: 'ORDERLIST/REFRESH_ERROR'
+    REFRESH_ERROR: 'ORDERLIST/REFRESH_ERROR',
+    ORDERPAGE: 'ORDERLIST/ORDERPAGE'
 };
 
 
@@ -22,6 +23,13 @@ function orderListRequest(user) {
             throw new Error('response error, status code: ' + response.status);            
         }
     });
+}
+
+export function gotoOrderPage(orderId) {
+    return {
+        type: 'DEVELOP',
+        content: orderId
+    };
 }
 
 export const actionCreatorFactory = {

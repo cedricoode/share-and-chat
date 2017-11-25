@@ -37,6 +37,8 @@ export default function orderlistReducer(state={data:[], freshing: false}, actio
         case actions.REFRESH_ERROR:
             //TODO: log error;
             return {...state, refreshing: false, refresh_error: action.content.error};
+        case actions.ORDERPAGE:
+            return {...state, }
         default:
             return state;
     }

@@ -1,33 +1,39 @@
 import React, { Component } from 'react';
-import { View, FlatList, StyleSheet, Text, Image, RefreshControl } from 'react-native';
+import {
+    View, FlatList, StyleSheet, TouchableOpacity,
+    Text, Image, RefreshControl } from 'react-native';
 import { Card } from 'react-native-elements';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 
 const ListItemComponent =
-    ({ id, startPlace, endPlace, startDateTime, endDateTime, isActive }) => (
-        <Card title={id}
-            titleStyle={{
-                fontWeight: isActive ? 'bold' : 'normal',
-                textAlign: 'left'
-            }}>
-            <View style={{ flexDirection: 'row' }}>
-                <View>
-                    <Image style={{ flex: 1, height: 16, width: 16 }} resizeMode='contain' source={require('../../static/icon/map.png')} />
-                    <Image style={{ flex: 1, height: 16, width: 16 }} resizeMode='contain' source={require('../../static/icon/map.png')} />
-                </View>
-                <View style={{ marginLeft: 16 }}>
-                    <View>
-                        <Text style={{ fontSize: 16 }}>{startDateTime}</Text>
-                        <Text>{startPlace}</Text>
+    ({ id, startPlace, endPlace, startDateTime,
+        endDateTime, isActive, handleClick }) => (
+        <TouchableOpacity onPress={()=>handleClick(id)}>
+            <Card title={id}
+                titleStyle={{
+                    fontWeight: isActive ? 'bold' : 'normal',
+                    textAlign: 'left'
+                }}>
+                
+                    <View style={{ flexDirection: 'row' }}>
+                        <View>
+                            <Image style={{ flex: 1, height: 16, width: 16 }} resizeMode='contain' source={require('../../static/icon/map.png')} />
+                            <Image style={{ flex: 1, height: 16, width: 16 }} resizeMode='contain' source={require('../../static/icon/map.png')} />
+                        </View>
+                        <View style={{ marginLeft: 16 }}>
+                            <View>
+                                <Text style={{ fontSize: 16 }}>{startDateTime}</Text>
+                                <Text>{startPlace}</Text>
+                            </View>
+                            <View style={{ marginTop: 8 }}>
+                                <Text style={{ fontSize: 16 }}>{endDateTime}</Text>
+                                <Text>{endPlace}</Text>
+                            </View>
+                        </View>
                     </View>
-                    <View style={{ marginTop: 8 }}>
-                        <Text style={{ fontSize: 16 }}>{endDateTime}</Text>
-                        <Text>{endPlace}</Text>
-                    </View>
-                </View>
-            </View>
-        </Card>
+            </Card>
+        </TouchableOpacity>
     );
 
 ListItemComponent.propTypes = {
@@ -36,7 +42,8 @@ ListItemComponent.propTypes = {
     endPlace: PropTypes.string.isRequired,
     startDateTime: PropTypes.string.isRequired,
     endDateTime: PropTypes.string.isRequired,
-    isActive: PropTypes.bool.isRequired
+    isActive: PropTypes.bool.isRequired,
+    handleClick: PropTypes.func.isRequired
 };
 
 class OrderListComponent extends Component {
@@ -44,6 +51,7 @@ class OrderListComponent extends Component {
         super(props);
         this._onRefresh = this._onRefresh.bind(this);
         this._onNavigatorEvent = this._onNavigatorEvent.bind(this);
+        this._handleItemClick = this._handleItemClick.bind(this);
 
         if (this.props.navigator) {
             this.props.navigator.addOnNavigatorEvent(this._onNavigatorEvent);
@@ -65,6 +73,9 @@ class OrderListComponent extends Component {
     _onNavigatorEvent(event) {
         get(this.props, 'orderListNavProps.eventHandler', () =>{})(event);
     }
+    _handleItemClick(id) {
+        this.props.onItemClick(id);
+    }
     render() {
         const { orders, refreshing } = this.props;
         return <View style={styles.container}>
@@ -75,7 +86,8 @@ class OrderListComponent extends Component {
                 style={{ flex: 1 }}
                 data={orders.map(item => ({ ...item, id: `Order N˚ ${item.id}` }))}
                 keyExtractor={(item) => item.id}
-                renderItem={({ item }) => <ListItemComponent {...item} />}
+                renderItem={({ item }) => <ListItemComponent {...item}
+                    handleClick={this._handleItemClick} />}
             />
         </View>;
     }
@@ -87,6 +99,7 @@ OrderListComponent.propTypes = {
     refreshing: PropTypes.bool,
     navigator: PropTypes.object,
     orderListNavProps: PropTypes.object,
+    onItemClick: PropTypes.func
 };
 
 const styles = StyleSheet.create({

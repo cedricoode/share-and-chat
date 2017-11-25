@@ -17,14 +17,12 @@ const persistConfig = {
 const reducer = persistCombineReducers(persistConfig, {
     auth: authReducer,
     orders: orderListReducer,
-    develop: (state = null, action) => {
-        if (action.type === 'DEVELOP') {
-            return action.content;
-        } else {
-            return state;
-        }
-    },
-    programHTML :(state=null) => state
+    develop: (state=null, action) =>
+        action.type === 'DEVELOP' ? action.content : state,
+    selectedId: (state=null, action) =>
+        action.type === 'SELECTORDER' ? action.content : state,
+    programHTML :(state=null, action) =>
+        action.type === 'SELECTORDER' ? 'https://www.google.com' : 'https://www.youtube.com'
     
 });
 
