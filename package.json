@@ -9,6 +9,7 @@
     "devtool": "react-devtools"
   },
   "dependencies": {
+    "lodash": "^4.17.4",
     "react": "16.0.0",
     "react-native": "0.50.3",
     "react-native-config": "^0.10.0",
