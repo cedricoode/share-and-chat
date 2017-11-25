@@ -34,7 +34,6 @@ const logger = createLogger({
 });
 
 function configureStore() {
-    console.log('called!!!!!!!');
     const enhanceCreateStore = compose(
         applyMiddleware(thunkMiddleware, logger),
         reduxReset()
@@ -42,6 +41,9 @@ function configureStore() {
     let store = enhanceCreateStore(
         reducer,
         initialState,
+        window !== undefined && 
+            window.__REDUX_DEVTOOLS_EXTENSION__ &&
+                window.__REDUX_DEVTOOLS_EXTENSION__()
         );
     let persistor = persistStore(store);
     return { persistor, store };
