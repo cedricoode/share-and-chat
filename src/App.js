@@ -106,6 +106,13 @@ function startOrderListApp() {
                         id: 'menu-btn',
                         component: components.menuButton
                     }
+                ],
+                rightButtons: [
+                    {
+                        id: 'logout-btn',
+                        componet: components.logoutButton,
+                        title: 'logout..'
+                    }
                 ]
             },
         },

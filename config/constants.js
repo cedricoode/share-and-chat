@@ -12,10 +12,11 @@ const colors = {
 };
 const endpoints = {
     login: `${Config.API_ROOT}/Token/PostAuth`,
-    firebaseToken: `${Config.API_ROOT}/Token/GetFirebaseToken`,
+    // firebaseToken: `${Config.API_ROOT}/Token/GetFirebaseToken`,
     refreshToken: `${Config.API_ROOT}/Token/PostAuth`,
     orderList: `${Config.API_ROOT}/Orders/List`
 };
+console.log(endpoints);
 const development = {
     username: Config.TEST_USER,
     password: Config.TEST_PASSWORD,
@@ -31,7 +32,8 @@ const screens = {
 };
 const components = {
     menuButton: 'com.tuding.components.menubutton',
-    sideMenu: 'com.tuding.components.sidemenu'
+    sideMenu: 'com.tuding.components.sidemenu',
+    logoutButton: 'com.tuding.components.logoutbutton'
 };
 
 export { colors, endpoints, development, screens, components };

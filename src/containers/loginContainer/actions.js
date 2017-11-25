@@ -1,5 +1,5 @@
 import logger from '../../helpers/logger';
-import Global from '../../../config/constants';
+import { endpoints } from '../../../config/constants';
 
 const actions = {
     LOGIN: 'AUTH/LOGIN',
@@ -32,7 +32,7 @@ function loginRequest(username, password) {
             password: password
         })
     };
-    return fetch(Global.endpoints.login, options).then(response => {
+    return fetch(endpoints.login, options).then(response => {
         console.log('here!!!!!!!!!');
         if (response.ok) {
             return response.json();
@@ -50,17 +50,15 @@ const actionCreatorFactory = {
             const state = getState();
             const { username, password } = state.auth;
             loginRequest(username, password)
-                .then(data => {
+                .then(({data, firebaseToken}) => {
                     logger.log('loginCtn', 'login', 'login success');                    
                     dispatch({
                         type: actions.LOGIN_SUCCESS,
-                        content: data
+                        content: { data, firebaseToken }
                     });})
-                .catch(err => dispatch({
+                .catch(error => dispatch({
                     type: actions.LOGIN_FAILURE,
-                    content: {
-                        reason: err
-                    }
+                    content: { error }
                 }));
         };
     }
