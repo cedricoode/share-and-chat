@@ -163,8 +163,8 @@ export default class App {
     }
 
     onStoreUpdate() {
-        const { loggedIn } = store.getState().auth;
-        // const loggedIn = store.getState().develop;
+        // const { loggedIn } = store.getState().auth;
+        const loggedIn = store.getState().develop;
 
         if (this.app != loggedIn) {
             this.app = loggedIn;
