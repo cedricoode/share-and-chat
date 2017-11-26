@@ -15,7 +15,8 @@ const endpoints = {
     login: `${Config.API_ROOT}/Token/PostAuth`,
     // firebaseToken: `${Config.API_ROOT}/Token/GetFirebaseToken`,
     refreshToken: `${Config.API_ROOT}/Token/PostAuth`,
-    orderList: `${Config.API_ROOT}/Orders/List`
+    orderList: `${Config.API_ROOT}/Orders/List`,
+    orderProgram: `${Config.API_ROOT_M}/orderprogram/programData`
 };
 const development = {
     username: Config.TEST_USER,
