@@ -15,6 +15,10 @@ import com.facebook.soloader.SoLoader;
 import java.util.Arrays;
 import java.util.List;
 
+import io.invertase.firebase.RNFirebasePackage;
+import io.invertase.firebase.database.RNFirebaseDatabasePackage;
+import io.invertase.firebase.auth.RNFirebaseAuthPackage;
+
 public class MainApplication extends NavigationApplication {
 
 //  private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
@@ -24,7 +28,13 @@ public class MainApplication extends NavigationApplication {
 //    }
 
     protected List<ReactPackage> getPackages() {
-      return Arrays.<ReactPackage>asList();
+      return Arrays.<ReactPackage>asList(
+        new VectorIconsPackage(),
+        new ReactNativeConfigPackage(),
+        new RNFirebasePackage(),
+        new RNFirebaseDatabasePackage(),
+        new RNFirebaseAuthPackage()
+      );
     }
 
 //    @Override
