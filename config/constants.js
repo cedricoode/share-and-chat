@@ -46,7 +46,6 @@ const _ENV_FIREBASE_CONFIG_MAPPING = {
 };
 const firebaseConfig = ObjectMapper(Config, _ENV_FIREBASE_CONFIG_MAPPING);
 
-
 const initialState = {
     auth: {
         loggedIn: false,
@@ -155,7 +154,10 @@ const initialState = {
     }
 };
 
+const misc = {
+    orderPrefix: 'Order N˚'
+};
 export {
     colors, endpoints, development, screens,
-    components, initialState, firebaseConfig
+    components, initialState, firebaseConfig, misc
 };

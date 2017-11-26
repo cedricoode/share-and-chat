@@ -6,11 +6,13 @@ import { Card } from 'react-native-elements';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 
+import { misc } from '../../config/constants';
+
 const ListItemComponent =
     ({ id, startPlace, endPlace, startDateTime,
-        endDateTime, isActive, handleClick }) => (
+        endDateTime, isActive, handleClick, orderPrefix }) => (
         <TouchableOpacity onPress={()=>handleClick(id)}>
-            <Card title={id}
+            <Card title={`${orderPrefix} ${id}`}
                 titleStyle={{
                     fontWeight: isActive ? 'bold' : 'normal',
                     textAlign: 'left'
@@ -18,8 +20,14 @@ const ListItemComponent =
                 
                     <View style={{ flexDirection: 'row' }}>
                         <View>
-                            <Image style={{ flex: 1, height: 16, width: 16 }} resizeMode='contain' source={require('../../static/icon/map.png')} />
-                            <Image style={{ flex: 1, height: 16, width: 16 }} resizeMode='contain' source={require('../../static/icon/map.png')} />
+                            <Image
+                                style={listItemStyles.listItemImage}
+                                resizeMode='contain'
+                                source={require('../../static/icon/map.png')}/>
+                            <Image
+                                style={listItemStyles.listItemImage}
+                                resizeMode='contain'
+                                source={require('../../static/icon/map.png')}/>
                         </View>
                         <View style={{ marginLeft: 16 }}>
                             <View>
@@ -34,7 +42,12 @@ const ListItemComponent =
                     </View>
             </Card>
         </TouchableOpacity>
-    );
+);
+
+const listItemStyles = StyleSheet.create({
+    listItemImage: {flex: 1, height: 16, width: 16}
+});
+
 
 ListItemComponent.propTypes = {
     id: PropTypes.string.isRequired,
@@ -43,7 +56,8 @@ ListItemComponent.propTypes = {
     startDateTime: PropTypes.string.isRequired,
     endDateTime: PropTypes.string.isRequired,
     isActive: PropTypes.bool.isRequired,
-    handleClick: PropTypes.func.isRequired
+    handleClick: PropTypes.func.isRequired,
+    orderPrefix: PropTypes.string
 };
 
 class OrderListComponent extends Component {
@@ -85,7 +99,8 @@ class OrderListComponent extends Component {
                     onRefresh={this._onRefresh}
                     refreshing={refreshing||false} />}
                 style={{ flex: 1 }}
-                data={orders.map(item => ({ ...item, id: `Order N˚ ${item.id}` }))}
+                data={orders.map(item =>
+                    ({...item, orderPrefix: misc.orderPrefix}))}
                 keyExtractor={(item) => item.id}
                 renderItem={({ item }) => <ListItemComponent {...item}
                     handleClick={this._handleItemClick} />}

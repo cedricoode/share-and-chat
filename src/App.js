@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import registerScreens from './navScreens';
 import registerComponents from './navComponents';
 import {
-    screens, colors, components,
+    screens, colors, components, misc,
     development, initialState } from '../config/constants';
 import store, { persistor } from '../store';
 
@@ -89,7 +89,7 @@ function startOrderApp() {
                 screen: screens.chat, // this is a registered name for a screen
                 icon: require('../static/icon/chat.png'),
                 selectedIcon: require('../static/icon/chat.png'), // iOS only
-                title: store.getState().selectedId,
+                title: `${misc.orderPrefix} ${store.getState().selectedId}`,
                 navigatorStyle: OrderNavigatorStyle,
                 navigatorButtons: {
                     rightButtons: [
