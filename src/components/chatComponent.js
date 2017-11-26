@@ -3,6 +3,7 @@ import { Image, View } from 'react-native';
 import { GiftedChat, Send } from 'react-native-gifted-chat';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
+import firebase from 'react-native-firebase';
 
 import Bubble from './Bubble';
 
@@ -14,6 +15,24 @@ class ChatComponent extends Component {
         if (this.props.navigator) {
             this.props.navigator.addOnNavigatorEvent(this._onNavigatorEvent);
         }
+    }
+
+    componentWillMount() {
+        this.unSubscribeAuthChange = firebase.auth().onAuthStateChanged((fbUser) => {
+            console.log('auth change listener: ', fbUser);
+        });
+        console.log('firebase token is: ', this.props.user.firebaseToken);
+        firebase.auth().createUserWithEmailAndPassword('testuser@gmail.com', 'password')
+        //     .then()
+        // firebase.auth().signInWithCustomToken(this.props.user.firebaseToken)
+            .then(user => {
+                console.log('user is: ', user);
+            })
+            .catch(err => console.log('user sign in error: ', err));
+    }
+
+    componentWillUnmount() {
+        this.unSubscribeAuthChange && this.unSubscribeAuthChange();
     }
 
     _onSend(messages) {
@@ -59,7 +78,7 @@ class ChatComponent extends Component {
 ChatComponent.propTypes = {
     sendMessage: PropTypes.func.isRequired,
     messages: PropTypes.array,
-    user: PropTypes.object,
+    user: PropTypes.object.isRequired,
     navigator: PropTypes.object,
     chatNavProps: PropTypes.object
 };
