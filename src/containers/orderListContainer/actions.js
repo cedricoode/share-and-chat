@@ -12,7 +12,7 @@ function orderListRequest(user) {
     const options = {
         method: 'GET',
         headers: {
-            Authorization: `${user.token_type} ${user.access_token}`,
+            Authorization: `${user.tokenType} ${user.accessToken}`,
         }
     };
     return fetch(`${endpoints.orderList}?page=0&size=20`, options).then(response => {

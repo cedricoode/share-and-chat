@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
-import { GiftedChat } from 'react-native-gifted-chat';
+import { Image, View } from 'react-native';
+import { GiftedChat, Send } from 'react-native-gifted-chat';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
+
+import Bubble from './Bubble';
 
 class ChatComponent extends Component {
     constructor(props) {
@@ -34,7 +37,21 @@ class ChatComponent extends Component {
                 messages={this.props.messages}
                 onSend={this._onSend}
                 user={{ _id: 1, name:'Cedric' }}
-                // renderAvatar={() => null}
+                renderSend={(props) => {
+                    return <Send {...props}>
+                        <View style={{height: 44, justifyContent: 'center'}}>
+                            <Image source={require('../../static/icon/send.png')}
+                                resizeMode='contain'
+                                style={{height: props.composerHeight - 8}}/>
+                        </View>
+                    </Send>;
+                }}
+                renderBubble={(props) => {
+                    console.log('renderd');
+                    return <Bubble {...props}/>;
+                }}
+                // renderAvatar={null}
+                renderAvatarOnTop={true}
             />);
     }
 }

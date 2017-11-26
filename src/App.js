@@ -59,14 +59,28 @@ function startLoginApp() {
 const OrderNavigatorStyle = {
     statusBarColor: colors.primary,
     statusBarTextColorScheme: 'light',
-    navigationBarColor: colors.primary,
-    navBarBackgroundColor: colors.primary,
-    navBarTextColor: colors.textOnPrimary,
-    navBarButtonColor: colors.textOnPrimary,
-    // tabBarButtonColor: 'red',
-    // tabBarSelectedButtonColor: 'red',
+    navigationBarColor: '#f4f4f4',
+    navBarBackgroundColor: '#f4f4f4',
+    navBarTextColor: 'black',
+    navBarButtonColor: 'black',
+    tabBarButtonColor: 'black',
+    tabBarSelectedButtonColor: colors.primary,
     tabBarBackgroundColor: 'white'
 };
+
+const OrderTabBarStyle = {
+    tabBarHidden: false, // make the tab bar hidden
+    tabBarButtonColor: 'black', // change the color of the tab icons and text (also unselected)
+    tabBarSelectedButtonColor: colors.primary, // change the color of the selected tab icon and text (only selected)
+    // tabBarBackgroundColor: '#551A8B' // change the background color of the tab bar
+    // tabBarTranslucent: false // change the translucent of the tab bar to false
+    // tabBarTextFontFamily: 'Avenir-Medium' //change the tab font family
+    // tabBarLabelColor: '#ffb700', // iOS only. change the color of tab text
+    // tabBarSelectedLabelColor: 'red', // iOS only. change the color of the selected tab text
+    // forceTitlesDisplay: true // Android only. If true - Show all bottom tab labels. If false - only the selected tab's label is visible.
+    // tabBarHideShadow: true // iOS only. Remove default tab bar top shadow (hairline)
+};
+
 function startOrderApp() {
     Navigation.startTabBasedApp({
         tabs: [
@@ -137,6 +151,7 @@ function startOrderApp() {
                 }               
             },
         ],
+        tabsStyle: OrderTabBarStyle,
         passProps: {
             chatNavProps: {
                 eventHandler: navEventHandler
