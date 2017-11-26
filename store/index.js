@@ -8,6 +8,7 @@ import reduxReset from 'redux-reset';
 import authReducer from '../src/containers/loginContainer/reducer';
 import orderListReducer from '../src/containers/orderListContainer/reducer';
 import messageReducer from '../src/containers/chatContainer/reducer';
+import programReducer from '../src/containers/programContainer/reducer'; 
 import { initialState } from '../config/constants';
 
 // 1. appInitialized should be blacklisted, since its lifespan is from starting app
@@ -24,12 +25,11 @@ const reducer = persistCombineReducers(persistConfig, {
     auth: authReducer,
     orders: orderListReducer,
     messages: messageReducer,
+    program : programReducer,
     develop: (state=null, action) =>
         action.type === 'DEVELOP' ? action.content : state,
     selectedId: (state=null, action) =>
-        action.type === 'SELECTORDER' ? action.content : state,
-    programHTML :(state=null, action) =>
-        action.type === 'SELECTORDER' ? 'https://www.google.com' : 'https://www.youtube.com',
+        action.type === 'SELECTORDER' ? action.content : state, 
     appInitialized: (state=false, action) =>
         action.type === 'APP_INITIALIZED' ? true: state
 });
