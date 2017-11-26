@@ -19,7 +19,7 @@ function orderListRequest(user) {
         if (response.ok) {
             return response.json();
         } else {
-            console.log('respnse: ', response);
+            console.log('response: ', response);
             throw new Error('response error, status code: ' + response.status);            
         }
     });

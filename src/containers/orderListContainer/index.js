@@ -9,7 +9,7 @@ import { actionCreatorFactory, gotoOrderPage } from './actions';
 function mapStateToProps(state) {
     return {
         orders: state.orders.data,
-        refreshing: state.orders.refresh
+        refreshing: state.orders.refreshing
     };
 }
 

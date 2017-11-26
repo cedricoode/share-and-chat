@@ -21,7 +21,7 @@ function mergeLists(obj1, obj2, key, sortKey, order=1) {
     return rtn;
 }
 
-export default function orderlistReducer(state={data:[], freshing: false}, action) {
+export default function orderlistReducer(state={data:[], refreshing: false}, action) {
     switch(action.type) {
         case actions.REFRESH:
             return {...state, refreshing: action.content};
