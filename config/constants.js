@@ -1,4 +1,5 @@
 import Config from 'react-native-config';
+import ObjectMapper from 'object-mapper';
 
 const colors = {
     primary: '#00a2ae',
@@ -34,6 +35,16 @@ const components = {
     sideMenu: 'com.tuding.components.sidemenu',
     logoutButton: 'com.tuding.components.logoutbutton'
 };
+
+const _ENV_FIREBASE_CONFIG_MAPPING = {
+    FB_API_KEY: 'apiKey',
+    FB_AUTH_DOMAIN: 'authDomain',
+    FB_DATABASE_URL: 'databaseURL', 
+    FB_PROJECT_ID: 'projectId',
+    FB_STORAGE_BUCKET: 'storageBucket',
+    FB_MESSAGING_SENDER_ID: 'messagingSenderId',
+};
+const firebaseConfig = ObjectMapper(Config, _ENV_FIREBASE_CONFIG_MAPPING);
 
 
 const initialState = {
@@ -144,4 +155,7 @@ const initialState = {
     }
 };
 
-export { colors, endpoints, development, screens, components, initialState };
+export {
+    colors, endpoints, development, screens,
+    components, initialState, firebaseConfig
+};
