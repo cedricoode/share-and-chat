@@ -5,6 +5,7 @@ import { persistStore, persistCombineReducers } from 'redux-persist';
 import storage from 'redux-persist/es/storage';
 import reduxReset from 'redux-reset';
 
+import { firebaseReducer } from './reducer';
 import authReducer from '../src/containers/loginContainer/reducer';
 import orderListReducer from '../src/containers/orderListContainer/reducer';
 import messageReducer from '../src/containers/chatContainer/reducer';
@@ -18,10 +19,11 @@ import { initialState } from '../config/constants';
 const persistConfig = {
     key: 'stateRoot',
     storage,
-    blacklist: ['appInitialized', 'selectedId']
+    blacklist: ['appInitialized', 'selectedId', 'firebaseAuth']
 };
 
 const reducer = persistCombineReducers(persistConfig, {
+    firebaseAuth: firebaseReducer,
     auth: authReducer,
     orders: orderListReducer,
     messages: messageReducer,
@@ -39,7 +41,7 @@ const logger = createLogger({
     diff: true
 });
 
-function configureStore() {
+export function configureStore() {
     const enhanceCreateStore = compose(
         applyMiddleware(thunkMiddleware, logger),
         reduxReset()

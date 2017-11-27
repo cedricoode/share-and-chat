@@ -1,24 +1,42 @@
 import { Navigation } from 'react-native-navigation';
 import { Provider } from 'react-redux';
+import firebase from 'react-native-firebase';
+import get from 'lodash/get';
 
 import registerScreens from './navScreens';
 import registerComponents from './navComponents';
 import {
-    screens, colors, components, misc,
-    development, initialState } from '../config/constants';
-import store, { persistor } from '../store';
+    screens, colors,
+    components, misc, initialState } from '../config/constants';
+import { persistor, store } from '../store';
 
+// **************************
+// * React Native Navigation*
+// **************************
 registerScreens(store, Provider);
 registerComponents(store, Provider);
+
+// **************************
+// *     Firebase          *
+// **************************
+firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+        store.dispatch({ type: 'FIREBASE/LOGIN' });
+    } else {
+        store.dispatch({ type: 'FIREBASE/LOGOUT' });
+    }
+});
 
 const navEventHandler = (event)=>{
     if (event.type === 'NavBarButtonPress') {
         if (event.id === 'logout-btn') {
+            firebase.auth().signOut();
             store.dispatch({type: 'RESET', state: {
                 ...initialState,
                 appInitialized: true,
                 _persist: store.getState()._persist
             }});
+
             persistor.purge();
         } else if (event.id === 'back-btn') {
             store.dispatch({type: 'SELECTORDER', content: null});
@@ -228,29 +246,42 @@ function startOrderListApp() {
 
 export default class App {
     constructor() {
-        store.subscribe(this.onStoreUpdate.bind(this));
+        // State of syncing disk data.
+        this.bootstrapped = false;
+        this.appInitialized = false;
+        this._unsubscribePersistor =
+            persistor.subscribe(this.handlePersistorChange);
+        this.handlePersistorChange();
+
+        this._unsubscribeStore = store.subscribe(this.handleStoreChange);
     }
 
-    onStoreUpdate() {
-        // only when app is rehydrated to dispatch an APP_INITIALIXED event
-        const { _persist, auth, appInitialized, selectedId } = store.getState();
-        if (_persist) {
-            if (appInitialized) {
-                const { loggedIn } = auth || {};
-                // const loggedIn = store.getState().develop;
-                const app = loggedIn ? (selectedId || 'orderList') : 'login';
-                console.log('app is: ', app);
-                if (this.app != app) {
-                    this.app = app;
-                    this.startApp(app);
-                }
-            } else {
-                // Dispatch an init action to get onStoreUpdate run. Only when 
-                // store is rehydrated and application is not initialized.
-                store.dispatch({type: 'APP_INITIALIZED'});
-                // store.dispatch({type: 'DEVELOP', content: development.develop});
+    handlePersistorChange = () => {
+        let { bootstrapped } = persistor.getState();
+        if (bootstrapped) {
+            this.bootstrapped = true;
+            // Firebase login.
+            const firebaseToken =
+                get(store.getState(), 'auth.user.firebaseToken', null);
+            if (firebaseToken) {
+                firebase.auth().signInWithCustomToken(firebaseToken)
+                    .catch(err => console.error(err));
             }
+            store.dispatch({type: 'APP_INITIALIZED'});
+            this._unsubscribePersistor && this._unsubscribePersistor();
+        }
+    }
 
+    handleStoreChange = () => {
+        // only when app is rehydrated to dispatch an APP_INITIALIXED event
+        const { firebaseAuth, selectedId } = store.getState();
+        if (this.bootstrapped) {
+            const { isLoggedIn } = firebaseAuth;
+            const app = isLoggedIn ? (selectedId || 'orderList') : 'login';
+            if (this.app != app) {
+                this.app = app;
+                this.startApp(app);
+            }
         }
     }
 

@@ -1,4 +1,5 @@
 import ObjectMapper from 'object-mapper';
+import firebase from 'react-native-firebase';
 
 import logger from '../../helpers/logger';
 import { endpoints } from '../../../config/constants';
@@ -67,7 +68,10 @@ const actionCreatorFactory = {
                     dispatch({
                         type: actions.LOGIN_SUCCESS,
                         content: { user }
-                    });})
+                    });
+                    // Firebase login, handled by a global listener.
+                    firebase.auth().signInWithCustomToken(user.firebaseToken);
+                })
                 .catch(error => dispatch({
                     type: actions.LOGIN_FAILURE,
                     content: { error }
