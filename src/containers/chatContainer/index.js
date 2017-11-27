@@ -7,7 +7,8 @@ import actionCreatorFactory from './actions';
 function mapStateToProps(state) {
     return {
         messages: state.messages[state.selectedId],
-        user: state.auth.user
+        user: state.auth.user,
+        orderId: state.selectedId
     };
 }
 

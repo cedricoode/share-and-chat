@@ -14,14 +14,14 @@ function messageReducer(state={}, action) {
             return state;
         case actions.MESSAGE_SENT: {
             const { roomId, messageId } = action.content;
-            let room = state[roomId];
-            if (typeof room === 'undefined') {
+            let messages = state[roomId];
+            if (typeof messages === 'undefined') {
                 console.error('this is an unexpected behaviour');
                 return state;
             } else {
-                let message = room.find(item => item._id === messageId)||{};
-                message.state = 'sent';
-                return Object.assign({}, state);
+                let newMessages = messages.map(msg => msg._id === messageId ?
+                    ({...msg, state: 'sent'}) : ({...msg}));
+                return {...state, [roomId]: newMessages};
             }
         }
         default: return state;
