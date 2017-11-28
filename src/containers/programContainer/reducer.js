@@ -1,9 +1,9 @@
 import { actions } from './actions'; 
 
-export default function programReducer(state={url: 'https://www.tudingbus.com/'}, action) {   
+export default function programReducer(state={ programs :{}}, action) { 
     switch(action.type) { 
-        case actions.LOADHTML:
-        return {...state , url: action.content.url};   
+        case actions.LOADHTML: 
+        return {...state,[action.content.id]:action.content.html};
         default:
             return state;
     }

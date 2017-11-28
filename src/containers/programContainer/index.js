@@ -3,8 +3,8 @@ import {View, Text, StyleSheet, WebView} from 'react-native';
 import ProgramComponent from '../../components/programComponent';
 import { actionCreatorFactory } from './actions';
 
-function mapStateToProps(state) { 
-    return {url: state.program.url};
+function mapStateToProps(state) {   
+    return {html: state.programs[state.selectedId]};
 } 
 function mapDispatchToProps(dispatch) {
     return {
