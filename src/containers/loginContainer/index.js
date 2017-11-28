@@ -1,7 +1,6 @@
 import { connect } from 'react-redux';
 import LoginComponent from '../../components/loginComponent';
 import actionCreators, { actionCreatorFactory } from './actions';
-import logger from '../../helpers/logger';
 
 // Redux
 function mapStateToProps(state) {
@@ -10,11 +9,9 @@ function mapStateToProps(state) {
         password: state.auth.password
     };
 }
-function mapDispatchToProps(dispatch, ownProps) {
-    logger.log('loginCtn', 'ctn', JSON.stringify(ownProps));
+function mapDispatchToProps(dispatch) {
     return {
         onUsernameChange: (username) => {
-            logger.log('loginCtn', 'container', username);
             dispatch(actionCreators.onChangeUsername(username));
         },
         onPasswordChange: (password) => {
