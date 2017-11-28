@@ -10,8 +10,8 @@ class ProgramComponent extends Component {
     componentDidMount() {
          this.props.onLoad();
     }
-    render() {
-        const {html} = this.props; 
+    render() { 
+        const {html} = this.props;  
         return    <WebView source={{html : html}} style={{
             flex: 1
         }}/> 
@@ -19,7 +19,7 @@ class ProgramComponent extends Component {
 };   
 
 ProgramComponent.propTypes = {
-    html: PropTypes.string.isRequired,
+    html: PropTypes.string,
     onLoad: PropTypes.func
 };
 export default ProgramComponent;

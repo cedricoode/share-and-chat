@@ -6,6 +6,7 @@ export const actions = {
     LOADHTML: 'LOADHTML',
     DOWNLOAD_HTML_ERROR: 'DOWNLOAD_HTML_ERROR',
 };
+// get program html url 
 function programRequest(orderId) {
     let id = orderId.substring(2);
     let url = `${endpoints.orderProgram}?id=` + id;
@@ -20,6 +21,7 @@ function programRequest(orderId) {
             console.log("programRequest fetch error" + err);
         });
 }
+// get program html by url 
 function getProgramHtml(url) {
     const options = {
         method: 'GET'
@@ -32,20 +34,11 @@ function getProgramHtml(url) {
             console.log("getProgramHtml fetch error" + err);
         });
 }
-
-function storeProgram(program) {
-
-
-}
-
-function getProgramHtmlFromStorage(orderId) {
-
-}
-
+ 
 export const actionCreatorFactory = {
     programActionCreator: () => {
-        return (dispatch, getState) => {
-            let { orderId } = getState().selectedId;
+        return (dispatch, getState) => { 
+            let orderId  = getState().selectedId.orderId;
             console.log("orderId  " + orderId);
             programRequest(orderId).then((data) => {
                 let url = data.url;

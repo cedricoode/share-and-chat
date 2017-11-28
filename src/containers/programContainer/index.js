@@ -4,7 +4,8 @@ import ProgramComponent from '../../components/programComponent';
 import { actionCreatorFactory } from './actions';
 
 function mapStateToProps(state) {   
-    return {html: state.programs[state.selectedId]};
+    let orderId = state.selectedId.orderId;
+    return {html: state.programs[orderId]};
 } 
 function mapDispatchToProps(dispatch) {
     return {
