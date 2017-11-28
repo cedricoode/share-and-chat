@@ -25,7 +25,7 @@ const reducer = persistCombineReducers(persistConfig, {
     auth: authReducer,
     orders: orderListReducer,
     messages: messageReducer,
-    program : programReducer,
+    programs : programReducer,
     develop: (state=null, action) =>
         action.type === 'DEVELOP' ? action.content : state,
     selectedId: (state=null, action) =>

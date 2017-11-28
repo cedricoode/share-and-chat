@@ -11,15 +11,15 @@ class ProgramComponent extends Component {
          this.props.onLoad();
     }
     render() {
-        const { url } = this.props;
-        return    <WebView source={{uri : url}} style={{
+        const {html} = this.props; 
+        return    <WebView source={{html : html}} style={{
             flex: 1
         }}/> 
     }
 };   
 
 ProgramComponent.propTypes = {
-    url: PropTypes.string.isRequired,
+    html: PropTypes.string.isRequired,
     onLoad: PropTypes.func
 };
 export default ProgramComponent;
