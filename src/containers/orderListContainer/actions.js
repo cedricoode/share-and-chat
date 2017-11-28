@@ -25,13 +25,6 @@ function orderListRequest(user) {
     });
 }
 
-export function gotoOrderPage(orderId) {
-    return {
-        type: 'DEVELOP',
-        content: orderId
-    };
-}
-
 export const actionCreatorFactory = {
     orderListActionCreator: () => {
         return (dispatch, getState) => {

@@ -1,9 +1,8 @@
 import { connect } from 'react-redux';
 
 import OrderListComponent from '../../components/orderListComponent';
-import { actionCreatorFactory, gotoOrderPage } from './actions';
-
-// React
+import { actionCreatorFactory } from './actions';
+import { actionCreatorFactory as selectOrderFactory } from '../../../store/actions';
 
 // Redux
 function mapStateToProps(state) {
@@ -17,8 +16,8 @@ function mapDispatchToProps(dispatch) {
     return {
         onRefresh: () => {dispatch(actionCreatorFactory.orderListActionCreator());},
         onItemClick: (orderId) => {
-            dispatch({type: 'SELECTORDER', content: orderId});
-            dispatch(gotoOrderPage(orderId));}
+            dispatch(selectOrderFactory.selectOrderIdCreator(orderId));
+        }
     };
 }
 

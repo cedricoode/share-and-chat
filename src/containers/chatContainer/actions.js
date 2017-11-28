@@ -18,20 +18,22 @@ export function sendingMessage(messages, roomId) {
 const actionCreatorFactory = {
     sendMessage: (messages) => {
         return (dispatch, getState) => {
-            // NetworkRequest
-            const { selectedId: roomId } = getState();
+            const { selectedId } = getState();
+            const { orderId: roomId, messageRef } = selectedId;
             dispatch(sendingMessage(messages, roomId));
-            setTimeout(() => {
-                messages.forEach((message) => {
+
+            messages.forEach(msg => {
+                delete msg.state;
+                const pushRef = messageRef.push();
+                return pushRef.set(msg).then(() =>
                     dispatch({
                         type: actions.MESSAGE_SENT,
                         content: {
                             roomId,
-                            messageId: message._id
+                            messageId: msg._id
                         }
-                    });
-                });
-            }, 2000);
+                    }));
+            });
         };
     }
 };

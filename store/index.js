@@ -5,7 +5,7 @@ import { persistStore, persistCombineReducers } from 'redux-persist';
 import storage from 'redux-persist/es/storage';
 import reduxReset from 'redux-reset';
 
-import { firebaseReducer } from './reducer';
+import { firebaseReducer, selectOrderReducer } from './reducer';
 import authReducer from '../src/containers/loginContainer/reducer';
 import orderListReducer from '../src/containers/orderListContainer/reducer';
 import messageReducer from '../src/containers/chatContainer/reducer';
@@ -30,8 +30,7 @@ const reducer = persistCombineReducers(persistConfig, {
     program : programReducer,
     develop: (state=null, action) =>
         action.type === 'DEVELOP' ? action.content : state,
-    selectedId: (state=null, action) =>
-        action.type === 'SELECTORDER' ? action.content : state, 
+    selectedId: selectOrderReducer, 
     appInitialized: (state=false, action) =>
         action.type === 'APP_INITIALIZED' ? true: state
 });

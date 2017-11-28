@@ -9,6 +9,10 @@ import {
     screens, colors,
     components, misc, initialState } from '../config/constants';
 import { persistor, store } from '../store';
+import {
+    actionCreatorFactory,
+    firebaseLogin,
+    firebaseLogout } from '../store/actions';
 
 // **************************
 // * React Native Navigation*
@@ -21,9 +25,9 @@ registerComponents(store, Provider);
 // **************************
 firebase.auth().onAuthStateChanged((user) => {
     if (user) {
-        store.dispatch({ type: 'FIREBASE/LOGIN' });
+        store.dispatch(firebaseLogin());
     } else {
-        store.dispatch({ type: 'FIREBASE/LOGOUT' });
+        store.dispatch(firebaseLogout());
     }
 });
 
@@ -39,7 +43,7 @@ const navEventHandler = (event)=>{
 
             persistor.purge();
         } else if (event.id === 'back-btn') {
-            store.dispatch({type: 'SELECTORDER', content: null});
+            store.dispatch(actionCreatorFactory.unselectOrderIdCreator());
         }
     }
 };
@@ -107,7 +111,7 @@ function startOrderApp() {
                 screen: screens.chat, // this is a registered name for a screen
                 icon: require('../static/icon/chat.png'),
                 selectedIcon: require('../static/icon/chat.png'), // iOS only
-                title: `${misc.orderPrefix} ${store.getState().selectedId}`,
+                title: `${misc.orderPrefix} ${store.getState().selectedId.orderId}`,
                 navigatorStyle: OrderNavigatorStyle,
                 navigatorButtons: {
                     rightButtons: [
@@ -277,7 +281,7 @@ export default class App {
         const { firebaseAuth, selectedId } = store.getState();
         if (this.bootstrapped) {
             const { isLoggedIn } = firebaseAuth;
-            const app = isLoggedIn ? (selectedId || 'orderList') : 'login';
+            const app = isLoggedIn ? (selectedId.orderId || 'orderList') : 'login';
             if (this.app != app) {
                 this.app = app;
                 this.startApp(app);

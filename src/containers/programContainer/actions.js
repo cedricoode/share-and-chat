@@ -27,7 +27,7 @@ function programRequest(orderId) {
 export const actionCreatorFactory = {
         programActionCreator: () => {
             return (dispatch, getState) => { 
-                let orderId = getState().selectedId;  
+                let { orderId } = getState().selectedId;  
                 programRequest(orderId).then((data) => {   
                      dispatch({type: actions.LOADHTML, content: data});
                 }).catch(error => {

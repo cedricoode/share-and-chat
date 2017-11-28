@@ -5,10 +5,11 @@ import actionCreatorFactory from './actions';
 
 // Redux
 function mapStateToProps(state) {
+    const { orderId } = state.selectedId;
     return {
-        messages: state.messages[state.selectedId],
+        messages: state.messages[orderId],
         user: state.auth.user,
-        orderId: state.selectedId
+        orderId
     };
 }
 
@@ -16,7 +17,7 @@ function mapDispatchToProps(dispatch) {
     return {
         sendMessage: (messages) => {
             dispatch(actionCreatorFactory.sendMessage(messages));
-        }
+        },
     };
 }
 

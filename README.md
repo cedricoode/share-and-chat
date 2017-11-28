@@ -34,12 +34,13 @@ For react native, we are not going to use create-react-native-app, since we are 
         }
     },
     messages: {
-        orderId: {
-            [timestamp+uuid]: {
+        orderId: [
+            {   
+                timestamp: '1511818810856',
                 sender: 'cedric',
                 content: 'where are you my driver?'
             }
-        }
+        ]
     }
 }
 ```

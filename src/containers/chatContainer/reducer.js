@@ -1,13 +1,45 @@
 import { actions } from './actions';
 
+import { actions as firebaseActions } from '../../../store/actions';
+
+/** Add remote messages to local if it doesn't exist,
+ * toggle state to sent, if it exists.
+*/
+function mergeRemoteMessage(localMsgs, remoteMsgs) {
+    console.log('merging state');
+    
+    let result = [...localMsgs];
+    remoteMsgs.forEach(rMsg => {
+        let foundMsg = localMsgs.find(lMsg => (lMsg._id === rMsg._id));
+        if (foundMsg) {
+            // toggle state
+            console.log('toggling state');
+            result = result.map(msg => 
+                (msg._id === foundMsg._id && msg.state !== 'sent')
+                    ? ({...msg, state: 'sent'}) : ({...msg}));
+        } else {
+            // add to localMsg.
+            console.log('adding msg');
+            const insertionP = result.findIndex(
+                msg => new Date(msg.createdAt) < new Date(rMsg.createdAt));
+            if (insertionP === -1) {
+                result = [...result, rMsg];
+            } else {
+                result.splice(insertionP, 0, rMsg);
+            }
+        }
+    });
+    return result;
+}
+
 function messageReducer(state={}, action) {
     switch(action.type) {
         case actions.MESSAGE_SENDING: {
-            const { roomId, messages } = action.content;
-            let room = state[roomId] || [];
-            messages.forEach(m => m.state = 'sending');
-            room = [...messages, ...room];
-            return Object.assign({}, state, {[roomId]: room});
+            let { roomId, messages: newMessages } = action.content;
+            let messages = state[roomId] || [];
+            newMessages.forEach(m => m.state = 'sending');
+            newMessages = [...newMessages, ...messages];
+            return Object.assign({}, state, {[roomId]: newMessages});
         }
         case actions.MESSAGE_SEND_FAILED:
             //TODO:
@@ -23,6 +55,16 @@ function messageReducer(state={}, action) {
                     ({...msg, state: 'sent'}) : ({...msg}));
                 return {...state, [roomId]: newMessages};
             }
+        }
+        case firebaseActions.FIREBASE_NEW_CHAT_DATA: {
+            let { roomId, messages: remoteMsgs } = action.content;
+            let newMessages = [...(state[roomId] || [])];
+            // remoteMsgs could be an object...
+            if (!Array.isArray(remoteMsgs)) {
+                remoteMsgs = [remoteMsgs];
+            }
+            newMessages = mergeRemoteMessage(newMessages, remoteMsgs);
+            return {...state, [roomId]: newMessages};
         }
         default: return state;
     }

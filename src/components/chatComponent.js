@@ -32,11 +32,12 @@ class ChatComponent extends Component {
     }
 
     render() {
+        const { userName, refId} = this.props.user;
         return (
             <GiftedChat
                 messages={this.props.messages}
                 onSend={this._onSend}
-                user={{ _id: 1, name:'Cedric' }}
+                user={{ id: refId, name: userName }}
                 renderSend={(props) => {
                     return <Send {...props}>
                         <View style={{height: 44, justifyContent: 'center'}}>
@@ -61,7 +62,8 @@ ChatComponent.propTypes = {
     messages: PropTypes.array,
     user: PropTypes.object.isRequired,
     navigator: PropTypes.object,
-    chatNavProps: PropTypes.object
+    chatNavProps: PropTypes.object,
+    orderId: PropTypes.string.isRequired
 };
 
 export default ChatComponent;
