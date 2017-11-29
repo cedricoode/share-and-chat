@@ -55,7 +55,7 @@ class LoginComponent extends Component {
                     </View>
                     {submitError ?
                         <Text style={styles.errorText}>
-                            error
+                            Error while login. {submitError.message||''}
                         </Text>
                         : null
                     }
@@ -80,7 +80,7 @@ LoginComponent.propTypes = {
     onSubmit: PropTypes.func,
     onUsernameChange: PropTypes.func,
     onPasswordChange: PropTypes.func,
-    submitError: PropTypes.bool,
+    submitError: PropTypes.object,
     loggingIn: PropTypes.bool
 };
 

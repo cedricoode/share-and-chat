@@ -7,7 +7,8 @@ function mapStateToProps(state) {
     return {
         username: state.auth.username,
         password: state.auth.password,
-        loggingIn: state.auth.loggingIn
+        loggingIn: state.auth.loggingIn,
+        submitError: state.auth.error
     };
 }
 function mapDispatchToProps(dispatch) {

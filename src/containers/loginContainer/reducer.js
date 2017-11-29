@@ -1,11 +1,7 @@
 import { actions }  from './actions';
+import { initialState } from '../../../config/constants';
 
-const DefaultState = {
-    username: 'default',
-    password: 'password',
-    loggedIn: false,
-    loggingIn: true
-};
+const DefaultState = initialState.auth;
 function reducer(state=DefaultState, action) {
     switch(action.type) {
         case actions.LOGIN:
@@ -22,7 +18,10 @@ function reducer(state=DefaultState, action) {
                 user: action.content.user
             };
         case actions.LOGIN_FAILURE:
-            return {...state, loggedIn: false, loggingIn: false};
+            return {...state,
+                loggedIn: false,
+                loggingIn: false,
+                error: action.content.error};
         default:
             return state;
     }

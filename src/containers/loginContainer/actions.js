@@ -1,7 +1,6 @@
 import ObjectMapper from 'object-mapper';
 import firebase from 'react-native-firebase';
 
-import logger from '../../helpers/logger';
 import { endpoints } from '../../../config/constants';
 
 const actions = {
@@ -37,8 +36,10 @@ function loginRequest(username, password) {
     };
     return fetch(endpoints.login, options).then(response => {
         if (response.ok) {
+            console.log('it is ok');
             return response.json();
         } else {
+            console.log('response is not ok: ', response);
             throw new Error('response error, status code: ' + response.status);
         }
     });
@@ -58,7 +59,6 @@ const ResponseMapper = {
 
 const actionCreatorFactory = {
     loginCreator: () => {
-        logger.log('loginCtn', 'actions', 'loginCreaton called!');
         return (dispatch, getState) => {
             const state = getState();
             const { username, password } = state.auth;
@@ -70,7 +70,7 @@ const actionCreatorFactory = {
                         content: { user }
                     });
                     // Firebase login, handled by a global listener.
-                    firebase.auth().signInWithCustomToken(user.firebaseToken);
+                    return firebase.auth().signInWithCustomToken(user.firebaseToken||'');
                 })
                 .catch(error => dispatch({
                     type: actions.LOGIN_FAILURE,
