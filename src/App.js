@@ -32,6 +32,7 @@ firebase.auth().onAuthStateChanged((user) => {
 });
 
 const navEventHandler = (event)=>{
+    console.log('navEventHandler:: ', event);
     if (event.type === 'NavBarButtonPress') {
         if (event.id === 'logout-btn') {
             firebase.auth().signOut();
@@ -279,9 +280,9 @@ export default class App {
 
     handleStoreChange = () => {
         // only when app is rehydrated to dispatch an APP_INITIALIXED event
-        const { firebaseAuth, selectedId } = store.getState();
+        const { auth, selectedId } = store.getState();
         if (this.bootstrapped) {
-            const { loggedIn } = firebaseAuth;
+            const { loggedIn } = auth;
             const app = loggedIn ? (selectedId.orderId || 'orderList') : 'login';
             if (this.app != app) {
                 this.app = app;
