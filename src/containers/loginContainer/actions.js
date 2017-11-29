@@ -69,8 +69,10 @@ const actionCreatorFactory = {
                         type: actions.LOGIN_SUCCESS,
                         content: { user }
                     });
-                    // Firebase login, handled by a global listener.
-                    return firebase.auth().signInWithCustomToken(user.firebaseToken||'');
+                    if (user && user.firebaseToken) {
+                        firebase.auth().signInWithCustomToken(user.firebaseToken)
+                            .catch(err => console.log(err));
+                    }
                 })
                 .catch(error => dispatch({
                     type: actions.LOGIN_FAILURE,
