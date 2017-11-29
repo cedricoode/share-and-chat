@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image, View } from 'react-native';
+import { Image, View, BackHandler } from 'react-native';
 import { GiftedChat, Send } from 'react-native-gifted-chat';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
@@ -11,9 +11,17 @@ class ChatComponent extends Component {
         super(props);
         this._onSend = this._onSend.bind(this);
         this._onNavigatorEvent = this._onNavigatorEvent.bind(this);
+    }
+
+    componentWillMount() {
         if (this.props.navigator) {
-            this.props.navigator.addOnNavigatorEvent(this._onNavigatorEvent);
+            this._unsubscribe =
+                this.props.navigator.addOnNavigatorEvent(this._onNavigatorEvent);
         }
+    }
+
+    componentWillUnmount() {
+        this._unsubscribe || this._unsubscribe();
     }
 
     _onSend(messages) {
@@ -28,8 +36,18 @@ class ChatComponent extends Component {
      * @param {NavigatorEventType} event 
      */
     _onNavigatorEvent(event) {
+        console.log('navigator ', event);        
+        if (event.id === 'willAppear') {
+            BackHandler.addEventListener(
+                'hardwareBackPress', this._onNavigatorEvent);
+        } else if (event.id === 'willDisappear') {
+            BackHandler.removeEventListener(
+                'hardwareBackPress', this._onNavigatorEvent);
+        }
         get(this.props, 'chatNavProps.eventHandler', () =>{})(event);
     }
+
+
 
     render() {
         const { userName, refId} = this.props.user;
