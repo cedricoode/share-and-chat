@@ -3,10 +3,11 @@ import {
     View, FlatList, StyleSheet, TouchableOpacity,
     Text, Image, RefreshControl } from 'react-native';
 import { Card } from 'react-native-elements';
+import Dash from 'react-native-dash';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 
-import { misc } from '../../config/constants';
+import { misc, colors } from '../../config/constants';
 
 const ListItemComponent =
     ({ id, startPlace, endPlace, startDateTime,
@@ -20,14 +21,22 @@ const ListItemComponent =
                 
                     <View style={{ flexDirection: 'row' }}>
                         <View>
-                            <Image
-                                style={listItemStyles.listItemImage}
-                                resizeMode='contain'
-                                source={require('../../static/icon/map.png')}/>
-                            <Image
-                                style={listItemStyles.listItemImage}
-                                resizeMode='contain'
-                                source={require('../../static/icon/map.png')}/>
+                            <View style={{flex:1, marginTop: 4}}>
+                                <Image
+                                    style={listItemStyles.listItemImage}
+                                    resizeMode='contain'
+                                    source={require('../../static/icon/start_point.png')}/>
+                                    <View style={{flex: 1,  alignItems: 'center', paddingTop: 4}}>
+                                <Dash dashColor='#bdbdbd' dashGap={6} style={{ flexDirection: 'column', flex: 1, width: 1}} />
+                                </View>
+                            </View>
+                            
+                            <View style={{flex:1, marginBottom: 28}}>
+                                <Image
+                                    style={listItemStyles.listItemImage}
+                                    resizeMode='contain'
+                                    source={require('../../static/icon/end_point.png')}/>
+                            </View>
                         </View>
                         <View style={{ marginLeft: 16 }}>
                             <View>
@@ -45,7 +54,7 @@ const ListItemComponent =
 );
 
 const listItemStyles = StyleSheet.create({
-    listItemImage: {flex: 1, height: 16, width: 16}
+    listItemImage: {height: 12, width: 12}
 });
 
 
@@ -67,8 +76,17 @@ class OrderListComponent extends Component {
         this._onNavigatorEvent = this._onNavigatorEvent.bind(this);
         this._handleItemClick = this._handleItemClick.bind(this);
 
+        
+    }
+    componentWillMount() {
         if (this.props.navigator) {
+            this._unsubscribe =
             this.props.navigator.addOnNavigatorEvent(this._onNavigatorEvent);
+        }
+    }
+    componentWillUnmount() {
+        if (this._unsubscribe) {
+            this._unsubscribe();
         }
     }
     componentDidMount() {
