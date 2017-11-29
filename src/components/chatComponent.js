@@ -80,8 +80,7 @@ ChatComponent.propTypes = {
     messages: PropTypes.array,
     user: PropTypes.object.isRequired,
     navigator: PropTypes.object,
-    chatNavProps: PropTypes.object,
-    orderId: PropTypes.string.isRequired
+    chatNavProps: PropTypes.object
 };
 
 export default ChatComponent;

@@ -15,13 +15,17 @@ function orderListRequest(user) {
             Authorization: `${user.tokenType} ${user.accessToken}`,
         }
     };
-    return fetch(`${endpoints.orderList}?page=0&size=20`, options).then(response => {
-        if (response.ok) {
-            return response.json();
-        } else {
-            console.log('response: ', response);
-            throw new Error('response error, status code: ' + response.status);            
-        }
+    return fetch(`${endpoints.orderList}?page=0&size=20`, options)
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                console.log('response: ', response);
+                const err = new Error('response error,'
+                    + JSON.stringify(response.status));
+                err.code = response.status;
+                throw err;
+            }
     });
 }
 
@@ -32,7 +36,14 @@ export const actionCreatorFactory = {
             const { user } = getState().auth;
             orderListRequest(user).then(({data}) => {
                 dispatch({type: actions.NEWDATA, content: {data}});
-            }).catch(error => {dispatch({type: actions.REFRESH_ERROR, content: {error}}); console.log(error);});
+            })
+                .catch(error => {
+                    dispatch({type: actions.REFRESH_ERROR, content: {error}});
+                    if (error.code === 401) {
+                        // TODO:Token is expired
+                        console.log(error);                
+                    }
+                });
         };
     }
 };
