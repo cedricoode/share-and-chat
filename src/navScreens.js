@@ -2,6 +2,7 @@ import ProgramScreen from './containers/programContainer';
 import ChatScreen from './containers/chatContainer';
 import MapScreen from './containers/mapContainer';
 import LoginContainer from './containers/loginContainer';
+import SideMenuContainer from './containers/sideMenuContainer'; 
 import OrderList from './containers/orderListContainer';
 import { screens } from '../config/constants';
 
@@ -19,4 +20,7 @@ export default function registerScreens(store, provider) {
         screens.program, () => ProgramScreen, store, provider);
     Navigation.registerComponent(
         screens.map, () => MapScreen, store, provider);
+  Navigation.registerComponent(
+            screens.sideMenu, () => SideMenuContainer, store, provider);
+        
 }

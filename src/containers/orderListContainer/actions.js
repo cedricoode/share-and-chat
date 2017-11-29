@@ -24,7 +24,7 @@ function orderListRequest(user) {
         }
     });
 }
-
+  
 export const actionCreatorFactory = {
     orderListActionCreator: () => {
         return (dispatch, getState) => {
@@ -34,5 +34,5 @@ export const actionCreatorFactory = {
                 dispatch({type: actions.NEWDATA, content: {data}});
             }).catch(error => {dispatch({type: actions.REFRESH_ERROR, content: {error}}); console.log(error);});
         };
-    }
+    } 
 };
