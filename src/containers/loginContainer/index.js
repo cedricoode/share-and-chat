@@ -6,7 +6,8 @@ import actionCreators, { actionCreatorFactory } from './actions';
 function mapStateToProps(state) {
     return {
         username: state.auth.username,
-        password: state.auth.password
+        password: state.auth.password,
+        loggingIn: state.auth.loggingIn
     };
 }
 function mapDispatchToProps(dispatch) {
