@@ -27,15 +27,11 @@ public class MainApplication extends NavigationApplication {
 //      return BuildConfig.DEBUG;
 //    }
 
-    protected List<ReactPackage> getPackages() {
-      return Arrays.<ReactPackage>asList(
-        new VectorIconsPackage(),
-        new ReactNativeConfigPackage(),
-        new RNFirebasePackage(),
-        new RNFirebaseDatabasePackage(),
-        new RNFirebaseAuthPackage()
-      );
-    }
+//    protected List<ReactPackage> getPackages() {
+//      return Arrays.<ReactPackage>asList(
+//
+//      );
+//    }
 
 //    @Override
 //    protected String getJSMainModuleName() {
@@ -57,7 +53,13 @@ public class MainApplication extends NavigationApplication {
 
   @Override
   public List<ReactPackage> createAdditionalReactPackages() {
-    return Arrays.<ReactPackage>asList();
+    return Arrays.<ReactPackage>asList(
+        new VectorIconsPackage(),
+        new ReactNativeConfigPackage(),
+        new RNFirebasePackage(),
+        new RNFirebaseDatabasePackage(),
+        new RNFirebaseAuthPackage()
+    );
   }
 
   @Override
