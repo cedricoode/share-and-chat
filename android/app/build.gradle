@@ -78,6 +78,14 @@ project.ext.react = [
 
 apply from: "../../node_modules/react-native/react.gradle"
 
+project.ext.envConfigFiles = [
+        debug: ".env.development",
+        release: ".env.production",
+        anycustombuildlowercase: ".env",
+]
+
+apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
+
 /**
  * Set this to true to create two separate APKs instead of one:
  *   - An APK that only works on ARM devices
@@ -137,9 +145,7 @@ android {
 }
 
 dependencies {
-    compile(project(':react-native-firebase')) {
-        transitive = false
-    }
+
     compile project(':react-native-vector-icons')
     compile project(':react-native-config')
     compile fileTree(dir: "libs", include: ["*.jar"])
@@ -150,6 +156,10 @@ dependencies {
     // Firebase Dependencies
     compile "com.google.android.gms:play-services-base:11.6.0"
     compile "com.google.firebase:firebase-core:11.6.0"
+
+    compile(project(':react-native-firebase')) {
+        transitive = false
+    }
 
     // Firebase Database Dependencies
     compile "com.google.firebase:firebase-database:11.6.0"

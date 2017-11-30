@@ -1,4 +1,5 @@
 import { actions } from './actions';
+import { initialState } from '../../../config/constants';
 
 /**
  * According to a key, merge two lists together.
@@ -21,7 +22,8 @@ function mergeLists(obj1, obj2, key, sortKey, order=1) {
     return rtn;
 }
 
-export default function orderlistReducer(state={data:[], refreshing: false}, action) {
+const DefaultState = initialState.orders;
+export default function orderlistReducer(state=DefaultState, action) {
     switch(action.type) {
         case actions.REFRESH:
             return {...state, refreshing: action.content};
@@ -38,7 +40,7 @@ export default function orderlistReducer(state={data:[], refreshing: false}, act
             //TODO: log error;
             return {...state, refreshing: false, refresh_error: action.content.error};
         case actions.ORDERPAGE:
-            return {...state, }
+            return { ...state };
         default:
             return state;
     }

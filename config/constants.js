@@ -49,6 +49,7 @@ const firebaseConfig = ObjectMapper(Config, _ENV_FIREBASE_CONFIG_MAPPING);
 const initialState = {
     auth: {
         loggedIn: false,
+        loggingIn: false,
         username: development.username,
         password: development.password
     },

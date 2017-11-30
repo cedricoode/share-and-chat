@@ -1,6 +1,7 @@
 import { actions } from './actions';
 
 import { actions as firebaseActions } from '../../../store/actions';
+import { initialState } from '../../../config/constants';
 
 /** Add remote messages to local if it doesn't exist,
  * toggle state to sent, if it exists.
@@ -32,7 +33,9 @@ function mergeRemoteMessage(localMsgs, remoteMsgs) {
     return result;
 }
 
-function messageReducer(state={}, action) {
+
+const DefaultState = initialState.messages;
+function messageReducer(state=DefaultState, action) {
     switch(action.type) {
         case actions.MESSAGE_SENDING: {
             let { roomId, messages: newMessages } = action.content;

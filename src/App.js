@@ -31,14 +31,9 @@ firebase.auth().onAuthStateChanged((user) => {
     }
 });
 
-const navEventHandler = (event,_navigator)=>{  
-
-    if (event.type == 'NavBarButtonPress' || event.type == 'DeepLink') {
-        if (event.id == 'backPress' || event.link == 'backPress') {
-            return true;
-        }
-    }
-    if (event.type === 'NavBarButtonPress'|| event.type == 'DeepLink') {
+const navEventHandler = (event)=>{
+    console.log('navEventHandler:: ', event);
+    if (event.type === 'NavBarButtonPress') {
         if (event.id === 'logout-btn') {
             firebase.auth().signOut();
             store.dispatch({type: 'RESET', state: {
@@ -48,7 +43,8 @@ const navEventHandler = (event,_navigator)=>{
             }});
 
             persistor.purge();
-        } else if (event.id === 'back-btn') {
+        } else if (event.id === 'back') {
+            console.log('backbutton clicked');
             store.dispatch(actionCreatorFactory.unselectOrderIdCreator());
         }else if ( event.link == 'menu-btn') {
             _navigator.toggleDrawer({
@@ -135,7 +131,7 @@ function startOrderApp() {
                     leftButtons: [
                         {
                             title: 'back',
-                            id: 'back-btn'
+                            id: 'back'
                         }
                     ]
                 }
@@ -157,7 +153,7 @@ function startOrderApp() {
                     leftButtons: [
                         {
                             title: 'back',
-                            id: 'back-btn'
+                            id: 'back'
                         }
                     ]
                 }
@@ -179,7 +175,7 @@ function startOrderApp() {
                     leftButtons: [
                         {
                             title: 'back',
-                            id: 'back-btn'
+                            id: 'back'
                         }
                     ]
                 }               
@@ -290,10 +286,10 @@ export default class App {
 
     handleStoreChange = () => {
         // only when app is rehydrated to dispatch an APP_INITIALIXED event
-        const { firebaseAuth, selectedId } = store.getState();
+        const { auth, selectedId } = store.getState();
         if (this.bootstrapped) {
-            const { isLoggedIn } = firebaseAuth;
-            const app = isLoggedIn ? (selectedId.orderId || 'orderList') : 'login';
+            const { loggedIn } = auth;
+            const app = loggedIn ? (selectedId.orderId || 'orderList') : 'login';
             if (this.app != app) {
                 this.app = app;
                 this.startApp(app);

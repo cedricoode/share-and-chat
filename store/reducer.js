@@ -1,11 +1,11 @@
 import { actions } from './actions';
 
-export function firebaseReducer(state={isLoggedIn:false}, action) {
+export function firebaseReducer(state={loggedIn:false}, action) {
     switch(action.type) {
         case actions.FIREBASE_LOGIN: 
-            return {isLoggedIn: true};
+            return {loggedIn: true};
         case actions.FIREBASE_LOGOUT:
-            return {isLoggedIn: false};
+            return {loggedIn: false};
         case actions.FIREBASE_NEW_CHAT_DATA:
             return state;
         default:

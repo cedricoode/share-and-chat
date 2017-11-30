@@ -1,7 +1,9 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import { createLogger } from 'redux-logger';
-import { persistStore, persistCombineReducers } from 'redux-persist';
+import { persistStore,
+    persistCombineReducers,
+    persistReducer } from 'redux-persist';
 import storage from 'redux-persist/es/storage';
 import reduxReset from 'redux-reset';
 
@@ -22,14 +24,18 @@ const persistConfig = {
     blacklist: ['appInitialized', 'selectedId', 'firebaseAuth']
 };
 
+const authPersistConfig = {
+    key: 'auth',
+    storage,
+    blacklist: ['loggingIn', 'password', 'username', 'error']
+};
+
 const reducer = persistCombineReducers(persistConfig, {
     firebaseAuth: firebaseReducer,
-    auth: authReducer,
+    auth: persistReducer(authPersistConfig, authReducer),
     orders: orderListReducer,
     messages: messageReducer,
     programs : programReducer,
-    develop: (state=null, action) =>
-        action.type === 'DEVELOP' ? action.content : state,
     selectedId: selectOrderReducer, 
     appInitialized: (state=false, action) =>
         action.type === 'APP_INITIALIZED' ? true: state

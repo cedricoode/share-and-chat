@@ -4120,6 +4120,13 @@ react-native-config@^0.10.0:
   version "0.10.0"
   resolved "https://registry.yarnpkg.com/react-native-config/-/react-native-config-0.10.0.tgz#7ecabfcdc5f8fe34ba42b56b043626eb72d232fe"
 
+react-native-dash@^0.0.8:
+  version "0.0.8"
+  resolved "https://registry.yarnpkg.com/react-native-dash/-/react-native-dash-0.0.8.tgz#92cd0259255a7e07e1378463cb5656f74b57ea24"
+  dependencies:
+    prop-types "^15.5.10"
+    react-native-measureme "0.0.1"
+
 react-native-debugger-open@^0.3.15:
   version "0.3.15"
   resolved "https://registry.yarnpkg.com/react-native-debugger-open/-/react-native-debugger-open-0.3.15.tgz#faf21986dc49495365059ec7fde682521f69bc7a"
@@ -4175,6 +4182,10 @@ react-native-lightbox@^0.7.0:
   resolved "https://registry.yarnpkg.com/react-native-lightbox/-/react-native-lightbox-0.7.0.tgz#e52b4d7fcc141f59d7b23f0180de535e35b20ec9"
   dependencies:
     prop-types "^15.5.10"
+
+react-native-measureme@0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/react-native-measureme/-/react-native-measureme-0.0.1.tgz#8b1c5595cdbb1cfdf85bff98fe36d33e98b6162c"
 
 react-native-navigation@^1.1.287:
   version "1.1.287"

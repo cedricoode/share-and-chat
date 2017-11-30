@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
     },
     inputField: {
         flex: 4,
+        fontSize: 16
     }
 });
 
