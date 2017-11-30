@@ -1,5 +1,6 @@
 import React, {Component} from 'react'; 
 import PropTypes from 'prop-types';
+import { colors } from '../../config/constants';
 import {
     View,
     ScrollView,
@@ -96,18 +97,18 @@ class SideMenuComponent extends Component {
   const styles = StyleSheet.create({
     drawer: {
       flex: 1,
-      backgroundColor: '#1E88E5'
+      backgroundColor: colors.primary
     },
     header: {
       height: 100,
       flex: 1,
       padding: 16,
-      backgroundColor: '#1565C0'
+      backgroundColor: colors.primary
     },
     content: {
       flex: 3,
       padding: 16,
-      backgroundColor: '#1E88E5'
+      backgroundColor: colors.primary
     },
     headerInfo: {
       height: 45 ,
