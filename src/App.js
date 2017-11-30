@@ -31,9 +31,9 @@ firebase.auth().onAuthStateChanged((user) => {
     }
 });
 
-const navEventHandler = (event)=>{
+const navEventHandler = (event,_navigator)=>{
     console.log('navEventHandler:: ', event);
-    if (event.type === 'NavBarButtonPress') {
+    if (event.type === 'NavBarButtonPress' || event.type == 'DeepLink') {
         if (event.id === 'logout-btn') {
             firebase.auth().signOut();
             store.dispatch({type: 'RESET', state: {
