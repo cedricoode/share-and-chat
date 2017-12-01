@@ -1,15 +1,15 @@
-import React ,{Component} from 'react';
-import { WebView, BackHandler } from 'react-native';
-import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import { View, Text, StyleSheet, BackHandler } from 'react-native';
 import get from 'lodash/get';
+import PropTypes from 'prop-types';
 
 
-class ProgramComponent extends Component {
+class MapComponent extends Component { 
     constructor(props) {
         super(props);
         this._onNavigatorEvent = this._onNavigatorEvent.bind(this);
-
     }
+
     componentWillMount() {
         if (this.props.navigator) {
             this._unsubscribe =
@@ -19,10 +19,6 @@ class ProgramComponent extends Component {
 
     componentWillUnmount() {
         this._unsubscribe && this._unsubscribe();
-    }
-
-    componentDidMount() {
-         this.props.onLoad(); 
     }
 
     /**
@@ -40,21 +36,29 @@ class ProgramComponent extends Component {
             BackHandler.removeEventListener(
                 'hardwareBackPress', this._onNavigatorEvent);
         }
-        get(this.props, 'programNavProps.eventHandler', () =>{})(event);
+        get(this.props, 'mapNavProps.eventHandler', () =>{})(event);
     }
 
-    render() { 
-        const {html} = this.props;  
-        return    <WebView source={{html : html}} style={{
-            flex: 1
-        }}/>;
+    render() {
+        return (
+            <View style={styles.container}>
+                <Text>a very cute little map</Text>
+        </View>);
     }
-} 
+}
 
-ProgramComponent.propTypes = {
-    html: PropTypes.string,
-    onLoad: PropTypes.func,
+MapComponent.propTypes = {
     navigator: PropTypes.object,
-    programNavProps: PropTypes.object
+    mapNavProps: PropTypes.object
 };
-export default ProgramComponent;
+
+const styles = StyleSheet.create({
+    container: {
+        backgroundColor: 'powderblue',
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
+    }
+});
+
+export default MapComponent;

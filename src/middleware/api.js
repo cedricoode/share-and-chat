@@ -81,7 +81,6 @@ function refreshToken(response, action, store) {
  * @param {object|null} responseMapping 
  */
 function callApi(endpoint, options, responseMapping) {
-    console.log(endpoint, options);
     return fetch(endpoint, options)
         .then(response => {
             if (!response.ok) {
@@ -92,7 +91,6 @@ function callApi(endpoint, options, responseMapping) {
                 if (endpoint === endpoints.login ||
                     endpoint === endpoints.refreshToken) {
                     if (data.code !== "999"){
-                    console.log('data is: ', data);
                     let error = new Error(data.message);
                     error.code = data.code;
                     return Promise.reject(error);
@@ -130,5 +128,6 @@ export default store => next => action => {
             action, {error: error || 'Caught unknown error', type: failureType}));
             return error;
         })
-        .then(response => refreshToken(response, action, store, next));
+        .then(response => refreshToken(response, action, store, next))
+        .catch(err => console.warn('unhandled rejection...', err));
 };

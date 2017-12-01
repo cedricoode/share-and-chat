@@ -65,7 +65,7 @@ class SideMenuComponent extends Component {
               {menuItems.map((item, idx) => (
                 <TouchableOpacity
                   key={idx}
-                  style={styles.listItem} 
+                  style={styles.listItem}
                 >
                   <Image  source={item.thumb } style={styles.listItemImage} />
                   <Text style={styles.listItemTitle}>{item.label}</Text>

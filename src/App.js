@@ -31,12 +31,13 @@ firebase.auth().onAuthStateChanged((user) => {
     }
 });
 
-let unsubscribe = store.subscribe(() => {
+
+store.subscribe(() => {
     const state = store.getState();
     if (state.auth.user &&
         !state.firebaseAuth.loggedIn) {
+        console.log('firebase logging in##########################');
         firebase.auth().signInWithCustomToken(state.auth.user.firebaseToken);
-        unsubscribe && unsubscribe();
     }
 });
 
@@ -193,6 +194,12 @@ function startOrderApp() {
         tabsStyle: OrderTabBarStyle,
         passProps: {
             chatNavProps: {
+                eventHandler: navEventHandler
+            },
+            mapNavProps: {
+                eventHandler: navEventHandler
+            },
+            programNavProps: {
                 eventHandler: navEventHandler
             }
         }  

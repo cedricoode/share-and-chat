@@ -43,7 +43,6 @@ export const actionCreatorFactory = {
                 let url = data.url;
                 getProgramHtml(url).then((data) => {
                     dispatch({ type: actions.LOADHTML, content: { id: orderId, html: data } });
-                    console.log("getProgramHtml   data " + data);
                 }).catch(error => {
                     dispatch({ type: actions.DOWNLOAD_HTML_ERROR, content: { error } });
                     console.log("getProgramHtml   error " + error);

@@ -122,6 +122,7 @@ class OrderListComponent extends Component {
                 keyExtractor={(item) => item.id}
                 renderItem={({ item }) => <ListItemComponent {...item}
                     handleClick={this._handleItemClick} />}
+                ListFooterComponent={<View style={{height: 32}}/>}
             />
         </View>;
     }

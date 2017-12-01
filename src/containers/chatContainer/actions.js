@@ -32,7 +32,8 @@ const actionCreatorFactory = {
                             roomId,
                             messageId: msg._id
                         }
-                    }));
+                    }))
+                    .catch(err => console.warn('no user signed in...', err));
             });
         };
     }

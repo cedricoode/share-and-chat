@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image, View, BackHandler } from 'react-native';
+import { Image, View, BackHandler, ActivityIndicator } from 'react-native';
 import { GiftedChat, Send } from 'react-native-gifted-chat';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
@@ -21,7 +21,12 @@ class ChatComponent extends Component {
     }
 
     componentWillUnmount() {
-        this._unsubscribe || this._unsubscribe();
+        this._unsubscribe && this._unsubscribe();
+    }
+
+    componentWillUpdate(nextProps) {
+        if (!nextProps.user) return false;
+        return true;
     }
 
     _onSend(messages) {
@@ -36,7 +41,6 @@ class ChatComponent extends Component {
      * @param {NavigatorEventType} event 
      */
     _onNavigatorEvent(event) {
-        console.log('navigator ', event);        
         if (event.id === 'willAppear') {
             BackHandler.addEventListener(
                 'hardwareBackPress', this._onNavigatorEvent);
@@ -47,8 +51,6 @@ class ChatComponent extends Component {
         get(this.props, 'chatNavProps.eventHandler', () =>{})(event);
     }
 
-
-
     render() {
         const { username, refId} = this.props.user || {};
         return (
@@ -56,6 +58,9 @@ class ChatComponent extends Component {
                 messages={this.props.messages}
                 onSend={this._onSend}
                 user={{ _id: refId, name: username }}
+                renderLoading={() => <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                        <ActivityIndicator animating={true} />
+                    </View>}
                 renderSend={(props) => {
                     return <Send {...props}>
                         <View style={{height: 44, justifyContent: 'center'}}>

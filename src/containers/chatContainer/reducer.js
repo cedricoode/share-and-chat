@@ -7,20 +7,16 @@ import { initialState } from '../../../config/constants';
  * toggle state to sent, if it exists.
 */
 function mergeRemoteMessage(localMsgs, remoteMsgs) {
-    console.log('merging state');
-    
     let result = [...localMsgs];
     remoteMsgs.forEach(rMsg => {
         let foundMsg = localMsgs.find(lMsg => (lMsg._id === rMsg._id));
         if (foundMsg) {
             // toggle state
-            console.log('toggling state');
             result = result.map(msg => 
                 (msg._id === foundMsg._id && msg.state !== 'sent')
                     ? ({...msg, state: 'sent'}) : ({...msg}));
         } else {
             // add to localMsg.
-            console.log('adding msg');
             const insertionP = result.findIndex(
                 msg => new Date(msg.createdAt) < new Date(rMsg.createdAt));
             if (insertionP === -1) {
