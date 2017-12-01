@@ -1,11 +1,14 @@
 import React, {Component} from 'react'; 
 import PropTypes from 'prop-types';
 import { colors } from '../../config/constants';
+import { Linking } from 'react-native'; 
 import {
     View,
+    Alert,
     ScrollView,
     Text,
     Image,
+    Button,
     Dimensions,
     TouchableOpacity,
     StyleSheet
@@ -44,26 +47,38 @@ import {
   ];
 class SideMenuComponent extends Component {
     constructor(props) {
-      super(props); 
+      super(props);    
+    }
+    _onMenuItemClick(index) {  
+       if(index == 1)
+          Linking.openURL('https://home.tudingbus.com/');
+    }  
+    _onContactItemClick(index) { 
+       if(index == 0){
+        Linking.openURL('tel:33967233959');
+       }else if(index == 1){
+        Linking.openURL('tel:33769690220');
+       }else{
+        Linking.openURL('mailto:mailto@deniseleeyohn.com');
+       } 
     } 
     render() {
       return(
-        <ScrollView style={styles.drawer}>
+        <View style={styles.drawer}   > 
           <View style={styles.header} key={0}>
             <View style={styles.headerContent} key={0}>
               <Image source={require('../../static/icon/driver-blanc.png')}  style={styles.headerIcon} /> 
               <View style={styles.headerInfo} key={1}> 
-                <Text style={styles.headerEmail} key={1}>
-                    pablodarde@gmail.com
-                </Text>
+                 <Text style={styles.headerEmail} key={1} >
+                    contact@tuding.fr
+                 </Text>
                </View>
-            </View>
-           
+            </View> 
           </View>
           <View style={styles.content} key={1}>
-            <View>
+            <View  >
               {menuItems.map((item, idx) => (
-                <TouchableOpacity
+                <TouchableOpacity   onPress={() => this._onMenuItemClick(idx)} 
                   key={idx}
                   style={styles.listItem}
                 >
@@ -76,7 +91,7 @@ class SideMenuComponent extends Component {
           <View style={styles.contactList} >
             <View>
               {contactList.map((item, idx) => (
-                <TouchableOpacity
+                <TouchableOpacity onPress={() => this._onContactItemClick(idx)}
                   key={idx}
                   style={styles.contactItem} 
                 >
@@ -85,7 +100,7 @@ class SideMenuComponent extends Component {
               ))}
             </View>
           </View>
-        </ScrollView>
+        </View>
       );
     }
   }
@@ -100,19 +115,17 @@ class SideMenuComponent extends Component {
       backgroundColor: colors.primary
     },
     header: {
-      height: 100,
-      flex: 1,
+      height: 100, 
       padding: 16,
       backgroundColor: colors.primary
     },
-    content: {
-      flex: 3,
+    content: { 
       padding: 16,
       backgroundColor: colors.primary
     },
     headerInfo: {
       height: 45 ,
-      width: 300,
+      width: 250,
       marginTop: 20,
       borderBottomColor: '#fff',
       borderBottomWidth: 1,
@@ -166,7 +179,7 @@ class SideMenuComponent extends Component {
         paddingLeft :20
       },
       contactItem: { 
-        width: 300,
+        width: 200, 
         height: 30 
       },
       contactItemTitle: {
