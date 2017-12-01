@@ -30,13 +30,12 @@ const screens = {
     chat: 'com.tuding.chat',
     map: 'com.tuding.map',
     program: 'com.tuding.program',
+    sideMenu: 'com.tuding.sidemenu'
 };
 const components = {
-    menuButton: 'com.tuding.components.menubutton',
-    sideMenu: 'com.tuding.components.sidemenu',
+    menuButton: 'com.tuding.components.menubutton', 
     logoutButton: 'com.tuding.components.logoutbutton'
-};
-
+}; 
 const _ENV_FIREBASE_CONFIG_MAPPING = {
     FB_API_KEY: 'apiKey',
     FB_AUTH_DOMAIN: 'authDomain',

@@ -29,6 +29,13 @@ export function firebaseLogout() {
         type: actions.FIREBASE_LOGOUT
     };
 }
+export function toggleSideMenu(){
+    this.props.navigator.toggleDrawer({
+        side: "left",
+        animated: true,
+        to: "open"
+     });
+}
 
 export const actionCreatorFactory = {
     selectOrderIdCreator: (orderId) => {

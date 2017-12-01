@@ -8,7 +8,7 @@ class ProgramComponent extends Component {
         super(props);  
     }
     componentDidMount() {
-         this.props.onLoad();
+         this.props.onLoad(); 
     }
     render() { 
         const {html} = this.props;  

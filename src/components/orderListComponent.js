@@ -104,11 +104,11 @@ class OrderListComponent extends Component {
      */
     _onNavigatorEvent(event) {
         get(this.props, 'orderListNavProps.eventHandler',
-            () =>console.log('no event handler'))(event);
+            () =>console.log('no event handler'))(event,this.props.navigator);
     }
     _handleItemClick(id) {
         this.props.onItemClick(id);
-    }
+    }  
     render() {
         const { orders, refreshing } = this.props;
         return <View style={styles.container}>

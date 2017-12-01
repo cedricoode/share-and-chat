@@ -1,17 +1,7 @@
 import React from 'react';
-
-import { View, StyleSheet } from 'react-native';
-
+import SideMenuComponent from '../../components/sideMenuComponent';  
 const SideMenu = () => (
-    <View style={styles.container}>
-    </View>
-);
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: 'lightgreen'
-    }
-});
-
+    <SideMenuComponent> 
+    </SideMenuComponent>
+); 
 export default SideMenu;

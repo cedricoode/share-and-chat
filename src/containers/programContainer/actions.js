@@ -1,6 +1,5 @@
 import { endpoints } from '../../../config/constants';
-import _ from 'lodash';
-
+import _ from 'lodash';   
 export const actions = {
     DOWNLOADHTML: 'DOWNLOADHTML',
     LOADHTML: 'LOADHTML',

@@ -13,7 +13,7 @@ import {
     actionCreatorFactory,
     firebaseLogin,
     firebaseLogout } from '../store/actions';
-
+ 
 // **************************
 // * React Native Navigation*
 // **************************
@@ -40,9 +40,9 @@ let unsubscribe = store.subscribe(() => {
     }
 });
 
-const navEventHandler = (event)=>{
+const navEventHandler = (event,_navigator)=>{
     console.log('navEventHandler:: ', event);
-    if (event.type === 'NavBarButtonPress') {
+    if (event.type === 'NavBarButtonPress' || event.type == 'DeepLink') {
         if (event.id === 'logout-btn') {
             firebase.auth().signOut();
             store.dispatch({type: 'RESET', state: {
@@ -55,6 +55,12 @@ const navEventHandler = (event)=>{
         } else if (event.id === 'back') {
             console.log('backbutton clicked');
             store.dispatch(actionCreatorFactory.unselectOrderIdCreator());
+        }else if ( event.link == 'menu-btn') {
+            _navigator.toggleDrawer({
+                side: 'left', // the side of the drawer since you can have two, 'left' / 'right'
+                animated: true, // does the toggle have transition animation or does it happen immediately (optional)
+                to: 'open' // optional, 'open' = open the drawer, 'closed' = close it, missing = the opposite of current state
+              });
         }
     }
 };
@@ -189,7 +195,7 @@ function startOrderApp() {
             chatNavProps: {
                 eventHandler: navEventHandler
             }
-        },
+        }  
     });
 }
 
@@ -217,8 +223,8 @@ function startOrderListApp() {
             navigatorButtons: {
                 leftButtons: [
                     {
-                        id: 'menu-btn',
-                        component: components.menuButton
+                        id: 'menu-btn', 
+                        component: components.menuButton  
                     }
                 ],
                 rightButtons: [
@@ -236,7 +242,7 @@ function startOrderListApp() {
         },
         drawer: { // optional, add this if you want a side menu drawer in your app
             left: { // optional, define if you want a drawer from the left
-                screen: components.sideMenu, // unique ID registered with Navigation.registerScreen
+                screen: screens.sideMenu, // unique ID registered with Navigation.registerScreen
                 passProps: {}, // simple serializable object that will pass as props to all top screens (optional)
                 disableOpenGesture: true // can the drawer be opened with a swipe instead of button (optional, Android only)
             },
