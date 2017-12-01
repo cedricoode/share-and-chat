@@ -1,9 +1,7 @@
-import ObjectMapper from 'object-mapper';
-import firebase from 'react-native-firebase';
-
 import { endpoints } from '../../../config/constants';
+import { API_REQUEST } from '../../middleware/api'; 
 
-const actions = {
+export const actions = {
     LOGIN: 'AUTH/LOGIN',
     LOGIN_SUCCESS: 'AUTH/LOGIN_SUCCESS',
     LOGIN_FAILURE: 'AUTH/LOGIN_FAILURE',
@@ -12,7 +10,7 @@ const actions = {
 };
 
 const actionCreators = {
-    onLogin: () => ({type: actions.LOGIN}),
+    // onLogin: () => ({type: actions.LOGIN}),
     onChangeUsername: ( username ) => ({
         type: actions.LOGIN_INPUT_USERNAME,
         content: { username }
@@ -20,7 +18,8 @@ const actionCreators = {
     onChangePassword: ( password ) => ({
         type: actions.LOGIN_INPUT_PASSWORD,
         content: { password }
-    })
+    }),
+    loginRequest: loginRequest
 };
 
 function loginRequest(username, password) {
@@ -34,53 +33,26 @@ function loginRequest(username, password) {
             password: password
         })
     };
-    return fetch(endpoints.login, options).then(response => {
-        if (response.ok) {
-            console.log('it is ok');
-            return response.json();
-        } else {
-            console.log('response is not ok: ', response);
-            throw new Error('response error, status code: ' + response.status);
+    return {
+        type: API_REQUEST,
+        [API_REQUEST]: {
+            types: [actions.LOGIN, actions.LOGIN_SUCCESS, actions.LOGIN_FAILURE],
+            endpoint: endpoints.login,
+            options,
+            responseMapping: ResponseMapping
         }
-    });
-    
+    };
 }
 
 // Map logging result to redux/auth.user
-const ResponseMapper = {
+const ResponseMapping = {
     'data.access_token': 'accessToken',
     'data.expires_in': 'expiresIn',
     'data.refresh_token': 'refreshToken',
     'data.token_type': 'tokenType',
     'data.ref_id': 'refId',
-    'data.user_name': 'userName',
+    'data.user_name': 'username',
     firebaseToken: 'firebaseToken'
 };
 
-const actionCreatorFactory = {
-    loginCreator: () => {
-        return (dispatch, getState) => {
-            const state = getState();
-            const { username, password } = state.auth;
-            loginRequest(username, password)
-                .then(rslt => {
-                    const user = ObjectMapper(rslt, ResponseMapper);
-                    dispatch({
-                        type: actions.LOGIN_SUCCESS,
-                        content: { user }
-                    });
-                    if (user && user.firebaseToken) {
-                        firebase.auth().signInWithCustomToken(user.firebaseToken)
-                            .catch(err => console.log(err));
-                    }
-                })
-                .catch(error => dispatch({
-                    type: actions.LOGIN_FAILURE,
-                    content: { error }
-                }));
-        };
-    }
-};
-
-export { actions, actionCreatorFactory };
 export default actionCreators;

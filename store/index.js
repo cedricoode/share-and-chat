@@ -1,6 +1,7 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import { createLogger } from 'redux-logger';
+import apiMiddleware from '../src/middleware/api';
 import { persistStore,
     persistCombineReducers,
     persistReducer } from 'redux-persist';
@@ -12,6 +13,7 @@ import authReducer from '../src/containers/loginContainer/reducer';
 import orderListReducer from '../src/containers/orderListContainer/reducer';
 import messageReducer from '../src/containers/chatContainer/reducer';
 import programReducer from '../src/containers/programContainer/reducer'; 
+import { refreshTokenStateReducer } from '../src/middleware/api';
 import { initialState } from '../config/constants';
 
 // 1. appInitialized should be blacklisted, since its lifespan is from starting app
@@ -21,7 +23,7 @@ import { initialState } from '../config/constants';
 const persistConfig = {
     key: 'stateRoot',
     storage,
-    blacklist: ['appInitialized', 'selectedId', 'firebaseAuth']
+    blacklist: ['appInitialized', 'selectedId', 'firebaseAuth', 'refreshTokenState']
 };
 
 const authPersistConfig = {
@@ -38,7 +40,8 @@ const reducer = persistCombineReducers(persistConfig, {
     programs : programReducer,
     selectedId: selectOrderReducer, 
     appInitialized: (state=false, action) =>
-        action.type === 'APP_INITIALIZED' ? true: state
+        action.type === 'APP_INITIALIZED' ? true: state,
+    refreshTokenState: refreshTokenStateReducer
 });
 
 const logger = createLogger({
@@ -48,7 +51,7 @@ const logger = createLogger({
 
 export function configureStore() {
     const enhanceCreateStore = compose(
-        applyMiddleware(thunkMiddleware, logger),
+        applyMiddleware(thunkMiddleware, apiMiddleware, logger),
         reduxReset()
     )(createStore);
     let store = enhanceCreateStore(

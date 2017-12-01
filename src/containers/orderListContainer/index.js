@@ -1,20 +1,21 @@
 import { connect } from 'react-redux';
-
 import OrderListComponent from '../../components/orderListComponent';
-import { actionCreatorFactory } from './actions';
+import { orderListRequest } from './actions';
 import { actionCreatorFactory as selectOrderFactory } from '../../../store/actions';
 
 // Redux
 function mapStateToProps(state) {
     return {
         orders: state.orders.data,
-        refreshing: state.orders.refreshing
+        refreshing: state.orders.refreshing,
+        user: state.auth.user
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        onRefresh: () => {dispatch(actionCreatorFactory.orderListActionCreator());},
+        onRefresh: (user) => 
+            dispatch(orderListRequest(user|| {})),
         onItemClick: (orderId) => {
             dispatch(selectOrderFactory.selectOrderIdCreator(orderId));
         }

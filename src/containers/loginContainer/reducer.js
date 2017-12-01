@@ -1,5 +1,7 @@
 import { actions }  from './actions';
+import { actions as refrehActions } from '../../middleware/api';
 import { initialState } from '../../../config/constants';
+import { getHumanReadableErrorMsg } from '../../helpers/utils';
 
 const DefaultState = initialState.auth;
 function reducer(state=DefaultState, action) {
@@ -15,13 +17,18 @@ function reducer(state=DefaultState, action) {
                 ...state,
                 loggingIn: false,
                 loggedIn: true,
-                user: action.content.user
+                user: action.content.response
             };
-        case actions.LOGIN_FAILURE:
+        case actions.LOGIN_FAILURE: {
+            const msg = getHumanReadableErrorMsg(action.error);
             return {...state,
                 loggedIn: false,
                 loggingIn: false,
-                error: action.content.error};
+                error: msg};
+        }
+        case refrehActions.AUTH_REFRESH_TOKEN_SUCCESS: {
+            return {...state, ...action.content.response};
+        }
         default:
             return state;
     }

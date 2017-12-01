@@ -28,7 +28,9 @@ class LoginComponent extends Component {
             onUsernameChange,
             onPasswordChange,
             submitError,
-            loggingIn
+            loggingIn,
+            username,
+            password
          } = this.props;
         return (
             <ImageBackground style={styles.imgBackground}
@@ -55,7 +57,7 @@ class LoginComponent extends Component {
                     </View>
                     {submitError ?
                         <Text style={styles.errorText}>
-                            Error while login. {submitError.message||''}
+                            Error while login. {submitError||''}
                         </Text>
                         : null
                     }
@@ -69,7 +71,7 @@ class LoginComponent extends Component {
                         loading={!!loggingIn}
                         disabled={!!loggingIn}
                         disabledStyle={styles.buttonStyle}
-                        onPress={() => onSubmit() || null} />
+                        onPress={() => onSubmit(username, password) || null} />
                 </View>
             </ImageBackground>
         );
@@ -80,8 +82,10 @@ LoginComponent.propTypes = {
     onSubmit: PropTypes.func,
     onUsernameChange: PropTypes.func,
     onPasswordChange: PropTypes.func,
-    submitError: PropTypes.object,
-    loggingIn: PropTypes.bool
+    submitError: PropTypes.string,
+    loggingIn: PropTypes.bool,
+    username: PropTypes.string,
+    password: PropTypes.string
 };
 
 const styles = StyleSheet.create({

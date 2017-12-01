@@ -1,5 +1,6 @@
 import { actions } from './actions';
 import { initialState } from '../../../config/constants';
+import { getHumanReadableErrorMsg } from '../../helpers/utils';
 
 /**
  * According to a key, merge two lists together.
@@ -26,21 +27,21 @@ const DefaultState = initialState.orders;
 export default function orderlistReducer(state=DefaultState, action) {
     switch(action.type) {
         case actions.REFRESH:
-            return {...state, refreshing: action.content};
+            return {...state, refreshing: true};
         case actions.NEWDATA:{
-            // merge data
             const mergedData = mergeLists(
-                state.data, action.content.data,
+                state.data, action.content.response.data,
                 'id',
                 'startDateTime',
                 -1);
             return {...state, data: mergedData, refreshing: false};
         }
-        case actions.REFRESH_ERROR:
-            //TODO: log error;
-            return {...state, refreshing: false, refresh_error: action.content.error};
+        case actions.REFRESH_ERROR: {
+            const msg = getHumanReadableErrorMsg(action.error);
+            return {...state, refreshing: false, refresh_error: msg};
+        }
         case actions.ORDERPAGE:
-            return { ...state };
+            return state;
         default:
             return state;
     }

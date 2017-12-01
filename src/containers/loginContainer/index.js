@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import LoginComponent from '../../components/loginComponent';
-import actionCreators, { actionCreatorFactory } from './actions';
+import actionCreators from './actions';
 
 // Redux
 function mapStateToProps(state) {
@@ -20,8 +20,8 @@ function mapDispatchToProps(dispatch) {
             dispatch(actionCreators.onChangePassword(password));
         },
         onSubmit: (username, password) => {
-            dispatch(actionCreators.onLogin());
-            dispatch(actionCreatorFactory.loginCreator(username, password));
+            // dispatch(actionCreators.onLogin());
+            dispatch(actionCreators.loginRequest(username, password));
         }
     };
 }

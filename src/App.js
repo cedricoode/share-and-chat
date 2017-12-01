@@ -31,6 +31,15 @@ firebase.auth().onAuthStateChanged((user) => {
     }
 });
 
+let unsubscribe = store.subscribe(() => {
+    const state = store.getState();
+    if (state.auth.user &&
+        !state.firebaseAuth.loggedIn) {
+        firebase.auth().signInWithCustomToken(state.auth.user.firebaseToken);
+        unsubscribe && unsubscribe();
+    }
+});
+
 const navEventHandler = (event)=>{
     console.log('navEventHandler:: ', event);
     if (event.type === 'NavBarButtonPress') {

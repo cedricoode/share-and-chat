@@ -1,7 +1,8 @@
 {
   "parser": "babel-eslint",
   "env": {
-    "browser": true
+    "browser": true,
+    "es6": true
   },
   "plugins": [ "react" ],
   "extends": [
@@ -12,6 +13,6 @@
      //override rules
      "semi": 2,
      "no-console": 0,
-     "global-require": 1
+     "global-require": 1,
   }
 }

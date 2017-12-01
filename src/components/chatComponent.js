@@ -50,12 +50,12 @@ class ChatComponent extends Component {
 
 
     render() {
-        const { userName, refId} = this.props.user;
+        const { username, refId} = this.props.user || {};
         return (
             <GiftedChat
                 messages={this.props.messages}
                 onSend={this._onSend}
-                user={{ _id: refId, name: userName }}
+                user={{ _id: refId, name: username }}
                 renderSend={(props) => {
                     return <Send {...props}>
                         <View style={{height: 44, justifyContent: 'center'}}>

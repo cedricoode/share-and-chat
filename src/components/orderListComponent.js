@@ -93,7 +93,7 @@ class OrderListComponent extends Component {
         this._onRefresh();
     }
     _onRefresh() {
-        this.props.onRefresh();
+        this.props.onRefresh(this.props.user);
     }
     /**
      * The navigator property is an injected dependency of this component,
@@ -133,7 +133,8 @@ OrderListComponent.propTypes = {
     refreshing: PropTypes.bool,
     navigator: PropTypes.object,
     orderListNavProps: PropTypes.object,
-    onItemClick: PropTypes.func
+    onItemClick: PropTypes.func,
+    user: PropTypes.object
 };
 
 const styles = StyleSheet.create({
