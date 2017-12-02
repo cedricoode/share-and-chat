@@ -9,6 +9,7 @@
     "devtool": "react-devtools"
   },
   "dependencies": {
+    "babel-plugin-transform-remove-console": "^6.8.5",
     "lodash": "^4.17.4",
     "object-mapper": "^4.2.0",
     "react": "16.0.0",

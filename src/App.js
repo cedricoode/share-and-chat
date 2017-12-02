@@ -2,6 +2,7 @@ import { Navigation } from 'react-native-navigation';
 import { Provider } from 'react-redux';
 import firebase from 'react-native-firebase';
 import get from 'lodash/get';
+import { Platform } from 'react-native';
 
 import registerScreens from './navScreens';
 import registerComponents from './navComponents';
@@ -53,7 +54,7 @@ const navEventHandler = (event,_navigator)=>{
             }});
 
             persistor.purge();
-        } else if (event.id === 'back') {
+        } else if (event.id === 'back-btn') {
             console.log('backbutton clicked');
             store.dispatch(actionCreatorFactory.unselectOrderIdCreator());
         }else if ( event.link == 'menu-btn') {
@@ -141,7 +142,8 @@ function startOrderApp() {
                     leftButtons: [
                         {
                             title: 'back',
-                            id: 'back'
+                            id: 'back-btn',
+                            ...(Platform.OS === 'ios' ? {} : {icon: require('../static/icon/back.png')})                            
                         }
                     ]
                 }
@@ -163,7 +165,8 @@ function startOrderApp() {
                     leftButtons: [
                         {
                             title: 'back',
-                            id: 'back'
+                            id: 'back-btn',
+                            ...(Platform.OS === 'ios' ? {} : {icon: require('../static/icon/back.png')})                            
                         }
                     ]
                 }
@@ -185,7 +188,8 @@ function startOrderApp() {
                     leftButtons: [
                         {
                             title: 'back',
-                            id: 'back'
+                            id: 'back-btn',
+                            ...(Platform.OS === 'ios' ? {} : {icon: require('../static/icon/back.png')})
                         }
                     ]
                 }               
@@ -230,7 +234,7 @@ function startOrderListApp() {
             navigatorButtons: {
                 leftButtons: [
                     {
-                        id: 'menu-btn', 
+                        id: Platform.OS === 'ios' ? 'menu-btn' : 'sideMenu', 
                         component: components.menuButton  
                     }
                 ],

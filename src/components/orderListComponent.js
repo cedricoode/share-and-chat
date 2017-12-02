@@ -122,7 +122,7 @@ class OrderListComponent extends Component {
                 keyExtractor={(item) => item.id}
                 renderItem={({ item }) => <ListItemComponent {...item}
                     handleClick={this._handleItemClick} />}
-                ListFooterComponent={<View style={{height: 32}}/>}
+                ListFooterComponent={<View style={{height: 80}}/>}
             />
         </View>;
     }
@@ -141,6 +141,9 @@ OrderListComponent.propTypes = {
 const styles = StyleSheet.create({
     container: {
         flex: 1
+        // flexGrow: 1,
+        // paddingTop: 16,
+        // paddingBottom: 16,
         // backgroundColor: 'green'
     }
 });

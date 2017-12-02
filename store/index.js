@@ -44,14 +44,20 @@ const reducer = persistCombineReducers(persistConfig, {
     refreshTokenState: refreshTokenStateReducer
 });
 
-const logger = createLogger({
-    timestamp: true,
-    diff: true
-});
+let middleware = [thunkMiddleware, apiMiddleware];
+
+if (__DEV__) {
+    const logger = createLogger({
+        timestamp: true,
+        diff: true
+    });
+    middleware = [...middleware, logger];
+}
+
 
 export function configureStore() {
     const enhanceCreateStore = compose(
-        applyMiddleware(thunkMiddleware, apiMiddleware, logger),
+        applyMiddleware(...middleware),
         reduxReset()
     )(createStore);
     let store = enhanceCreateStore(

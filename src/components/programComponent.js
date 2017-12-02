@@ -33,14 +33,15 @@ class ProgramComponent extends Component {
      * @param {NavigatorEventType} event 
      */
     _onNavigatorEvent(event) {
-        if (event.id === 'willAppear') {
+        console.log('are you there??');
+        if (event && event.id === 'willAppear') {
             BackHandler.addEventListener(
                 'hardwareBackPress', this._onNavigatorEvent);
-        } else if (event.id === 'willDisappear') {
+        } else if (event && event.id === 'willDisappear') {
             BackHandler.removeEventListener(
                 'hardwareBackPress', this._onNavigatorEvent);
         }
-        get(this.props, 'programNavProps.eventHandler', () =>{})(event);
+        get(this.props, 'chatNavProps.eventHandler', () =>{})(event || {id: 'back', type: 'NavBarButtonPress'});
     }
 
     render() { 
