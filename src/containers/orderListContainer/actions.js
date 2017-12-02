@@ -13,7 +13,7 @@ export function orderListRequest(user) {
     const options = {
         method: 'GET',
         headers: {
-            Authorization: `${user.tokenType} ${user.accessToken}`,
+            Authorization: `${user && user.tokenType} ${user && user.accessToken}`,
         }
     };
 
