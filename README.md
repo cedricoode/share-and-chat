@@ -21,6 +21,7 @@ For react native, we are not going to use create-react-native-app, since we are 
 8. [redux-persist](https://github.com/rt2zz/redux-persist), a redux state persisting tool.
 9. [redux-logger](https://github.com/evgenyrodionov/redux-logger), as its name suggests.
 10. [react-native-navigation](https://wix.github.io/react-native-navigation/#/styling-the-navigator), the navigation tools we are using.
+    * For the versions we are using, (RN 0.50.3, RNN 1.1.29), there is a bug of listview flickering at the bottom on android device. This is explained in [this issue](https://github.com/wix/react-native-navigation/issues/2138). As the state of this writing, only custom fix is available (which is to merge the pull request manually in node_modules/react-native-navigation)...
 
 ## Firebase
 ### Realtime database

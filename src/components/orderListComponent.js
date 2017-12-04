@@ -18,7 +18,6 @@ const ListItemComponent =
                     fontWeight: isActive ? 'bold' : 'normal',
                     textAlign: 'left'
                 }}>
-                
                     <View style={{ flexDirection: 'row' }}>
                         <View>
                             <View style={{flex:1, marginTop: 4}}>
@@ -122,7 +121,7 @@ class OrderListComponent extends Component {
                 keyExtractor={(item) => item.id}
                 renderItem={({ item }) => <ListItemComponent {...item}
                     handleClick={this._handleItemClick} />}
-                ListFooterComponent={<View style={{height: 80}}/>}
+                // ListFooterComponent={<View style={{height: 80}}/>}
             />
         </View>;
     }

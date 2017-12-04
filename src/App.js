@@ -33,14 +33,16 @@ firebase.auth().onAuthStateChanged((user) => {
 });
 
 
-store.subscribe(() => {
-    const state = store.getState();
-    if (state.auth.user &&
-        !state.firebaseAuth.loggedIn) {
-        console.log('firebase logging in##########################');
-        firebase.auth().signInWithCustomToken(state.auth.user.firebaseToken);
-    }
-});
+// store.subscribe(() => {
+//     const state = store.getState();
+//     if (state.auth.user &&
+//         !state.firebaseAuth.loggedIn) {
+//         console.log('firebase logging in##########################');
+//         if (state.auth.user.firebaseToken) {
+//             firebase.auth().signInWithCustomToken(state.auth.user.firebaseToken);
+//         }
+//     }
+// });
 
 const navEventHandler = (event,_navigator)=>{
     console.log('navEventHandler:: ', event);
@@ -222,7 +224,7 @@ const OrderListNavigatorStype = {
     navBarButtonColor: colors.textOnPrimary,
     // tabBarButtonColor: 'red',
     // tabBarSelectedButtonColor: 'red',
-    tabBarBackgroundColor: 'white'
+    tabBarBackgroundColor: 'white',
 };
 
 function startOrderListApp() {
@@ -295,10 +297,10 @@ export default class App {
             // Firebase login.
             const firebaseToken =
                 get(store.getState(), 'auth.user.firebaseToken', null);
-            if (firebaseToken) {
-                firebase.auth().signInWithCustomToken(firebaseToken)
-                    .catch(err => console.error(err));
-            }
+            // if (firebaseToken) {
+            //     firebase.auth().signInWithCustomToken(firebaseToken)
+            //         .catch(err => console.error(err));
+            // }
             store.dispatch({type: 'APP_INITIALIZED'});
             this._unsubscribePersistor && this._unsubscribePersistor();
         }
