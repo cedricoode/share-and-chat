@@ -7,7 +7,7 @@ import Dash from 'react-native-dash';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 
-import { misc, colors } from '../../config/constants';
+import { misc } from '../../config/constants';
 
 const ListItemComponent =
     ({ id, startPlace, endPlace, startDateTime,
@@ -78,6 +78,7 @@ class OrderListComponent extends Component {
         
     }
     componentWillMount() {
+        console.log('component will mount');
         if (this.props.navigator) {
             this._unsubscribe =
             this.props.navigator.addOnNavigatorEvent(this._onNavigatorEvent);

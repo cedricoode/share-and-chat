@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, BackHandler } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import get from 'lodash/get';
 import PropTypes from 'prop-types';
 
@@ -29,15 +29,9 @@ class MapComponent extends Component {
      * @param {NavigatorEventType} event 
      */
     _onNavigatorEvent(event) {
-        console.log('are you there??');
-        if (event && event.id === 'willAppear') {
-            BackHandler.addEventListener(
-                'hardwareBackPress', this._onNavigatorEvent);
-        } else if (event && event.id === 'willDisappear') {
-            BackHandler.removeEventListener(
-                'hardwareBackPress', this._onNavigatorEvent);
-        }
-        get(this.props, 'chatNavProps.eventHandler', () =>{})(event || {id: 'back', type: 'NavBarButtonPress'});
+        get(this.props,
+            'chatNavProps.eventHandler',
+            () =>{})(event || {id: 'back', type: 'NavBarButtonPress'});
     }
 
     render() {

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image, View, BackHandler, ActivityIndicator } from 'react-native';
+import { Image, View, ActivityIndicator } from 'react-native';
 import { GiftedChat, Send } from 'react-native-gifted-chat';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
@@ -41,15 +41,9 @@ class ChatComponent extends Component {
      * @param {NavigatorEventType} event 
      */
     _onNavigatorEvent(event) {
-        console.log('are you there??');
-        if (event && event.id === 'willAppear') {
-            BackHandler.addEventListener(
-                'hardwareBackPress', this._onNavigatorEvent);
-        } else if (event && event.id === 'willDisappear') {
-            BackHandler.removeEventListener(
-                'hardwareBackPress', this._onNavigatorEvent);
-        }
-        get(this.props, 'chatNavProps.eventHandler', () =>{})(event || {id: 'back', type: 'NavBarButtonPress'});
+        get(this.props,
+            'chatNavProps.eventHandler',
+            () =>{})(event || {id: 'back', type: 'NavBarButtonPress'});
     }
 
     render() {

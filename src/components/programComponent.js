@@ -1,5 +1,5 @@
 import React ,{Component} from 'react';
-import { WebView, BackHandler } from 'react-native';
+import { WebView } from 'react-native';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 
@@ -33,15 +33,9 @@ class ProgramComponent extends Component {
      * @param {NavigatorEventType} event 
      */
     _onNavigatorEvent(event) {
-        console.log('are you there??');
-        if (event && event.id === 'willAppear') {
-            BackHandler.addEventListener(
-                'hardwareBackPress', this._onNavigatorEvent);
-        } else if (event && event.id === 'willDisappear') {
-            BackHandler.removeEventListener(
-                'hardwareBackPress', this._onNavigatorEvent);
-        }
-        get(this.props, 'chatNavProps.eventHandler', () =>{})(event || {id: 'back', type: 'NavBarButtonPress'});
+        get(this.props,
+            'chatNavProps.eventHandler',
+            () =>{})(event || {id: 'back', type: 'NavBarButtonPress'});
     }
 
     render() { 

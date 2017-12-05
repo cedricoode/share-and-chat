@@ -32,20 +32,7 @@ firebase.auth().onAuthStateChanged((user) => {
     }
 });
 
-
-// store.subscribe(() => {
-//     const state = store.getState();
-//     if (state.auth.user &&
-//         !state.firebaseAuth.loggedIn) {
-//         console.log('firebase logging in##########################');
-//         if (state.auth.user.firebaseToken) {
-//             firebase.auth().signInWithCustomToken(state.auth.user.firebaseToken);
-//         }
-//     }
-// });
-
 const navEventHandler = (event,_navigator)=>{
-    console.log('navEventHandler:: ', event);
     if (event.type === 'NavBarButtonPress' || event.type == 'DeepLink') {
         if (event.id === 'logout-btn') {
             firebase.auth().signOut();
@@ -56,8 +43,7 @@ const navEventHandler = (event,_navigator)=>{
             }});
 
             persistor.purge();
-        } else if (event.id === 'back-btn') {
-            console.log('backbutton clicked');
+        } else if (event.id === 'back' || event.id === 'backPress') {
             store.dispatch(actionCreatorFactory.unselectOrderIdCreator());
         }else if ( event.link == 'menu-btn') {
             _navigator.toggleDrawer({
@@ -91,7 +77,7 @@ function startLoginApp() {
         },
         
         passProps: {}, // simple serializable object that will pass as props to all top screens (optional)
-        animationType: 'slide-down' // optional, add transition animation to root change: 'none', 'slide-down', 'fade'
+        animationType: 'fade' // optional, add transition animation to root change: 'none', 'slide-down', 'fade'
 
     });
 }
@@ -125,6 +111,10 @@ const OrderTabBarStyle = {
 };
 
 function startOrderApp() {
+    firebase.auth().signInWithCustomToken(
+        get(store.getState(), 'auth.user.firebaseToken', ''))
+        .then(() => console.log('firebase loggedIn'))
+        .catch(err => console.error('firebase login error, ', err));
     Navigation.startTabBasedApp({
         tabs: [
             {
@@ -144,11 +134,11 @@ function startOrderApp() {
                     leftButtons: [
                         {
                             title: 'back',
-                            id: 'back-btn',
-                            ...(Platform.OS === 'ios' ? {} : {icon: require('../static/icon/back.png')})                            
+                            id: 'back'
                         }
                     ]
-                }
+                },
+                overrideBackPress: true
             },
             {
                 label: 'map',
@@ -167,11 +157,11 @@ function startOrderApp() {
                     leftButtons: [
                         {
                             title: 'back',
-                            id: 'back-btn',
-                            ...(Platform.OS === 'ios' ? {} : {icon: require('../static/icon/back.png')})                            
+                            id: 'back'
                         }
                     ]
-                }
+                },
+                overrideBackPress: true                
             },
             {
                 label: 'program',
@@ -190,11 +180,11 @@ function startOrderApp() {
                     leftButtons: [
                         {
                             title: 'back',
-                            id: 'back-btn',
-                            ...(Platform.OS === 'ios' ? {} : {icon: require('../static/icon/back.png')})
+                            id: 'back'
                         }
                     ]
-                }               
+                },
+                overrideBackPress: true                
             },
         ],
         tabsStyle: OrderTabBarStyle,
@@ -208,7 +198,8 @@ function startOrderApp() {
             programNavProps: {
                 eventHandler: navEventHandler
             }
-        }  
+        },
+        animationType: 'fade'
     });
 }
 
@@ -253,6 +244,7 @@ function startOrderListApp() {
                 eventHandler: navEventHandler
             }
         },
+        animationType: 'fade',
         drawer: { // optional, add this if you want a side menu drawer in your app
             left: { // optional, define if you want a drawer from the left
                 screen: screens.sideMenu, // unique ID registered with Navigation.registerScreen
@@ -285,22 +277,14 @@ export default class App {
         this.appInitialized = false;
         this._unsubscribePersistor =
             persistor.subscribe(this.handlePersistorChange);
-        this.handlePersistorChange();
-
         this._unsubscribeStore = store.subscribe(this.handleStoreChange);
+        this.handlePersistorChange();
     }
 
     handlePersistorChange = () => {
         let { bootstrapped } = persistor.getState();
         if (bootstrapped) {
             this.bootstrapped = true;
-            // Firebase login.
-            const firebaseToken =
-                get(store.getState(), 'auth.user.firebaseToken', null);
-            // if (firebaseToken) {
-            //     firebase.auth().signInWithCustomToken(firebaseToken)
-            //         .catch(err => console.error(err));
-            // }
             store.dispatch({type: 'APP_INITIALIZED'});
             this._unsubscribePersistor && this._unsubscribePersistor();
         }
