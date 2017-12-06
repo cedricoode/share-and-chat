@@ -12,44 +12,44 @@ import { misc } from '../../config/constants';
 const ListItemComponent =
     ({ id, startPlace, endPlace, startDateTime,
         endDateTime, isActive, handleClick, orderPrefix }) => (
-        <TouchableOpacity onPress={()=>handleClick(id)}>
-            <Card title={`${orderPrefix} ${id}`}
-                titleStyle={{
-                    fontWeight: isActive ? 'bold' : 'normal',
-                    textAlign: 'left'
-                }}>
-                    <View style={{ flexDirection: 'row' }}>
-                        <View>
-                            <View style={{flex:1, marginTop: 4}}>
-                                <Image
-                                    style={listItemStyles.listItemImage}
-                                    resizeMode='contain'
-                                    source={require('../../static/icon/start_point.png')}/>
-                                    <View style={{flex: 1,  alignItems: 'center', paddingTop: 4}}>
-                                <Dash dashColor='#bdbdbd' dashGap={6} style={{ flexDirection: 'column', flex: 1, width: 1}} />
-                                </View>
-                            </View>
-                            
-                            <View style={{flex:1, marginBottom: 28}}>
-                                <Image
-                                    style={listItemStyles.listItemImage}
-                                    resizeMode='contain'
-                                    source={require('../../static/icon/end_point.png')}/>
+        <Card title={`${orderPrefix} ${id}`}
+            titleStyle={{
+                fontWeight: isActive ? 'bold' : 'normal',
+                textAlign: 'left'
+            }}>
+            <TouchableOpacity onPress={()=>handleClick(id)}>
+                <View style={{ flexDirection: 'row' }}>
+                    <View>
+                        <View style={{flex:1, marginTop: 4}}>
+                            <Image
+                                style={listItemStyles.listItemImage}
+                                resizeMode='contain'
+                                source={require('../../static/icon/start_point.png')}/>
+                                <View style={{flex: 1,  alignItems: 'center', paddingTop: 4}}>
+                            <Dash dashColor='#bdbdbd' dashGap={6} style={{ flexDirection: 'column', flex: 1, width: 1}} />
                             </View>
                         </View>
-                        <View style={{ marginLeft: 16 }}>
-                            <View>
-                                <Text style={{ fontSize: 16 }}>{startDateTime}</Text>
-                                <Text>{startPlace}</Text>
-                            </View>
-                            <View style={{ marginTop: 8 }}>
-                                <Text style={{ fontSize: 16 }}>{endDateTime}</Text>
-                                <Text>{endPlace}</Text>
-                            </View>
+                        
+                        <View style={{flex:1, marginBottom: 28}}>
+                            <Image
+                                style={listItemStyles.listItemImage}
+                                resizeMode='contain'
+                                source={require('../../static/icon/end_point.png')}/>
                         </View>
                     </View>
-            </Card>
-        </TouchableOpacity>
+                    <View style={{ marginLeft: 16 }}>
+                        <View>
+                            <Text style={{ fontSize: 16 }}>{startDateTime}</Text>
+                            <Text>{startPlace}</Text>
+                        </View>
+                        <View style={{ marginTop: 8 }}>
+                            <Text style={{ fontSize: 16 }}>{endDateTime}</Text>
+                            <Text>{endPlace}</Text>
+                        </View>
+                    </View>
+                </View>
+            </TouchableOpacity>
+        </Card>
 );
 
 const listItemStyles = StyleSheet.create({
@@ -74,11 +74,8 @@ class OrderListComponent extends Component {
         this._onRefresh = this._onRefresh.bind(this);
         this._onNavigatorEvent = this._onNavigatorEvent.bind(this);
         this._handleItemClick = this._handleItemClick.bind(this);
-
-        
     }
     componentWillMount() {
-        console.log('component will mount');
         if (this.props.navigator) {
             this._unsubscribe =
             this.props.navigator.addOnNavigatorEvent(this._onNavigatorEvent);
@@ -122,7 +119,7 @@ class OrderListComponent extends Component {
                 keyExtractor={(item) => item.id}
                 renderItem={({ item }) => <ListItemComponent {...item}
                     handleClick={this._handleItemClick} />}
-                // ListFooterComponent={<View style={{height: 80}}/>}
+                ListFooterComponent={<View style={{height: 16}}/>}
             />
         </View>;
     }
