@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 
 import ChatComponent from '../../components/chatComponent';
 import actionCreatorFactory from './actions';
+import { firebaseNewChatData } from '../../../store/actions';
 
 // Redux
 function mapStateToProps(state) {
@@ -15,9 +16,12 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        sendMessage: (messages) => {
-            dispatch(actionCreatorFactory.sendMessage(messages));
+        sendMessage: (messages, messageQuery) => {
+            dispatch(actionCreatorFactory.sendMessage(messages, messageQuery));
         },
+        saveRemoteMessage: (roomId, messages) => {
+            dispatch(firebaseNewChatData(roomId, messages));
+        }
     };
 }
 

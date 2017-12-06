@@ -24,9 +24,15 @@ registerComponents(store, Provider);
 // **************************
 // *     Firebase          *
 // **************************
-firebase.auth().onAuthStateChanged((user) => {
-    if (user) {
-        store.dispatch(firebaseLogin());
+firebase.auth().onIdTokenChanged(async (user) => {
+    if (user) { // if user is not null, this is mightbe triggered by token refreshed.
+        try {
+            console.log('onidtokenchanged, user signed in');
+            const firebaseToken = await user.getIdToken();
+            store.dispatch(firebaseLogin(firebaseToken));
+        } catch(err) {
+            console.error('refresh firebase Token error');
+        }
     } else {
         store.dispatch(firebaseLogout());
     }

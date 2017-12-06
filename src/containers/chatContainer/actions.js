@@ -16,10 +16,11 @@ export function sendingMessage(messages, roomId) {
 }
 
 const actionCreatorFactory = {
-    sendMessage: (messages) => {
+    sendMessage: (messages, messageQuery) => {
         return (dispatch, getState) => {
+            const messageRef = messageQuery.ref;
             const { selectedId } = getState();
-            const { orderId: roomId, messageRef } = selectedId;
+            const { orderId: roomId } = selectedId;
             dispatch(sendingMessage(messages, roomId));
 
             messages.forEach(msg => {

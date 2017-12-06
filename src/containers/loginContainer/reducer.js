@@ -1,5 +1,6 @@
 import { actions }  from './actions';
 import { actions as refrehActions } from '../../middleware/api';
+import { actions as firebaseActions } from '../../../store/actions';
 import { initialState } from '../../../config/constants';
 import { getHumanReadableErrorMsg } from '../../helpers/utils';
 
@@ -28,6 +29,12 @@ function reducer(state=DefaultState, action) {
         }
         case refrehActions.AUTH_REFRESH_TOKEN_SUCCESS: {
             return {...state, ...action.content.response};
+        }
+        case firebaseActions.FIREBASE_LOGIN: {
+            if (action.content) {
+                const newUser = {...state.user, firebaseToken: action.content};
+                return {...state, user: newUser};
+            } else return state;
         }
         default:
             return state;

@@ -3,6 +3,7 @@ import { Image, View, ActivityIndicator } from 'react-native';
 import { GiftedChat, Send } from 'react-native-gifted-chat';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
+import firebase from 'react-native-firebase';
 
 import Bubble from './Bubble';
 
@@ -11,6 +12,7 @@ class ChatComponent extends Component {
         super(props);
         this._onSend = this._onSend.bind(this);
         this._onNavigatorEvent = this._onNavigatorEvent.bind(this);
+        this._onNewRemoteMsg = this._onNewRemoteMsg.bind(this);
     }
 
     componentWillMount() {
@@ -22,6 +24,10 @@ class ChatComponent extends Component {
 
     componentWillUnmount() {
         this._unsubscribe && this._unsubscribe();
+        this.state.messageQuery &&
+            this.state.messageQuery.off('child_added', this._onNewRemoteMsg);
+        delete this.state.messageQuery;
+        this.setState({...this.state});
     }
 
     componentWillUpdate(nextProps) {
@@ -29,8 +35,24 @@ class ChatComponent extends Component {
         return true;
     }
 
+    componentDidMount() {
+        const { orderId } = this.props;
+        const messageRef = firebase.database().ref(`messages/${orderId}`);
+        let messageQuery = messageRef.orderByChild('createdAt');
+        messageQuery = messageQuery.startAt(
+            (this.props.messages && this.props.messages[0]
+                || {createdAt: new Date('1992-01-01')})
+                .createdAt);
+        messageQuery.on('child_added', this._onNewRemoteMsg);
+        this.setState({...this.state, messageQuery});
+    }
+
+    _onNewRemoteMsg(snapshot) {
+        this.props.saveRemoteMessage(this.props.orderId, snapshot.val());
+    }
+
     _onSend(messages) {
-        this.props.sendMessage(messages);
+        this.props.sendMessage(messages, this.state.messageQuery);
     }
 
     /**
@@ -66,7 +88,6 @@ class ChatComponent extends Component {
                     </Send>;
                 }}
                 renderBubble={(props) => {
-                    console.log('renderd');
                     return <Bubble {...props}/>;
                 }}
                 // renderAvatar={null}
@@ -80,7 +101,9 @@ ChatComponent.propTypes = {
     messages: PropTypes.array,
     user: PropTypes.object.isRequired,
     navigator: PropTypes.object,
-    chatNavProps: PropTypes.object
+    chatNavProps: PropTypes.object,
+    orderId: PropTypes.string.isRequired,
+    saveRemoteMessage: PropTypes.func.isRequired
 };
 
 export default ChatComponent;
