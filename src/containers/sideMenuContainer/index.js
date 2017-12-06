@@ -1,7 +1,6 @@
 import React from 'react';
 import SideMenuComponent from '../../components/sideMenuComponent';  
-const SideMenu = () => (
-    <SideMenuComponent> 
-    </SideMenuComponent>
+const SideMenu = (props) => (
+    <SideMenuComponent {...props} />
 ); 
 export default SideMenu;

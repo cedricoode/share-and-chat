@@ -38,17 +38,20 @@ firebase.auth().onIdTokenChanged(async (user) => {
     }
 });
 
+function logout() {
+    firebase.auth().signOut();
+    store.dispatch({type: 'RESET', state: {
+        ...initialState,
+        appInitialized: true,
+        _persist: store.getState()._persist
+    }});
+    persistor.purge();
+}
+
 const navEventHandler = (event,_navigator)=>{
     if (event.type === 'NavBarButtonPress' || event.type == 'DeepLink') {
         if (event.id === 'logout-btn') {
-            firebase.auth().signOut();
-            store.dispatch({type: 'RESET', state: {
-                ...initialState,
-                appInitialized: true,
-                _persist: store.getState()._persist
-            }});
-
-            persistor.purge();
+            logout();
         } else if (event.id === 'back' || event.id === 'backPress') {
             store.dispatch(actionCreatorFactory.unselectOrderIdCreator());
         }else if ( event.link == 'menu-btn') {
@@ -254,7 +257,7 @@ function startOrderListApp() {
         drawer: { // optional, add this if you want a side menu drawer in your app
             left: { // optional, define if you want a drawer from the left
                 screen: screens.sideMenu, // unique ID registered with Navigation.registerScreen
-                passProps: {}, // simple serializable object that will pass as props to all top screens (optional)
+                passProps: {logout}, // simple serializable object that will pass as props to all top screens (optional)
                 disableOpenGesture: true // can the drawer be opened with a swipe instead of button (optional, Android only)
             },
             // right: { // optional, define if you want a drawer from the right

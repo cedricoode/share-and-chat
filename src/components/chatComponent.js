@@ -30,9 +30,8 @@ class ChatComponent extends Component {
         this.setState({...this.state});
     }
 
-    componentWillUpdate(nextProps) {
-        if (!nextProps.user) return false;
-        return true;
+    shouldComponentUpdate(nextProps) {
+        return !!nextProps.orderId;
     }
 
     componentDidMount() {
