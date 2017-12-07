@@ -26,8 +26,12 @@ function getProgramHtml(url) {
         method: 'GET'
     };
     return fetch(url, options)
-        .then(response => {
-            return response.text();
+        .then(response => {  
+            let errorContent  = '<div style = "font-size:15px">Loading page error ...<div>';
+            if(response.ok == true)
+             return response.text();
+            else 
+             return errorContent;
         })
         .catch(err => {
             console.log("getProgramHtml fetch error" + err);
@@ -38,17 +42,22 @@ export const actionCreatorFactory = {
     programActionCreator: () => {
         return (dispatch, getState) => { 
             let orderId  = getState().selectedId.orderId;
-            console.log("orderId  " + orderId);
-            programRequest(orderId).then((data) => {
+            console.log("orderId  " + orderId); 
+             programRequest(orderId).then((data) => { 
                 let url = data.url;
-                getProgramHtml(url).then((data) => {
-                    dispatch({ type: actions.LOADHTML, content: { id: orderId, html: data } });
-                }).catch(error => {
-                    dispatch({ type: actions.DOWNLOAD_HTML_ERROR, content: { error } });
-                    console.log("getProgramHtml   error " + error);
-                });
+                if(url){
+                    getProgramHtml(url).then((data) => {  
+                            dispatch({ type: actions.LOADHTML, content: { id: orderId, html: data } });  
+                    }).catch(error => { 
+                        dispatch({ type: actions.LOADHTML, content: { id: orderId, html: data } });
+                        console.log("getProgramHtml   error " + error);
+                    });
+                }else{
+                    dispatch({ type: actions.LOADHTML, content: { id: orderId, html: data } }); 
+                }
+                
             }).catch(error => {
-                dispatch({ type: actions.DOWNLOAD_HTML_ERROR, content: { error } });
+                dispatch({ type: actions.LOADHTML, content: { id: orderId, html: data } });
                 console.log("programRequest   error " + error);
             });
         };
