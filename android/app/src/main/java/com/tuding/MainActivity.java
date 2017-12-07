@@ -1,5 +1,9 @@
 package com.tuding;
 
+import android.app.ActionBar;
+import android.view.View;
+import android.widget.LinearLayout;
+
 import com.reactnativenavigation.controllers.SplashActivity;
 
 public class MainActivity extends SplashActivity {
@@ -12,4 +16,16 @@ public class MainActivity extends SplashActivity {
 //    protected String getMainComponentName() {
 //        return "tuding";
 //    }
+    @Override
+    public LinearLayout createSplashLayout() {
+        View decorView = getWindow().getDecorView();
+        // Hide the status bar.
+        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+        decorView.setSystemUiVisibility(uiOptions);
+
+        LinearLayout view = new LinearLayout(this);
+        view.setBackground(getResources().getDrawable(R.drawable.splash_screen));
+        return view;
+    }
+
 }
