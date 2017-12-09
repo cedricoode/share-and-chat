@@ -154,7 +154,7 @@ function startOrderApp() {
                 screen: screens.map,
                 icon: require('../static/icon/map.png'),
                 selectedIcon: require('../static/icon/map.png'), // iOS only
-                title: 'ProgramScreen',
+                title: 'Map',
                 navigatorStyle: OrderNavigatorStyle,
                 navigatorButtons: {
                     rightButtons: [

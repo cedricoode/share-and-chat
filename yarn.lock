@@ -4187,6 +4187,10 @@ react-native-lightbox@^0.7.0:
   dependencies:
     prop-types "^15.5.10"
 
+react-native-maps@^0.18.3:
+  version "0.18.3"
+  resolved "https://registry.yarnpkg.com/react-native-maps/-/react-native-maps-0.18.3.tgz#85dee19596aff434ff65d69b5a218288c3363a3d"
+
 react-native-measureme@0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/react-native-measureme/-/react-native-measureme-0.0.1.tgz#8b1c5595cdbb1cfdf85bff98fe36d33e98b6162c"

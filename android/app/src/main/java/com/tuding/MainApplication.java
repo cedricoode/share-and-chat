@@ -3,6 +3,7 @@ package com.tuding;
 import android.app.Application;
 
 import com.reactnativenavigation.NavigationApplication;
+import com.airbnb.android.react.maps.MapsPackage;
 
 // import com.facebook.react.ReactApplication;
 import com.oblador.vectoricons.VectorIconsPackage;
@@ -48,8 +49,7 @@ public class MainApplication extends NavigationApplication {
 //    super.onCreate();
 //    SoLoader.init(this, /* native exopackage */ false);
 //  }
-
-
+ 
   @Override
   public List<ReactPackage> createAdditionalReactPackages() {
     return Arrays.<ReactPackage>asList(
@@ -57,7 +57,9 @@ public class MainApplication extends NavigationApplication {
         new ReactNativeConfigPackage(),
         new RNFirebasePackage(),
         new RNFirebaseDatabasePackage(),
-        new RNFirebaseAuthPackage()
+        new RNFirebaseAuthPackage(),
+        new MainReactPackage(),
+        new MapsPackage()
     );
   }
 

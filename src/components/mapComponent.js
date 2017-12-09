@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import get from 'lodash/get';
 import PropTypes from 'prop-types';
-
+import MapView from 'react-native-maps';
 
 class MapComponent extends Component { 
     constructor(props) {
@@ -35,11 +35,23 @@ class MapComponent extends Component {
     }
 
     render() {
+        const { region } = this.props;
+        console.log(region); 
         return (
-            <View style={styles.container}>
-                <Text>a very cute little map</Text>
-        </View>);
-    }
+          <View style ={styles.container}>
+            <MapView
+              style={styles.map}
+              region={{
+                latitude: 37.78825,
+                longitude: -122.4324,
+                latitudeDelta: 0.015,
+                longitudeDelta: 0.0121,
+              }}
+            >
+            </MapView>
+          </View>
+        );
+      }
 }
 
 MapComponent.propTypes = {
@@ -49,11 +61,17 @@ MapComponent.propTypes = {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: 'powderblue',
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center'
-    }
-});
+      ...StyleSheet.absoluteFillObject,
+      height: 400,
+      width: 400,
+      justifyContent: 'flex-end',
+      alignItems: 'center',
+    },
+    map: {
+      ...StyleSheet.absoluteFillObject,
+    },
+  });
 
 export default MapComponent;
+
+ 
