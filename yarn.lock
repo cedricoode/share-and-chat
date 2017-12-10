@@ -4195,9 +4195,9 @@ react-native-measureme@0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/react-native-measureme/-/react-native-measureme-0.0.1.tgz#8b1c5595cdbb1cfdf85bff98fe36d33e98b6162c"
 
-react-native-navigation@^1.1.287:
+"react-native-navigation@git://github.com/cedricode/react-native-navigation.git#7eff8ef44d66d20ceed64fd8d440a9bbbf03c970":
   version "1.1.299"
-  resolved "https://registry.yarnpkg.com/react-native-navigation/-/react-native-navigation-1.1.299.tgz#e8ff7f8c67af250fd2770fb5360eca17c365b746"
+  resolved "git://github.com/cedricode/react-native-navigation.git#7eff8ef44d66d20ceed64fd8d440a9bbbf03c970"
   dependencies:
     lodash "4.x.x"
 
