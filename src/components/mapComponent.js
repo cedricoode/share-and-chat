@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import get from 'lodash/get';
 import PropTypes from 'prop-types';
 import MapView from 'react-native-maps';
@@ -14,10 +14,14 @@ class MapComponent extends Component {
         if (this.props.navigator) {
             this._unsubscribe =
                 this.props.navigator.addOnNavigatorEvent(this._onNavigatorEvent);
+            this.props.navigator.toggleNavBar({to: 'hidden', animated: true});
         }
     }
 
     componentWillUnmount() {
+        if (this.props.navigator) {
+          this.props.navigator.toggleNavBar({to: 'show', animated: true});
+        }
         this._unsubscribe && this._unsubscribe();
     }
 
@@ -62,8 +66,7 @@ MapComponent.propTypes = {
 const styles = StyleSheet.create({
     container: {
       ...StyleSheet.absoluteFillObject,
-      height: 400,
-      width: 400,
+      flex: 1,
       justifyContent: 'flex-end',
       alignItems: 'center',
     },
