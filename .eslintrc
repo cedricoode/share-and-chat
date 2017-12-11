@@ -13,6 +13,6 @@
      //override rules
      "semi": 2,
      "no-console": 0,
-     "global-require": 1,
+     "global-require": 1
   }
 }
