@@ -9,6 +9,7 @@ import {
 import get from 'lodash/get';
 import PropTypes from 'prop-types';
 import MapView from 'react-native-maps';
+import firebase from 'react-native-firebase';
 
 class MapComponent extends Component {
   constructor(props) {
@@ -31,6 +32,17 @@ class MapComponent extends Component {
       this.props.navigator.toggleNavBar({ to: 'hidden', animated: true });
     }
 
+    // Subscribe to firebase location db.
+    const { orderId } = this.props;
+    const locationRef = firebase.database().ref(`locations/${orderId}`);
+    let locationQuery = locationRef.orderByChild('createdAt');
+    locationQuery = locationQuery.startAt(
+        (this.props.locations && this.props.locations[0]
+            || {createdAt: new Date('1992-01-01')})
+            .createdAt);
+    locationQuery.on('child_added', this._onNewRemoteLocation);
+    this.setState({...this.state, locationQuery});
+
     // Checkpermission. TODO: platform check. TODO: android api check.
     PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION)
       .then(hasPermission => {
@@ -48,6 +60,11 @@ class MapComponent extends Component {
           );
         }
       });
+    
+    this.watchId = navigator.geolocation.watchPosition(this._onGeoSuccess, this._onGeoError, {
+      enableHighAccuracy: true,
+      maximumAge: 10 * 60 * 1000
+    });
   }
 
   componentWillUnmount() {
@@ -55,6 +72,17 @@ class MapComponent extends Component {
       this.props.navigator.toggleNavBar({ to: 'show', animated: true });
     }
     this._unsubscribe && this._unsubscribe();
+    navigator.geolocation.clearWatch(this.watchId);
+
+    // Clear firebase listener
+    this.state.locationQuery &&
+    this.state.locationQuery.off('child_added', this._onNewRemoteLocation);
+    delete this.state.locationQuery;
+    this.setState({...this.state});
+  }
+
+  _onNewRemoteLocation(snapshot) {
+    this.props.saveRemoteLocation(this.props.orderId, snapshot.val());
   }
 
   /**
@@ -71,7 +99,11 @@ class MapComponent extends Component {
   }
 
   _onGeoSuccess(position) {
-    this.setState({markers: [{...position.coords}], region: {...position.coords, latitudeDelta: 0.09, longitudeDelta: 0.09}});
+    // TODO: update firebase.
+    // this.props.sendLocation(position, this.state.locationQuery);
+    this.setState({
+      markers: [{...position.coords}],
+      region: {...position.coords, latitudeDelta: 0.09, longitudeDelta: 0.09}});
     console.log('get current position: ', position);
   }
 
@@ -81,7 +113,7 @@ class MapComponent extends Component {
 
   _requestLocation() {
     navigator.geolocation.getCurrentPosition(this._onGeoSuccess, this._onGeoError, {
-      timeout: 10000,
+      maximumAge: 10 * 60 * 1000,
       enableHighAccuracy: true,
       useSignificantChanges: true
     });
@@ -101,6 +133,7 @@ class MapComponent extends Component {
                 title='ME'
                 description='This is my location'
                 key={marker.latitude}
+                image={require('../../static/icon/bus.png')}
               />
             ))
           }
@@ -121,7 +154,11 @@ class MapComponent extends Component {
 
 MapComponent.propTypes = {
   navigator: PropTypes.object,
-  mapNavProps: PropTypes.object
+  mapNavProps: PropTypes.object,
+  orderId: PropTypes.string,
+  locations: PropTypes.array,
+  saveRemoteLocation: PropTypes.func,
+  sendLocation: PropTypes.func
 };
 
 const styles = StyleSheet.create({

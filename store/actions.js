@@ -4,6 +4,7 @@ export const actions = {
     FIREBASE_LOGIN: 'FIREBASE/LOGIN',
     FIREBASE_LOGOUT: 'FIREBASE/LOGOUT',
     FIREBASE_NEW_CHAT_DATA: 'FIREBASE/NEW_CHAT_DATA',
+    FIREBASE_NEW_LOCATION_DATA: 'FIREBASE/NEW_LOCATION_DATA',
     SELECTORDERID: 'ROOT/SELECTORDERID',
     UNSELECTORDERID: 'ROOT/UNSELECTORDERID'
 };
@@ -14,6 +15,16 @@ export function firebaseNewChatData(roomId, messages) {
         content: {
             roomId,
             messages
+        }
+    };
+}
+
+export function firebaseNewLocationData(roomId, locations) {
+    return {
+        type: actions.FIREBASE_NEW_CHAT_DATA,
+        content: {
+            roomId,
+            locations
         }
     };
 }
