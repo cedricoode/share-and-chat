@@ -5,7 +5,7 @@ export const actions = {
 };
 
 
-export function sendingLocation(locations, roomId) {
+export function sendingLocation(location, roomId) {
     return {
         type: actions.LOCATION_SENDING,
         content: {
@@ -28,7 +28,7 @@ const actionCreatorFactory = {
                     type: actions.LOCATION_SENT,
                     content: {
                         roomId,
-                        locationId: location._id
+                        uid: location.uid
                     }
                 })).catch(err => console.warn('no user signed in...', err));
         };

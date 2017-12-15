@@ -13,6 +13,7 @@ import authReducer from '../src/containers/loginContainer/reducer';
 import orderListReducer from '../src/containers/orderListContainer/reducer';
 import messageReducer from '../src/containers/chatContainer/reducer';
 import programReducer from '../src/containers/programContainer/reducer'; 
+import locationReducer from '../src/containers/mapContainer/reducer';
 import { refreshTokenStateReducer } from '../src/middleware/api';
 import { initialState } from '../config/constants';
 
@@ -37,6 +38,7 @@ const reducer = persistCombineReducers(persistConfig, {
     auth: persistReducer(authPersistConfig, authReducer),
     orders: orderListReducer,
     messages: messageReducer,
+    locations: locationReducer,
     programs : programReducer,
     selectedId: selectOrderReducer, 
     appInitialized: (state=false, action) =>

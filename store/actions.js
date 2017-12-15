@@ -21,7 +21,7 @@ export function firebaseNewChatData(roomId, messages) {
 
 export function firebaseNewLocationData(roomId, locations) {
     return {
-        type: actions.FIREBASE_NEW_CHAT_DATA,
+        type: actions.FIREBASE_NEW_LOCATION_DATA,
         content: {
             roomId,
             locations

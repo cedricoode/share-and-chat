@@ -18,6 +18,7 @@ class MapComponent extends Component {
     this._requestLocation = this._requestLocation.bind(this);
     this._onGeoSuccess = this._onGeoSuccess.bind(this);
     this._onGeoError = this._onGeoError.bind(this);
+    this._onNewRemoteLocation = this._onNewRemoteLocation.bind(this);
     this.state = {markers: [], region: {
       latitude: 37.78825,
       longitude: -122.4324,
@@ -100,7 +101,11 @@ class MapComponent extends Component {
 
   _onGeoSuccess(position) {
     // TODO: update firebase.
-    // this.props.sendLocation(position, this.state.locationQuery);
+    this.props.sendLocation({
+      ...position,
+      uid: this.props.user.refId,
+      id: String(new Date().getTime())
+    }, this.state.locationQuery);
     this.setState({
       markers: [{...position.coords}],
       region: {...position.coords, latitudeDelta: 0.09, longitudeDelta: 0.09}});
@@ -158,7 +163,8 @@ MapComponent.propTypes = {
   orderId: PropTypes.string,
   locations: PropTypes.array,
   saveRemoteLocation: PropTypes.func,
-  sendLocation: PropTypes.func
+  sendLocation: PropTypes.func,
+  user: PropTypes.object
 };
 
 const styles = StyleSheet.create({

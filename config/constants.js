@@ -57,7 +57,8 @@ const initialState = {
         data: [],
         refreshing: false
     },
-    messages: {}
+    messages: {},
+    locations: {}
 };
 
 const misc = {
