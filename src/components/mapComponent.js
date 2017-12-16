@@ -4,13 +4,18 @@ import {
   StyleSheet,
   PermissionsAndroid,
   Image,
-  TouchableHighlight
+  TouchableHighlight,
+  Platform,
+  Dimensions
 } from 'react-native';
 import get from 'lodash/get';
 import PropTypes from 'prop-types';
 import MapView from 'react-native-maps';
 import firebase from 'react-native-firebase';
-
+let { width, height } = Dimensions.get('window');
+const ASPECT_RATIO = width / height; 
+const LATITUDE_DELTA = 0.0922;
+const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 class MapComponent extends Component {
   constructor(props) {
     super(props);
@@ -22,8 +27,8 @@ class MapComponent extends Component {
     this.state = {markers: [], region: {
       latitude: 37.78825,
       longitude: -122.4324,
-      latitudeDelta: 0.015,
-      longitudeDelta: 0.0121}};
+      latitudeDelta: LATITUDE_DELTA,
+      longitudeDelta:LONGITUDE_DELTA}};
   }
 
   componentWillMount() {
@@ -45,23 +50,24 @@ class MapComponent extends Component {
     this.setState({...this.state, locationQuery});
 
     // Checkpermission. TODO: platform check. TODO: android api check.
-    PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION)
-      .then(hasPermission => {
-        if (hasPermission) {
-          console.log('has permission');
-        } else {
-          // Check for permissions.
-          PermissionsAndroid.request(
-            PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-            {
-              title: 'To Share Your Location',
-              message: 'In order to share your location with others, \
-                    you need to grant this permission..'
-            }
-          );
-        }
-      });
-    
+    if(Platform.OS === 'android' ){
+      PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION)
+        .then(hasPermission => {
+          if (hasPermission) {
+            console.log('has permission');
+          } else {
+            // Check for permissions.
+            PermissionsAndroid.request(
+              PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+              {
+                title: 'To Share Your Location',
+                message: 'In order to share your location with others, \
+                      you need to grant this permission..'
+              }
+            );
+          }
+        });
+    }
     this.watchId = navigator.geolocation.watchPosition(this._onGeoSuccess, this._onGeoError, {
       enableHighAccuracy: true,
       maximumAge: 10 * 60 * 1000
@@ -108,7 +114,7 @@ class MapComponent extends Component {
     }, this.state.locationQuery);
     this.setState({
       markers: [{...position.coords}],
-      region: {...position.coords, latitudeDelta: 0.09, longitudeDelta: 0.09}});
+      region: {...position.coords, latitudeDelta: LATITUDE_DELTA, longitudeDelta: LONGITUDE_DELTA}});
     console.log('get current position: ', position);
   }
 
@@ -120,7 +126,8 @@ class MapComponent extends Component {
     navigator.geolocation.getCurrentPosition(this._onGeoSuccess, this._onGeoError, {
       maximumAge: 10 * 60 * 1000,
       enableHighAccuracy: true,
-      useSignificantChanges: true
+      useSignificantChanges: true,
+      timeout: 20000
     });
   }
 
@@ -136,6 +143,7 @@ class MapComponent extends Component {
               <MapView.Marker
                 coordinate={marker}
                 title='ME'
+                style={styles.mapIcon}
                 description='This is my location'
                 key={marker.latitude}
                 image={require('../../static/icon/bus.png')}
