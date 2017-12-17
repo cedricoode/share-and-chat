@@ -169,7 +169,7 @@ MapComponent.propTypes = {
   navigator: PropTypes.object,
   mapNavProps: PropTypes.object,
   orderId: PropTypes.string,
-  locations: PropTypes.array,
+  locations: PropTypes.object,
   saveRemoteLocation: PropTypes.func,
   sendLocation: PropTypes.func,
   user: PropTypes.object

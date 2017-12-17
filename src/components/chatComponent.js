@@ -74,16 +74,15 @@ class ChatComponent extends Component {
                 messages={this.props.messages}
                 onSend={this._onSend}
                 user={{ _id: refId, name: username }}
-                renderLoading={() => <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                renderLoading={() => <View style={styles.loading}>
                         <ActivityIndicator animating={true} />
                     </View>}
                 renderSend={(props) => {
-                    return <Send {...props}>
-                        <View style={{height: 44, justifyContent: 'center'}}>
-                            <Image source={require('../../static/icon/send.png')}
-                                resizeMode='contain'
-                                style={{height: props.composerHeight - 8}}/>
-                        </View>
+                    return <Send {...props}
+                        containerStyle={styles.sendContainer}>
+                        <Image source={require('../../static/icon/send.png')}
+                            resizeMode='contain'
+                            style={styles.sendImage}/>
                     </Send>;
                 }}
                 renderBubble={(props) => {
@@ -94,6 +93,16 @@ class ChatComponent extends Component {
             />);
     }
 }
+
+const styles = {
+    sendContainer: {
+        alignSelf: 'center',
+        marginVertical: 4,
+        justifyContent: 'center'
+    },
+    sendImage: {height: 40, alignSelf: 'center'},
+    loading: {flex: 1, justifyContent: 'center'}
+};
 
 ChatComponent.propTypes = {
     sendMessage: PropTypes.func.isRequired,
