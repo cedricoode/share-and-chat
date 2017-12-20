@@ -1,3 +1,5 @@
+import firebase from 'react-native-firebase';
+
 export const actions = {
     LOCATION_SENDING: 'CHAT/LOCATION_SENDING',
     LOCATION_SENT: 'CHAT/LOCATION_SENT',
@@ -20,17 +22,17 @@ const actionCreatorFactory = {
         return (dispatch, getState) => {
             const locationRef = locationQuery.ref;
             const { selectedId } = getState();
-            const { orderId: roomId } = selectedId;
+            const { orderId : roomId } = selectedId;
             dispatch(sendingLocation(location, roomId));
-            const pushRef = locationRef.push();
-            pushRef.set(location).then(() =>
+             var query = locationRef.child('/' + location.uid); 
+             query.set(location).then(() =>
                 dispatch({
                     type: actions.LOCATION_SENT,
                     content: {
                         roomId,
                         uid: location.uid
                     }
-                })).catch(err => console.warn('no user signed in...', err));
+                })).catch(err => console.warn('no user signed in...', err)); 
         };
     }
 };
