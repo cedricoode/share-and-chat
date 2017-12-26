@@ -35,12 +35,12 @@ export function refreshTokenStateReducer(state=false, action) {
 }
 
 const refreshTokenMapping = {
-    'data.access_token': 'accessToken',
-    'data.refresh_token': 'refreshToken',
-    'data.token_type': 'tokenType',
-    'data.ref_id': 'refId',
-    'data.user_name': 'username',
-    'data.expiresIn': 'expiresIn'
+    'data.result.access_token': 'accessToken',
+    'data.result.refresh_token': 'refreshToken',
+    'data.result.token_type': 'tokenType',
+    'data.result.ref_id': 'refId',
+    'data.result.user_name': 'username',
+    'data.result.expiresIn': 'expiresIn'
 };
 /** 
  * Attempt to refresh auth token of this user, since this call might be executed
@@ -81,12 +81,11 @@ function refreshToken(response, action, store) {
  * @param {object|null} responseMapping 
  */
 function callApi(endpoint, options, responseMapping) {
-    return fetch(endpoint, options)
-        .then(response => {
+    return fetch(endpoint, options)  
+        .then(response => { 
             if (!response.ok) {
                 return Promise.reject(response);
-            }
-
+            } 
             return response.json().then(data => {
                 if (endpoint === endpoints.login ||
                     endpoint === endpoints.refreshToken) {

@@ -5,7 +5,7 @@ import { initialState } from '../../../config/constants';
 import { getHumanReadableErrorMsg } from '../../helpers/utils';
 
 const DefaultState = initialState.auth;
-function reducer(state=DefaultState, action) {
+function reducer(state=DefaultState, action) { 
     switch(action.type) {
         case actions.LOGIN:
             return {...state, loggingIn: true};
@@ -14,6 +14,7 @@ function reducer(state=DefaultState, action) {
         case actions.LOGIN_INPUT_USERNAME:
             return {...state, username: action.content.username};
         case actions.LOGIN_SUCCESS:
+            debugger
             return {
                 ...state,
                 loggingIn: false,
