@@ -13,7 +13,7 @@ export function firebaseReducer(state={loggedIn:false}, action) {
     }
 }
 
-export function selectOrderReducer(state={orderId: 'Order110'}, action) {
+export function selectOrderReducer(state={}, action) {
     switch(action.type) {
         case actions.SELECTORDERID:
             return {...action.content};

@@ -13,8 +13,7 @@ function reducer(state=DefaultState, action) {
             return {...state, password: action.content.password};
         case actions.LOGIN_INPUT_USERNAME:
             return {...state, username: action.content.username};
-        case actions.LOGIN_SUCCESS:
-            debugger
+        case actions.LOGIN_SUCCESS: 
             return {
                 ...state,
                 loggingIn: false,

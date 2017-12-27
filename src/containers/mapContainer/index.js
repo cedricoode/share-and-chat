@@ -4,11 +4,11 @@ import actionCreatorFactory from './actions';
 import { firebaseNewLocationData } from '../../../store/actions';
 
 function mapStateToProps(state) {
-    const { orderId } = state.selectedId;
+    const { orderId } = state.selectedId; 
     return {
         locations: state.locations[orderId],
         user: state.auth.user,
-        orderId
+        orderId 
     };
 }
 
@@ -19,6 +19,9 @@ function mapDispatchToProps(dispatch) {
         },
         saveRemoteLocation: (roomId, position) => {
             dispatch(firebaseNewLocationData(roomId, position));
+        },
+        fetchLocationList: (locationQuery) => {
+            dispatch(actionCreatorFactory.fetchLocations(locationQuery));
         }
     };
 }

@@ -25,6 +25,7 @@ function mergeLists(obj1, obj2, key, sortKey, order=1) {
 
 const DefaultState = initialState.orders;
 export default function orderlistReducer(state=DefaultState, action) {
+     
     switch(action.type) {
         case actions.REFRESH:
             return {...state, refreshing: true};

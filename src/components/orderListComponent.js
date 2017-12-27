@@ -86,10 +86,10 @@ class OrderListComponent extends Component {
             this._unsubscribe();
         }
     }
-    componentDidMount() {
+    componentDidMount() { 
         this._onRefresh();
     }
-    _onRefresh() {
+    _onRefresh() { 
         this.props.onRefresh(this.props.user);
     }
     /**

@@ -24,7 +24,8 @@ registerComponents(store, Provider);
 // **************************
 // *     Firebase          *
 // **************************
-firebase.auth().onIdTokenChanged(async (user) => {
+
+ firebase.auth().onIdTokenChanged(async (user) => { 
     if (user) { // if user is not null, this is mightbe triggered by token refreshed.
         try {
             console.log('onidtokenchanged, user signed in');
@@ -119,7 +120,7 @@ const OrderTabBarStyle = {
     // tabBarHideShadow: true // iOS only. Remove default tab bar top shadow (hairline)
 };
 
-function startOrderApp() {
+function startOrderApp() { 
     firebase.auth().signInWithCustomToken(
         get(store.getState(), 'auth.user.firebaseToken', ''))
         .then(() => console.log('firebase loggedIn'))

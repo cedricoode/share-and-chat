@@ -2,27 +2,52 @@ import { actions } from './actions';
 import { initialState } from '../../../config/constants';
 
 const DefaultState = initialState.locations;
-function locationReducer(state=DefaultState, action) {
+function locationReducer(state=DefaultState, action) { 
     switch(action.type) {
-        case actions.LOCATION_SENDING: {
-            let { roomId, location: newLocation } = action.content;
-            let locations = state[roomId];
-            newLocation.state = 'sending';
+        case actions.LOCATION_SENDING: { 
             return {...state,
-                [roomId]: {
-                    ...locations,
-                    [newLocation.uid]: newLocation
-                }};
+                sending : true
+            }; 
         }
         case actions.LOCATION_SENT: {
-            const { roomId, uid } = action.content;
-            let location = state[roomId][uid];
-            if (location) location = {...location, state: 'sent'};
-            return {...state, [roomId]: {...state[roomId], [uid]: location}};
+          let { roomId, location: newLocation } = action.content;
+            let locations = state[roomId];
+            if(locations.length > 0){
+                var index = locations.map(function(l){
+                    return l.uid;
+                }).indexOf(newLocation.uid); 
+                if (index !== -1) { 
+                   locations[index] = newLocation;  
+                } 
+            }else{
+                locations.push(newLocation);
+            } 
+            return {...state,
+                [roomId]:locations,
+                sending : false
+            }; 
         }
         case actions.LOCATION_SEND_FAILED:
             // TODO:
             return state;
+        case actions.LOCATIONS_FETCHING: 
+            return {
+                ...state,
+                fetching : true 
+            };
+        case actions.LOCATIONS_FETCHING_SUCCESS: 
+            let locations  = action.content.locations;
+            let roomId  = action.content.roomId; 
+            return {
+                ...state,
+                fetching : false,
+                [roomId]: locations
+            };
+        case actions.LOCATIONS_FETCHING_FAILED: 
+            return {
+                ...state,
+                fetching : false 
+            };
         default:
             return state;
     }

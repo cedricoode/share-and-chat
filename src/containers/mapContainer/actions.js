@@ -3,38 +3,92 @@ import firebase from 'react-native-firebase';
 export const actions = {
     LOCATION_SENDING: 'CHAT/LOCATION_SENDING',
     LOCATION_SENT: 'CHAT/LOCATION_SENT',
-    LOCATION_SEND_FAILED: 'CHAT/LOCATION_SEND_FAILED'
-};
-
-
-export function sendingLocation(location, roomId) {
+    LOCATION_SEND_FAILED: 'CHAT/LOCATION_SEND_FAILED',
+    LOCATIONS_FETCHING:'CHAT/LOCATIONS_FETCHING',
+    LOCATIONS_FETCHING_SUCCESS:'CHAT/LOCATIONS_FETCHING_SUCCESS',
+    LOCATIONS_FETCHING_FAILED:'CHAT/LOCATIONS_FETCHING_FAILED',
+}; 
+export function sendingLocation() {
     return {
         type: actions.LOCATION_SENDING,
         content: {
-            roomId,
-            location
+            sending : true
         }
     };
 }
-
+export function fetchingAllLocations() {
+    return {
+        type: actions.LOCATIONS_FETCHING,
+        content: { 
+            fetching : true
+        }
+    };
+}
+export function fetchingAllLocationsSuccess(roomId,locations) {
+    return {
+        type: actions.LOCATIONS_FETCHING_SUCCESS,
+        content: { 
+            roomId,
+            fetching : false,
+            locations :locations
+        }
+    };
+}
+export function fetchingAllLocationsFailed(error) {
+    return {
+        type: actions.LOCATIONS_FETCHING_FAILED,
+        content: { 
+            fetching : false,
+            error :  error
+        }
+    };
+}
 const actionCreatorFactory = {
     sendLocation: (location, locationQuery) => {
         return (dispatch, getState) => {
             const locationRef = locationQuery.ref;
             const { selectedId } = getState();
             const { orderId : roomId } = selectedId;
-            dispatch(sendingLocation(location, roomId));
+            dispatch(sendingLocation());
              var query = locationRef.child('/' + location.uid); 
-             query.set(location).then(() =>
+             query.set(location).then(() =>{
                 dispatch({
                     type: actions.LOCATION_SENT,
                     content: {
-                        roomId,
-                        uid: location.uid
-                    }
-                })).catch(err => console.warn('no user signed in...', err)); 
+                        roomId : roomId,
+                        location : location 
+                    } 
+                });
+               // actionCreatorFactory.fetchLocations(locationQuery);  
+            }
+            ).catch(err => console.warn('no user signed in...', err)); 
         };
-    }
+    },
+    fetchLocations: (locationQuery) => { 
+        return (dispatch, getState) => {
+           dispatch(fetchingAllLocations());
+            const locationRef = locationQuery.ref; 
+            const { selectedId } = getState();
+            const { orderId : roomId } = selectedId;
+            let promises = [];
+            locationRef.once('value', function(snapshot) {
+              let locations = [];
+              snapshot.forEach(function(childSnapshot) { 
+                let childData = childSnapshot.val(); 
+                let promise =  locations.push(childData);
+                promises.push(promise); 
+              });
+              Promise.all(promises)
+              .then(function() {  
+                dispatch(fetchingAllLocationsSuccess(roomId,locations));  
+              })
+              .catch(function(err) {
+                console.warn('fetching locations error -' + err);
+                dispatch(fetchingAllLocationsFailed(err)); 
+              });  
+            }); 
+        };
+    }, 
 };
 
 export default actionCreatorFactory;

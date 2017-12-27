@@ -15,8 +15,7 @@ export function orderListRequest(user) {
         headers: {
             Authorization: `${user && user.tokenType} ${user && user.accessToken}`,
         }
-    };
-
+    }; 
     return {
         type: API_REQUEST,
         [API_REQUEST]: {

@@ -46,13 +46,15 @@ function loginRequest(username, password) {
 
 // Map logging result to redux/auth.user
 const ResponseMapping = {
-    'data.access_token': 'accessToken',
-    'data.expires_in': 'expiresIn',
-    'data.refresh_token': 'refreshToken',
-    'data.token_type': 'tokenType',
-    'data.ref_id': 'refId',
-    'data.user_name': 'username',
-    firebaseToken: 'firebaseToken'
+    'data.result.access_token': 'accessToken',
+    'data.result.expires_in': 'expiresIn',
+    'data.result.refresh_token': 'refreshToken',
+    'data.result.token_type': 'tokenType',
+    'data.result.ref_id': 'refId',
+    'data.result.user_name': 'username',
+    'data.result.role': 'role',
+    firebaseToken: 'firebaseToken' 
+   
 };
 
 export default actionCreators;
