@@ -25,7 +25,7 @@ registerComponents(store, Provider);
 // *     Firebase          *
 // **************************
 
- firebase.auth().onIdTokenChanged(async (user) => { 
+ firebase.auth().onUserChanged(async (user) => { 
     if (user) { // if user is not null, this is mightbe triggered by token refreshed.
         try {
             console.log('onidtokenchanged, user signed in');
@@ -35,6 +35,7 @@ registerComponents(store, Provider);
             console.error('refresh firebase Token error');
         }
     } else {
+        console.log('firebase logout');
         store.dispatch(firebaseLogout());
     }
 });
@@ -124,7 +125,7 @@ function startOrderApp() {
     firebase.auth().signInWithCustomToken(
         get(store.getState(), 'auth.user.firebaseToken', ''))
         .then(() => console.log('firebase loggedIn'))
-        .catch(err => console.error('firebase login error, ', err));
+        .catch(err => console.log('firebase login error, ', err));
     Navigation.startTabBasedApp({
         tabs: [
             {
