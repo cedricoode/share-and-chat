@@ -17,7 +17,7 @@ function mapDispatchToProps(dispatch) {
         sendLocation: (position, locationQuery) => {
             dispatch(actionCreatorFactory.sendLocation(position, locationQuery));
         },
-        saveRemoteLocation: (roomId, position) => {
+        upsertRemoteLocation: (roomId, position) => {
             dispatch(firebaseNewLocationData(roomId, position));
         },
         fetchLocationList: (locationQuery) => {
