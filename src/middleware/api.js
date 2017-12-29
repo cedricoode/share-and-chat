@@ -63,6 +63,7 @@ function refreshToken(response, action, store) {
                     actions.AUTH_REFRESH_TOKEN_SUCCESS,
                     actions.AUTH_REFRESH_TOKEN_FAILURE],
                 options: {
+                    method: 'POST',
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify({
                         userName: username,
