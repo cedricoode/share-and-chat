@@ -41,11 +41,11 @@ class MapComponent extends Component {
     this._getMarkers = this._getMarkers.bind(this);
     this._focusMap = this._focusMap.bind(this);
     this._focusMapToCoords = this._focusMapToCoords.bind(this);
-    this._displayAllMakers = this._displayAllMakers.bind(this);
+    this._displayAllMarkers = this._displayAllMarkers.bind(this);
     this._onNewRemoteLocation = this._onNewRemoteLocation.bind(this);
     let locationList = props.locations;
     this.AllMarkerMapButton = <MapButton key={0}
-      onPress={this._displayAllMakers}
+      onPress={this._displayAllMarkers}
       imageSource={require('../../static/icon/location-map.png')}/>;
     this._renderMapButtons = this._renderMapButtons.bind(this);
     this.state = {
@@ -117,7 +117,7 @@ class MapComponent extends Component {
 
   componentDidMount() {
     animationTimeout = setTimeout(() => {
-      this._displayAllMakers();
+      this._displayAllMarkers();
     }, timeout);
   }
 
@@ -152,7 +152,7 @@ class MapComponent extends Component {
     this._focusMap(currentMarker);
   }
 
-  _displayAllMakers() {
+  _displayAllMarkers() {
     let markers = [];
     markers = this._getMarkers();
     this._focusMap(markers, true);
