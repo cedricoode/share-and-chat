@@ -24,6 +24,13 @@ const GEO_OPTIONS = {
 };
 const timeout = 3000;
 let animationTimeout;
+
+const RoleImageMap = {
+  'DRIVER': require('../../static/icon/driver-hei.png'),
+  'GUIDE': require('../../static/icon/guide-hei.png'),
+  'GROUP-LEADER': require('../../static/icon/leader-hei.png')
+};
+
 class MapComponent extends Component {
   constructor(props) {
     super(props);
@@ -33,9 +40,14 @@ class MapComponent extends Component {
     this._onGeoError = this._onGeoError.bind(this);
     this._getMarkers = this._getMarkers.bind(this);
     this._focusMap = this._focusMap.bind(this);
+    this._focusMapToCoords = this._focusMapToCoords.bind(this);
     this._displayAllMakers = this._displayAllMakers.bind(this);
     this._onNewRemoteLocation = this._onNewRemoteLocation.bind(this);
     let locationList = props.locations;
+    this.AllMarkerMapButton = <MapButton key={0}
+      onPress={this._displayAllMakers}
+      imageSource={require('../../static/icon/location-map.png')}/>;
+    this._renderMapButtons = this._renderMapButtons.bind(this);
     this.state = {
       locations: locationList, region: {
         latitude: 37.78825,
@@ -114,7 +126,7 @@ class MapComponent extends Component {
     if (role) {
       switch (role) {
         case 'DRIVER':
-          return require('../../static/icon/driver.png');
+          return require('../../static/icon/bus.png');
         case 'GUIDE':
           return require('../../static/icon/guide.png');
         case 'GROUP-LEADER':
@@ -125,8 +137,19 @@ class MapComponent extends Component {
     }
   }
 
-  _focusMap(markers, animated) {
+  _focusMap(markers, animated=true) {
     this.map.fitToSuppliedMarkers(markers, animated);
+  }
+
+  _focusMapToCoords(position) {
+    this.setState({
+      region: { ...position.coords,
+        latitudeDelta: LATITUDE_DELTA,
+        longitudeDelta: LONGITUDE_DELTA
+      }
+    });
+    let currentMarker = [position.uid];
+    this._focusMap(currentMarker);
   }
 
   _displayAllMakers() {
@@ -166,11 +189,7 @@ class MapComponent extends Component {
     //add or udpate  location on firebase
     this.props.sendLocation(newLocation, this.state.locationQuery);
     //update region 
-    this.setState({
-      region: { ...position.coords, latitudeDelta: LATITUDE_DELTA, longitudeDelta: LONGITUDE_DELTA }
-    });
-    let currentMarker = [uid];
-    this._focusMap(currentMarker, true);
+    this._focusMapToCoords(newLocation);
   }
 
   _onGeoError(err) {
@@ -188,12 +207,29 @@ class MapComponent extends Component {
   _requestLocation() {
     navigator.geolocation.getCurrentPosition(this._onGeoSuccess, this._onGeoError, GEO_OPTIONS);
   }
+
   _getMarkers() {
     let markers = [];
     for (let i = 0; i < (this.props.locations.length||0); i++) {
       markers.push(this.props.locations[i].uid);
     }
     return markers;
+  }
+
+  _renderMapButtons() {
+    if (Array.isArray(this.props.locations)) {
+      return this.props.locations.reduce((prev, location) => {
+        const newButton = <MapButton
+          key={location.uid}
+          onPress={location.uid === this.props.user.refId ?
+            this._requestLocation : () => this._focusMapToCoords(location)}
+          imageSource={RoleImageMap[location.role]}/>;
+        prev.push(newButton);
+        return prev;
+      }, [this.AllMarkerMapButton]);
+    } else {
+      return [this.AllMarkerMapButton];
+    }
   }
 
   render() {
@@ -218,28 +254,30 @@ class MapComponent extends Component {
             ))
           }
         </MapView>
-        <TouchableHighlight
-          underlayColor='rgba(0,0,0,0)'
-          onPress={this._requestLocation}
-          style={styles.currentPositionIcon}>
-          <Image
-            resizeMode='contain'
-            style={styles.mapIcon}
-            source={require('../../static/icon/currentlocation.png')} />
-        </TouchableHighlight>
-        <TouchableHighlight
-          underlayColor='rgba(0,0,0,0)'
-          onPress={this._displayAllMakers}
-          style={styles.allPositionIcon}>
-          <Image
-            resizeMode='contain'
-            style={styles.mapIcon}
-            source={require('../../static/icon/location-map.png')} />
-        </TouchableHighlight>
+        <View style={{flexDirection: 'row', justifyContent: 'flex-end', alignSelf: 'stretch'}}>
+          {this._renderMapButtons()}
+        </View>
       </View>
     );
   }
 }
+
+const MapButton = ({onPress, imageSource}) => (
+  <TouchableHighlight
+    underlayColor='rgba(0,0,0,0)'
+    onPress={onPress}
+    style={styles.allPositionIcon}>
+    <Image
+      resizeMode='contain'
+      style={styles.mapIcon}
+      source={imageSource} />
+  </TouchableHighlight>
+);
+
+MapButton.propTypes = {
+  onPress: PropTypes.func,
+  imageSource: PropTypes.number
+};
 
 MapComponent.propTypes = {
   navigator: PropTypes.object,
@@ -267,8 +305,10 @@ const styles = StyleSheet.create({
     marginRight: 5
   },
   allPositionIcon: {
-    marginTop: 20,
-    marginRight: 5,
+    marginTop: 4,
+    marginBottom: 4,
+    marginRight: 4,
+    marginLeft: 4,
     alignSelf: 'flex-end'
   },
   mapIcon: {
