@@ -14,7 +14,7 @@ function locationReducer(state = DefaultState, action) {
         case actions.LOCATION_SENT: {
             let { roomId, locations: newLocation } = action.content;
             let locations = state[roomId];
-            locations = upsertLocation(locations, newLocation);
+            locations = upsertLocation(locations || [], newLocation);
             return {
                 ...state,
                 [roomId]: locations,
@@ -46,7 +46,7 @@ function locationReducer(state = DefaultState, action) {
         case firebaseActions.FIREBASE_NEW_LOCATION_DATA: {
             let { roomId, locations: newLocation } = action.content;
             let locations = state[roomId];
-            locations = upsertLocation(locations, newLocation);
+            locations = upsertLocation(locations || [], newLocation);
             return {
                 ...state,
                 [roomId]: locations,
