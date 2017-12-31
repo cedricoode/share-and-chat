@@ -7,12 +7,15 @@ import {
   TouchableHighlight,
   Platform,
   Dimensions,
-  Alert
+  Alert,
+  Text
 } from 'react-native';
 import get from 'lodash/get';
 import PropTypes from 'prop-types';
 import MapView from 'react-native-maps';
 import firebase from 'react-native-firebase';
+import timeago from 'time-ago';
+
 let { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
 const LATITUDE_DELTA = 0.0922;
@@ -244,13 +247,21 @@ class MapComponent extends Component {
               this.props.locations.map((location, index) => (
               <MapView.Marker
                 coordinate={location.coords}
-                title={location.username}
-                description='This is my location'
+                title={location.role}
+                description={`Updated at: ${timeago.ago(location.timestamp)}`}
                 key={index}
                 identifier={location.uid}
                 style={styles.mapIcon}
                 image={this.displayMarker(location.coords)}
-              />
+              >
+                <MapView.Callout updatedAt={location.timestamp}>
+                  <View style={{width: 160}}>
+                    <Text style={{fontWeight: 'bold'}}>{location.role}</Text>
+                    <Text style={{marginVertical: 8}}>{location.username}</Text>
+                    <TimeAgo time={location.timestamp}/>
+                  </View>
+                </MapView.Callout>
+              </MapView.Marker>
             ))
           }
         </MapView>
@@ -261,6 +272,39 @@ class MapComponent extends Component {
     );
   }
 }
+
+class TimeAgo extends Component {
+  componentDidMount() {
+    this.createTimeout();
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.state.timerHandler);
+  }
+
+  createTimeout = () => {
+    this.setState({timerHandler: setTimeout(() => {
+      this.update();
+    }, 10000)});
+  }
+
+  update = () => {
+    this.forceUpdate();
+    this.createTimeout();
+  }
+
+  render() {
+    return (
+      <Text>
+        {`Updated At: ${timeago.ago(this.props.time)}`}
+      </Text>
+    );
+  }
+}
+
+TimeAgo.propTypes = {
+  time: PropTypes.number
+};
 
 const MapButton = ({onPress, imageSource}) => (
   <TouchableHighlight

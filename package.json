@@ -27,7 +27,8 @@
     "redux-logger": "^3.0.6",
     "redux-persist": "^5.4.0",
     "redux-reset": "^0.3.0",
-    "redux-thunk": "^2.2.0"
+    "redux-thunk": "^2.2.0",
+    "time-ago": "^0.2.1"
   },
   "devDependencies": {
     "babel-eslint": "^8.0.2",
