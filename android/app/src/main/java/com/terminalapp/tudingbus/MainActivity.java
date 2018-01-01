@@ -1,6 +1,5 @@
-package com.tuding;
+package com.terminalapp.tudingbus;
 
-import android.app.ActionBar;
 import android.view.View;
 import android.widget.LinearLayout;
 

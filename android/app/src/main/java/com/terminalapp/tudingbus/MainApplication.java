@@ -1,6 +1,4 @@
-package com.tuding;
-
-import android.app.Application;
+package com.terminalapp.tudingbus;
 
 import com.reactnativenavigation.NavigationApplication;
 import com.airbnb.android.react.maps.MapsPackage;
@@ -8,10 +6,8 @@ import com.airbnb.android.react.maps.MapsPackage;
 // import com.facebook.react.ReactApplication;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.lugg.ReactNativeConfig.ReactNativeConfigPackage;
-import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
  import com.facebook.react.shell.MainReactPackage;
-import com.facebook.soloader.SoLoader;
 
 import java.util.Arrays;
 import java.util.List;
