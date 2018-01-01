@@ -52,6 +52,7 @@ class MapComponent extends Component {
       imageSource={require('../../static/icon/location-map.png')}/>;
     this._renderMapButtons = this._renderMapButtons.bind(this);
     this.state = {
+      hasPermission: false,
       locations: locationList, region: {
         latitude: 37.78825,
         longitude: -122.4324,
@@ -79,26 +80,34 @@ class MapComponent extends Component {
     locationQuery.on('child_changed', this._onNewRemoteLocation);
     this.setState({ ...this.state, locationQuery });
     this.props.fetchLocationList(locationQuery);
-    // Checkpermission. TODO: platform check. TODO: android api check.
     if (Platform.OS === 'android') {
-      PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION)
-        .then(hasPermission => {
-          if (hasPermission) {
-            console.log('has permission');
-          } else {
-            // Check for permissions.
-            PermissionsAndroid.request(
-              PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-              {
-                title: 'To Share Your Location',
-                message: 'In order to share your location with others, \
-                      you need to grant this permission..'
-              }
-            );
-          }
-        });
+      if (Platform.Version >= 23) { // Permission module is only for android version >= 23.
+        PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION)
+          .then(hasPermission => {
+            if (hasPermission) {
+              this.setState({...this.state, hasPermission});
+              console.log('has permission');
+            } else {
+              // Check for permissions.
+              PermissionsAndroid.request(
+                PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+                {
+                  title: 'To Share Your Location',
+                  message: 'In order to share your location with others, \
+                        you need to grant this permission..'
+                }
+              );
+            }
+          });
+      } else {
+        this.setState({...this.state, hasPermission: true});
+      }
     }
-    this.watchId = navigator.geolocation.watchPosition(this._onGeoSuccess, this._onGeoError, GEO_OPTIONS);
+    if (this.state.hasPermission) {
+      this.watchId = navigator.geolocation.watchPosition(
+        this._onGeoSuccess, this._onGeoError, GEO_OPTIONS
+      );
+    }
   }
 
   componentWillUnmount() {
@@ -208,7 +217,9 @@ class MapComponent extends Component {
   }
 
   _requestLocation() {
-    navigator.geolocation.getCurrentPosition(this._onGeoSuccess, this._onGeoError, GEO_OPTIONS);
+    if (this.state.hasPermission) {
+      navigator.geolocation.getCurrentPosition(this._onGeoSuccess, this._onGeoError, GEO_OPTIONS);
+    }
   }
 
   _getMarkers() {
