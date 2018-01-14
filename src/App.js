@@ -51,16 +51,17 @@ function logout() {
 }
 
 const navEventHandler = (event,_navigator)=>{
+    console.log('event: ', event);
     if (event.type === 'NavBarButtonPress' || event.type == 'DeepLink') {
         if (event.id === 'logout-btn') {
             logout();
         } else if (event.id === 'back' || event.id === 'backPress') {
             store.dispatch(actionCreatorFactory.unselectOrderIdCreator());
-        }else if ( event.link == 'menu-btn') {
+        } else if ( event.link == 'menu-btn' || event.id === 'sideMenu') {
             _navigator.toggleDrawer({
                 side: 'left', // the side of the drawer since you can have two, 'left' / 'right'
-                animated: true, // does the toggle have transition animation or does it happen immediately (optional)
-                to: 'open' // optional, 'open' = open the drawer, 'closed' = close it, missing = the opposite of current state
+                animated: true // does the toggle have transition animation or does it happen immediately (optional)
+                // to: 'open' // optional, 'open' = open the drawer, 'closed' = close it, missing = the opposite of current state
               });
         }
     }

@@ -236,7 +236,10 @@ class MapComponent extends Component {
         const newButton = <MapButton
           key={location.uid}
           onPress={location.uid === this.props.user.refId ?
-            this._requestLocation : () => this._focusMapToCoords(location)}
+            () => {
+              this._requestLocation();
+              this._focusMapToCoords(location);
+            } : () => this._focusMapToCoords(location)}
           imageSource={RoleImageMap[location.role]}/>;
         prev.push(newButton);
         return prev;
