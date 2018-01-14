@@ -52,7 +52,6 @@ class MapComponent extends Component {
       imageSource={require('../../static/icon/location-map.png')}/>;
     this._renderMapButtons = this._renderMapButtons.bind(this);
     this.state = {
-      hasPermission: false,
       locations: locationList, region: {
         latitude: 37.78825,
         longitude: -122.4324,
@@ -80,12 +79,12 @@ class MapComponent extends Component {
     locationQuery.on('child_changed', this._onNewRemoteLocation);
     this.setState({ ...this.state, locationQuery });
     this.props.fetchLocationList(locationQuery);
-    if (Platform.OS === 'android') {
+    if (Platform.OS === 'android' && !this.props.hasPermission) {
       if (Platform.Version >= 23) { // Permission module is only for android version >= 23.
         PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION)
           .then(hasPermission => {
             if (hasPermission) {
-              this.setState({...this.state, hasPermission});
+              this.props.toggleLocationPermission(hasPermission);
               console.log('has permission');
             } else {
               // Check for permissions.
@@ -100,10 +99,11 @@ class MapComponent extends Component {
             }
           });
       } else {
-        this.setState({...this.state, hasPermission: true});
+        this.props.toggleLocationPermission(true); 
       }
     }
-    if (this.state.hasPermission) {
+    if (Platform.OS === 'ios' || this.props.hasPermission) {
+      console.log('start to watch');
       this.watchId = navigator.geolocation.watchPosition(
         this._onGeoSuccess, this._onGeoError, GEO_OPTIONS
       );
@@ -217,14 +217,14 @@ class MapComponent extends Component {
   }
 
   _requestLocation() {
-    if (this.state.hasPermission) {
+    if (Platform.OS === 'ios' || this.props.hasPermission) {
       navigator.geolocation.getCurrentPosition(this._onGeoSuccess, this._onGeoError, GEO_OPTIONS);
     }
   }
 
   _getMarkers() {
     let markers = [];
-    for (let i = 0; i < (this.props.locations.length||0); i++) {
+    for (let i = 0; i < (this.props.locations && this.props.locations.length||0); i++) {
       markers.push(this.props.locations[i].uid);
     }
     return markers;
@@ -342,7 +342,9 @@ MapComponent.propTypes = {
   upsertRemoteLocation: PropTypes.func,
   sendLocation: PropTypes.func,
   fetchLocationList: PropTypes.func,
-  user: PropTypes.object
+  user: PropTypes.object,
+  hasPermission: PropTypes.bool,
+  toggleLocationPermission: PropTypes.func
 };
 
 const styles = StyleSheet.create({

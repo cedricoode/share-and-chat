@@ -2,6 +2,7 @@ export const actions = {
     LOCATION_SENDING: 'MAP/LOCATION_SENDING',
     LOCATION_SENT: 'MAP/LOCATION_SENT',
     LOCATION_SEND_FAILED: 'MAP/LOCATION_SEND_FAILED',
+    LOCATION_PERMISSION: 'MAP/LOCATION_PERMISSION_CHANGED',
     LOCATIONS_FETCHING: 'MAP/LOCATIONS_FETCHING',
     LOCATIONS_FETCHING_SUCCESS: 'MAP/LOCATIONS_FETCHING_SUCCESS',
     LOCATIONS_FETCHING_FAILED: 'MAP/LOCATIONS_FETCHING_FAILED',
@@ -41,6 +42,16 @@ export function fetchingAllLocationsFailed(error) {
         }
     };
 }
+
+export function locationChanged(permission) {
+    return {
+        type: actions.LOCATION_PERMISSION,
+        content: {
+            hasPermission: permission
+        }
+    };
+}
+
 const actionCreatorFactory = {
     sendLocation: (location, locationQuery) => {
         return (dispatch, getState) => {

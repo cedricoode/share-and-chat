@@ -58,7 +58,7 @@ const initialState = {
         refreshing: false
     },
     messages: {},
-    locations: {}
+    locations: { hasPermission: false}
 };
 
 const misc = {

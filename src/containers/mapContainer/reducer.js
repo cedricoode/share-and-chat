@@ -24,6 +24,8 @@ function locationReducer(state = DefaultState, action) {
         case actions.LOCATION_SEND_FAILED:
             // TODO:
             return state;
+        case actions.LOCATION_PERMISSION:
+            return {...state, hasPermission: action.content.hasPermission};
         case actions.LOCATIONS_FETCHING:
             return {
                 ...state,
