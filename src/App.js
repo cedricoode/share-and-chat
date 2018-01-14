@@ -136,12 +136,12 @@ function startOrderApp() {
                 title: `${misc.orderPrefix} ${store.getState().selectedId.orderId}`,
                 navigatorStyle: OrderNavigatorStyle,
                 navigatorButtons: {
-                    rightButtons: [
-                        {
-                            title: 'logout',
-                            id: 'logout-btn'
-                        }
-                    ],
+                    // rightButtons: [
+                    //     {
+                    //         title: 'logout',
+                    //         id: 'logout-btn'
+                    //     }
+                    // ],
                     leftButtons: [
                         {
                             title: 'back',
@@ -159,12 +159,12 @@ function startOrderApp() {
                 title: 'Map',
                 navigatorStyle: OrderNavigatorStyle,
                 navigatorButtons: {
-                    rightButtons: [
-                        {
-                            title: 'logout',
-                            id: 'logout-btn'
-                        }
-                    ],
+                    // rightButtons: [
+                    //     {
+                    //         title: 'logout',
+                    //         id: 'logout-btn'
+                    //     }
+                    // ],
                     leftButtons: [
                         {
                             title: 'back',
@@ -182,12 +182,12 @@ function startOrderApp() {
                 title: 'ProgramScreen',
                 navigatorStyle: OrderNavigatorStyle,
                 navigatorButtons: {
-                    rightButtons: [
-                        {
-                            title: 'logout',
-                            id: 'logout-btn'
-                        }
-                    ],
+                    // rightButtons: [
+                    //     {
+                    //         title: 'logout',
+                    //         id: 'logout-btn'
+                    //     }
+                    // ],
                     leftButtons: [
                         {
                             title: 'back',
@@ -242,12 +242,12 @@ function startOrderListApp() {
                         component: components.menuButton  
                     }
                 ],
-                rightButtons: [
-                    {
-                        id: 'logout-btn',
-                        title: 'logout'
-                    }
-                ]
+                // rightButtons: [
+                //     {
+                //         id: 'logout-btn',
+                //         title: 'logout'
+                //     }
+                // ]
             },
         },
         passProps: {
