@@ -53,7 +53,7 @@ function logout() {
 const navEventHandler = (event,_navigator)=>{
     console.log('event: ', event);
     if (event.type === 'NavBarButtonPress' || event.type == 'DeepLink') {
-        if (event.id === 'logout-btn') {
+        if (event.link === 'menu-logout') {
             logout();
         } else if (event.id === 'back' || event.id === 'backPress') {
             store.dispatch(actionCreatorFactory.unselectOrderIdCreator());
@@ -260,7 +260,7 @@ function startOrderListApp() {
         drawer: { // optional, add this if you want a side menu drawer in your app
             left: { // optional, define if you want a drawer from the left
                 screen: screens.sideMenu, // unique ID registered with Navigation.registerScreen
-                passProps: {logout}, // simple serializable object that will pass as props to all top screens (optional)
+                passProps: {logout:logout}, // simple serializable object that will pass as props to all top screens (optional)
                 disableOpenGesture: true // can the drawer be opened with a swipe instead of button (optional, Android only)
             },
             // right: { // optional, define if you want a drawer from the right

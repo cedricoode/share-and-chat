@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { colors } from '../../config/constants';
 import { Linking } from 'react-native';
 import { store } from '../../store';
+import { Navigation } from 'react-native-navigation';
 
 import {
   View,
@@ -48,7 +49,7 @@ export const contactList = [
   }
 ];
 class SideMenuComponent extends Component {
-  constructor(props) {
+  constructor(props) { 
     debugger
     super(props); 
   }
@@ -56,7 +57,8 @@ class SideMenuComponent extends Component {
     if (index == 1)
       Linking.openURL('https://home.tudingbus.com/');
     else if (index === 0) {
-      this.props.logout();
+     // this.props.logout();
+      Navigation.handleDeepLink({ link:'menu-logout'})
     }
   }
   _onContactItemClick(index) {
@@ -112,8 +114,7 @@ class SideMenuComponent extends Component {
 }
 
 SideMenuComponent.propTypes = {
-  logout: PropTypes.func.isRequired,
-  username:PropTypes.string.isRequired 
+  logout: PropTypes.func.isRequired 
  };
 
 const styles = StyleSheet.create({

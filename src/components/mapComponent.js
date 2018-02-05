@@ -138,7 +138,7 @@ class MapComponent extends Component {
     if (role) {
       switch (role) {
         case 'DRIVER':
-          return require('../../static/icon/bus.png');
+          return require('../../static/icon/driver.png');
         case 'GUIDE':
           return require('../../static/icon/guide.png');
         case 'GROUP-LEADER':
@@ -256,6 +256,7 @@ class MapComponent extends Component {
           style={styles.map}
           region={this.state.region}
           ref={ref => { this.map = ref; }}
+          onRegionChange={region => this._renderMapButtons()} 
         >
           { Array.isArray(this.props.locations) &&
               this.props.locations.map((location, index) => (

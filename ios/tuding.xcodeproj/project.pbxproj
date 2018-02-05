@@ -361,8 +361,6 @@
 		2B8FBF3837DF985F9F97A996 /* libPods-tudingTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-tudingTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		32DA249D51CE4354AC851D83 /* RNFirebase.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNFirebase.xcodeproj; path = "../node_modules/react-native-firebase/ios/RNFirebase.xcodeproj"; sourceTree = "<group>"; };
 		3AB64CE07A1B409E941C007E /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
-		3B62E6BC29BAACE360F07FF1 /* Pods-tuding-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tuding-tvOSTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-tuding-tvOSTests/Pods-tuding-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
-		3C3863CAAB56679F60CEEABB /* Pods-tuding-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tuding-tvOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-tuding-tvOS/Pods-tuding-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		3E80602CDC90C6F99A5CA9E1 /* Pods-tuding.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tuding.debug.xcconfig"; path = "Pods/Target Support Files/Pods-tuding/Pods-tuding.debug.xcconfig"; sourceTree = "<group>"; };
 		3EC5BF7DAE2412F6FBF80903 /* Pods-tuding.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tuding.release.xcconfig"; path = "Pods/Target Support Files/Pods-tuding/Pods-tuding.release.xcconfig"; sourceTree = "<group>"; };
 		412124E80C5E49498FC1BB13 /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
@@ -373,7 +371,6 @@
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
 		6E9BA60EA0D3406F9D4C7810 /* libReactNativeNavigation.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libReactNativeNavigation.a; sourceTree = "<group>"; };
 		755274F431BD4B67AFCF930C /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
-		7630C49C3866E0345BBB32B5 /* Pods-tuding-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tuding-tvOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-tuding-tvOS/Pods-tuding-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		8202ED921FC61BB900B81D3F /* ReactNativeNavigation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactNativeNavigation.xcodeproj; path = "../node_modules/react-native-navigation/ios/ReactNativeNavigation.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
@@ -388,7 +385,6 @@
 		D65116E298684B8CB3A47548 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
 		DAFEE34E731A5B89D2C7D1B6 /* libPods-tuding-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-tuding-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E640642C18AEDC6B179B1E62 /* libPods-tuding-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-tuding-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		E70975C3C23473D16B45797B /* Pods-tuding-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tuding-tvOSTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-tuding-tvOSTests/Pods-tuding-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		EB01B55E62E846299ECDBD44 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -716,10 +712,6 @@
 			children = (
 				3E80602CDC90C6F99A5CA9E1 /* Pods-tuding.debug.xcconfig */,
 				3EC5BF7DAE2412F6FBF80903 /* Pods-tuding.release.xcconfig */,
-				3C3863CAAB56679F60CEEABB /* Pods-tuding-tvOS.debug.xcconfig */,
-				7630C49C3866E0345BBB32B5 /* Pods-tuding-tvOS.release.xcconfig */,
-				E70975C3C23473D16B45797B /* Pods-tuding-tvOSTests.debug.xcconfig */,
-				3B62E6BC29BAACE360F07FF1 /* Pods-tuding-tvOSTests.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -1401,7 +1393,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.tuding.termapp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tuding.app;
 				PRODUCT_NAME = tuding;
 				PROVISIONING_PROFILE = "b03e05dd-7471-4d8f-93de-cfb2abfc5581";
 				PROVISIONING_PROFILE_SPECIFIER = "Wildcard App dev";
@@ -1439,7 +1431,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.tuding.termapp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tuding.app;
 				PRODUCT_NAME = tuding;
 				PROVISIONING_PROFILE = "b03e05dd-7471-4d8f-93de-cfb2abfc5581";
 				PROVISIONING_PROFILE_SPECIFIER = "Wildcard App dev";
