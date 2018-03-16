@@ -49,9 +49,8 @@ export const contactList = [
   }
 ];
 class SideMenuComponent extends Component {
-  constructor(props) { 
-    debugger
-    super(props); 
+  constructor(props) {
+    super(props);
   }
   _onMenuItemClick(index) {
     if (index == 1)
@@ -77,7 +76,7 @@ class SideMenuComponent extends Component {
           <View style={styles.headerContent} key={0}>
             <Image source={require('../../static/icon/driver-blanc.png')} style={styles.headerIcon} />
             <View style={styles.headerInfo} key={1}>
-              <Text style={styles.headerEmail} key={1} > 
+              <Text style={styles.headerEmail} key={1} >
                 {store.getState().auth.username}
                  </Text>
             </View>
@@ -114,7 +113,7 @@ class SideMenuComponent extends Component {
 }
 
 SideMenuComponent.propTypes = {
-  logout: PropTypes.func.isRequired 
+  logout: PropTypes.func.isRequired
  };
 
 const styles = StyleSheet.create({

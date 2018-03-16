@@ -15,6 +15,7 @@ import java.util.List;
 import io.invertase.firebase.RNFirebasePackage;
 import io.invertase.firebase.database.RNFirebaseDatabasePackage;
 import io.invertase.firebase.auth.RNFirebaseAuthPackage;
+import com.agontuk.RNFusedLocation.RNFusedLocationPackage;
 
 public class MainApplication extends NavigationApplication {
 
@@ -55,7 +56,8 @@ public class MainApplication extends NavigationApplication {
         new RNFirebaseDatabasePackage(),
         new RNFirebaseAuthPackage(),
         new MainReactPackage(),
-        new MapsPackage()
+        new MapsPackage(),
+        new RNFusedLocationPackage()
     );
   }
 

@@ -4157,6 +4157,10 @@ react-native-firebase@^3.1.0:
     opencollective "^1.0.3"
     prop-types "^15.6.0"
 
+react-native-geolocation-service@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/react-native-geolocation-service/-/react-native-geolocation-service-1.0.2.tgz#84c6ab2a2aa2d33aa23411f6d6f6c1a35da43adf"
+
 react-native-gifted-chat@^0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/react-native-gifted-chat/-/react-native-gifted-chat-0.3.0.tgz#ab371723e3ddad07385d0ff1dbfcae156151daad"

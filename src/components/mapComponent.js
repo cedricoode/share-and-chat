@@ -15,16 +15,17 @@ import PropTypes from 'prop-types';
 import MapView from 'react-native-maps';
 import firebase from 'react-native-firebase';
 import timeago from 'time-ago';
+import GeoLocation from 'react-native-geolocation-service';
 
 let { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
 const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 const GEO_OPTIONS = {
-  maximumAge: 60000,
   enableHighAccuracy: true,
-  timeout: 20000
+  timeout: 10000
 };
+
 const timeout = 3000;
 let animationTimeout;
 
@@ -46,18 +47,25 @@ class MapComponent extends Component {
     this._focusMapToCoords = this._focusMapToCoords.bind(this);
     this._displayAllMarkers = this._displayAllMarkers.bind(this);
     this._onNewRemoteLocation = this._onNewRemoteLocation.bind(this);
+    this.startWatchPosition = this.startWatchPosition.bind(this);
     let locationList = props.locations;
     this.AllMarkerMapButton = <MapButton key={0}
       onPress={this._displayAllMarkers}
       imageSource={require('../../static/icon/location-map.png')}/>;
+    this.MyLocationMapButton = <MapButton key={1}
+      onPress={this._requestLocation}
+      imageSource={require('../../static/icon/mylocation.png')}/>
     this._renderMapButtons = this._renderMapButtons.bind(this);
     this.state = {
-      locations: locationList, region: {
+      locations: locationList,
+      region: {
         latitude: 37.78825,
         longitude: -122.4324,
         latitudeDelta: LATITUDE_DELTA,
         longitudeDelta: LONGITUDE_DELTA
-      }
+      },
+      latDelta: LATITUDE_DELTA,
+      longDelta: LONGITUDE_DELTA
     };
   }
 
@@ -85,6 +93,7 @@ class MapComponent extends Component {
           .then(hasPermission => {
             if (hasPermission) {
               this.props.toggleLocationPermission(hasPermission);
+              this._requestLocation();              
               console.log('has permission');
             } else {
               // Check for permissions.
@@ -95,7 +104,13 @@ class MapComponent extends Component {
                   message: 'In order to share your location with others, \
                         you need to grant this permission..'
                 }
-              );
+              ).then(granted => {
+                if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                  this.props.toggleLocationPermission(true);
+                } else {
+                  this.props.toggleLocationPermission(false);
+                }
+              });
             }
           });
       } else {
@@ -104,9 +119,8 @@ class MapComponent extends Component {
     }
     if (Platform.OS === 'ios' || this.props.hasPermission) {
       console.log('start to watch');
-      this.watchId = navigator.geolocation.watchPosition(
-        this._onGeoSuccess, this._onGeoError, GEO_OPTIONS
-      );
+      this._requestLocation();
+      this.startWatchPosition();
     }
   }
 
@@ -116,6 +130,9 @@ class MapComponent extends Component {
     }
     this._unsubscribe && this._unsubscribe();
     navigator.geolocation.clearWatch(this.watchId);
+    if (this.manualWatchId) {
+      clearInterval(this.manualWatchId);
+    }
     // Clear firebase listener
     // this.state.locationQuery && this.state.locationQuery.off('child_added', this._onNewRemoteLocation);
     if (this.state.locationQuery)
@@ -131,6 +148,13 @@ class MapComponent extends Component {
     animationTimeout = setTimeout(() => {
       this._displayAllMarkers();
     }, timeout);
+  }
+
+  startWatchPosition() {
+    this.watchId = navigator.geolocation.watchPosition(this._onGeoSuccess, this._onGeoError);
+    this.manualWatchId = setInterval(() => {
+      this._requestLocation(false);
+    }, 7000);
   }
 
   displayMarker(marker) {
@@ -156,8 +180,8 @@ class MapComponent extends Component {
   _focusMapToCoords(position) {
     this.setState({
       region: { ...position.coords,
-        latitudeDelta: LATITUDE_DELTA,
-        longitudeDelta: LONGITUDE_DELTA
+        latitudeDelta: this.state.region.latitudeDelta,
+        longitudeDelta: this.state.region.longitudeDelta
       }
     });
     let currentMarker = [position.uid];
@@ -187,6 +211,11 @@ class MapComponent extends Component {
       () => { })(event || { id: 'back', type: 'NavBarButtonPress' });
   }
 
+  _onSysGeoSuccess = (position) => {
+    let newLocation = this._onGeoSuccess(position);
+    this._focusMapToCoords(newLocation);
+  } 
+
   _onGeoSuccess(position) {
     let role = this.props.user.role;
     position.coords.role = role;
@@ -200,8 +229,9 @@ class MapComponent extends Component {
     };
     //add or udpate  location on firebase
     this.props.sendLocation(newLocation, this.state.locationQuery);
+    return newLocation;
     //update region 
-    this._focusMapToCoords(newLocation);
+    // this._focusMapToCoords(newLocation);
   }
 
   _onGeoError(err) {
@@ -216,9 +246,13 @@ class MapComponent extends Component {
     );
   }
 
-  _requestLocation() {
+  _requestLocation(focus=true) {
     if (Platform.OS === 'ios' || this.props.hasPermission) {
-      navigator.geolocation.getCurrentPosition(this._onGeoSuccess, this._onGeoError, GEO_OPTIONS);
+      if (focus) {
+        GeoLocation.getCurrentPosition(this._onSysGeoSuccess, this._onGeoError, GEO_OPTIONS);
+      } else {
+        GeoLocation.getCurrentPosition(this._onGeoSuccess, this._onGeoError, GEO_OPTIONS);        
+      }
     }
   }
 
@@ -241,11 +275,11 @@ class MapComponent extends Component {
               this._focusMapToCoords(location);
             } : () => this._focusMapToCoords(location)}
           imageSource={RoleImageMap[location.role]}/>;
-        prev.push(newButton);
+        prev.unshift(newButton);
         return prev;
-      }, [this.AllMarkerMapButton]);
+      }, [this.AllMarkerMapButton, this.MyLocationMapButton]);
     } else {
-      return [this.AllMarkerMapButton];
+      return [this.AllMarkerMapButton, this.MyLocationMapButton];
     }
   }
 
@@ -256,7 +290,9 @@ class MapComponent extends Component {
           style={styles.map}
           region={this.state.region}
           ref={ref => { this.map = ref; }}
-          onRegionChange={region => this._renderMapButtons()} 
+          onRegionChange={region => {
+            this.setState({region});
+            this._renderMapButtons();}} 
         >
           { Array.isArray(this.props.locations) &&
               this.props.locations.map((location, index) => (
